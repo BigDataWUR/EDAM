@@ -9,6 +9,11 @@ from setuptools.command.install import install
 from setuptools.command.test import test as TestCommand
 
 import edam
+try:
+    import pypandoc
+    long_description = pypandoc.convert('README.md', 'rst')
+except(IOError, ImportError):
+    long_description = open('README.md').read()
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -63,17 +68,17 @@ class CustomInstall(install):
                  os.path.join(home_user_directory, '.viewer', 'templates', 'edam'))
 
 
-def read(*filenames, **kwargs):
-    encoding = kwargs.get('encoding', 'utf-8')
-    sep = kwargs.get('sep', '\n')
-    buf = []
-    for filename in filenames:
-        with io.open(filename, encoding=encoding) as f:
-            buf.append(f.read())
-    return sep.join(buf)
+# def read(*filenames, **kwargs):
+#     encoding = kwargs.get('encoding', 'utf-8')
+#     sep = kwargs.get('sep', '\n')
+#     buf = []
+#     for filename in filenames:
+#         with io.open(filename, encoding=encoding) as f:
+#             buf.append(f.read())
+#     return sep.join(buf)
 
 
-long_description = read('README.md')
+# long_description = read('README.md')
 
 
 class PyTest(TestCommand):
@@ -91,9 +96,11 @@ class PyTest(TestCommand):
 setup(
     name='edam',
     version=edam.__version__,
-    url='http://github.com/ecologismico/edam',
+    url='https://github.com/BigDataWUR/EDAM/',
+    download_url='http://github.com/ecologismico/edam',
     description='An input template framework',
     long_description=long_description,
+    long_description_content_type='text/markdown',
     license='GNU General Public License v3.0',
     author='Argyrios Samourkasidis',
     setup_requires=['pytest-runner'],
@@ -117,17 +124,14 @@ setup(
             ['edam=bin.edam:cli', 'viewer=bin.viewer:run'],
         
     },
-    classifiers=[
-        'Development Status :: 3 - Alpha',
-        'Intended Audience :: e-scientists',
-        'Topic :: Environmental data management :: Data acquisition tools',
-        
-        'License :: OSI Approved :: GNU General Public License v3.0',
-        
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-    ],
+    # classifiers=[
+    #     'Intended Audience :: e-scientists',
+    #     'Topic :: Environmental data management :: Data acquisition tools',
+    #     'License :: OSI Approved :: GNU General Public License v3.0',
+    #     'Programming Language :: Python :: 3',
+    #     'Programming Language :: Python :: 3.4',
+    #     'Programming Language :: Python :: 3.5',
+    #     'Programming Language :: Python :: 3.6'
+    # ]
 
 )
