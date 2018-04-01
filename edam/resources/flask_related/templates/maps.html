@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% set active_page = "maps" %}
+{% block title %}Maps{% endblock %}
+{% block head %}{{mymap.js}}{% endblock %}
+{% block body %}
+
+    <div class="row">
+        <div class="col">
+            <div id="map-canvas" style="width:750px;height:650px;"> {{mymap.html}}</div>
+        </div>
+    </div>
+
+{% endblock %}

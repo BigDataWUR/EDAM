@@ -1,0 +1,76 @@
+Station:
+    name: Agmip
+    mobile: False
+    latitude: 23.200
+    longitude: 89.330
+    license: Attribution
+    tags:
+        key1: value1
+        key2: value2
+Observables:
+    1:
+        observable_id: tmin
+        name: Temperature Min
+        ontology: http://edam.gr#TemperatureMin
+    2:
+        observable_id: tmax
+        name: Temperature Max
+        ontology: http://sweet.com#TemperatureMaximum
+    3:
+        observable_id: rain
+        name: Rain
+        ontology: http://edam.gr#Rain
+    4:
+        observable_id: srad
+        name: Solar radiation
+        ontology: http://edam.gr#SolarRadiation
+    5:
+        observable_id: wind
+        name: Wind
+        ontology: http://edam.gr#Wind
+    39:
+        observable_id: rhum
+        name: Humidity
+        ontology: http://edam.gr#RelativeHumidity
+    6:
+        observable_id: vprs
+        name: Vprs
+    7:
+        observable_id: dewp
+        name: Dewing point
+        ontology: http://edam.gr#DewingPoint
+Units of Measurement:
+    1:
+        name: unknown
+        symbol:
+        ontology:
+        relevant_observables: dewp, vprs, srad
+    2:
+        name: Percent
+        symbol: \%
+        ontology: something
+        relevant_observables: rhum
+    3:
+        name: Celcius
+        symbol: C
+        ontology: something
+        relevant_observables: tmin, tmax
+    4:
+        name: Millimeters
+        symbol: mm
+        ontology: something
+        relevant_observables: rain
+    5:
+        name: kilometers per hour
+        symbol: km/h
+        ontology: something
+        relevant_observables: wind
+Sensors:
+    1:
+        generic: True
+        name: Generic Agmip sensor
+        manufacturer: Agmip Consortium
+        relevant_observables: dewp, vprs, srad, rhum, tmin, tmax, rain, wind
+        tags:
+            old: True
+            analog: False

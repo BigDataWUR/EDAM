@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExceptionReport xmlns="http://www.opengis.net/ows/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 version="1.0.0"
+                 xml:lang="en">
+    <Exception exceptionCode=""
+               locator="">
+        <ExceptionText></ExceptionText>
+    </Exception>
+</ExceptionReport>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<om:ObservationCollection
+        xmlns:gml="http://www.opengis.net/gml"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        xmlns:sos="http://www.opengis.net/sos/1.0"
+        xmlns:om="http://www.opengis.net/om/1.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.opengis.net/om/1.0 http://schemas.opengis.net/om/1.0.0/om.xsd">
+    <gml:description>{{ results[0].observable.name}} measurements
+        from {{ results[0].station.name}} station
+    </gml:description>
+    <gml:name>{{ results[0].station.id}}:{{ results[0].helper.sensor.id }}</gml:name>
+    <om:member>
+        <om:samplingTime>
+            <gml:TimePeriod gml:id="ST">
+                <gml:beginPosition>{{ results[0].timestamp }}</gml:beginPosition>
+                <gml:endPosition>{{ results[-1].timestamp }}</gml:endPosition>
+            </gml:TimePeriod>
+        </om:samplingTime>{% for measurement in results %}
+        <sos:observationData>
+        {#+ hash(helper.observable.name)#}
+            <om:Observation gml:id="{{ results[0].observable.name }}">
+                <om:phenomenonTime>
+{#                    {{ hash(d2s(measurement.timestamp)) }}#}
+                    <gml:TimeInstant gml:id="#">
+                        <gml:timePosition>{{ measurement.timestamp }}</gml:timePosition>
+                    </gml:TimeInstant>
+                </om:phenomenonTime>
+{#                {{ hash(d2s(measurement.timestamp)) }}#}
+                <om:resultTime xlink:href="#"/>
+                <om:procedure>{{ results[0].helper.sensor.name}}</om:procedure>
+                <om:observedProperty xlink:href="{{ results[0].observable.ontology }}"/>
+                <om:result uom="{{ results[0].uom.name }}">{{ measurement.value }}</om:result>
+            </om:Observation>
+        </sos:observationData>
+    {% endfor %}
+    </om:member>
+</om:ObservationCollection>

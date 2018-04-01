@@ -1,0 +1,93 @@
+Station:
+  url: http://www.bom.gov.au
+  license: Attribution
+Observables:
+    1:
+        observable_id: temp
+        name: Temperature above sea level
+    15:
+        observable_id: tempMIN
+        name: Temperature Min
+    16:
+        observable_id: tempMAX
+        name: Temperature Max
+    2:
+        observable_id: rain
+        name: Rain
+    3:
+        observable_id: evap
+        name: Evapotranspiration
+    4:
+        observable_id: sun
+        name: Sunlight
+    5:
+        observable_id: windm_dir
+        name: Wind max direction
+    11:
+        observable_id: windm_spd
+        name: Wind max speed
+    6:
+        observable_id: wind_dir
+        name: Wind direction
+    12:
+        observable_id: wind_spd
+        name: Wind speed
+    7:
+        observable_id: humidity
+        name: Humidity
+    8:
+        observable_id: cloud
+        name: Cloud
+    10:
+        observable_id: mlsp
+        name: Pressure
+Units of Measurement:
+    1:
+        name: Celcius
+        symbol: C
+        ontology: something
+        relevant_observables: temp, tempMIN, tempMAX
+    2:
+        name: Millimeters
+        symbol: mm
+        ontology: something
+        relevant_observables: rain, evap
+    3:
+        name: hours
+        symbol: hours
+        ontology: something
+        relevant_observables: sun
+    4:
+        name: hecto Pascal
+        symbol: hPa
+        ontology: something
+        relevant_observables: mlsp
+    5:
+        name: eights
+        symbol: 8th
+        ontology: something
+        relevant_observables: cloud
+    6:
+        name: Percent
+        symbol: \%
+        ontology: something
+        relevant_observables: humidity
+    7:
+        name: Wind speed
+        symbol: km/h
+        ontology: something
+        relevant_observables: wind_spd, wind_dir
+    8:
+        name: Wind direction
+        symbol:
+        ontology: something
+        relevant_observables: windm_spd, windm_dir
+Sensors:
+1:
+        generic: True
+        name: Generic Bom sensor
+        manufacturer: Bom Consortium
+        relevant_observables: temp, tempMIN, tempMAX, rain, evap, sun, mlsp, cloud, humidity, windm_spd, windm_dir, wind_spd, wind_dir
+        tags:
+            old: True
+            analog: False

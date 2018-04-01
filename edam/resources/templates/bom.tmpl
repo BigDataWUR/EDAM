@@ -1,0 +1,11 @@
+"Daily Weather Observations for {{station.name}}, {{station.region}} for July 2017"
+"Prepared at 16:06 GMT on Monday  7 August 2017   IDCJDW5002.201701"
+"Copyright 2003 Commonwealth Bureau of Meteorology"
+"The "official" Adelaide site is now at West Terrace / ngayirdapira."
+"The "official" Adelaide weather observations site is now at West Terrace / ngayirdapira {site number 023000}. This Kent Town site is about 2 km east of the city centre."
+"Observations were drawn from Adelaide (Kent Town) {station 023090}"
+
+,"Date","Minimum temperature (°C)","Maximum temperature (°C)","Rainfall (mm)","Evaporation (mm)","Sunshine (hours)","Direction of maximum wind gust ","Speed of maximum wind gust (km/h)","Time of maximum wind gust",{% set hour=9 %},{% set hour=9 %},{% set hour=9 %},{% set hour=9 %},{% set hour=9 %},{%set hour=9 %},{% set hour=15 %},{% set hour=15 %},{%set hour=15 %},{% set hour=15 %},{% set hour=15 %},{% set hour=15 %}
+{%for temp, wind, timestamp, windm_spd, windm_dir, wind_spd, wind_dir, rain, evap, sun, humidity, cloud, mlsp, tempMIN, tempMAX in chunk%}
+,{{timestamp.date()}},{{tempMIN.value}},{{tempMAX.value}},{{rain.value}},{{evap.value}},{{sun.value}},{{windm_dir.value}},{{windm_spd.value}},{{same_timestamp(windm_spd.timestamp.time, windm_dir.timestamp.time)}},{{temp.value}},{{humidity.value}},{{cloud.value}},{{wind_dir.value}},{{wind_spd.value}},{{mlsp.value}},{{temp.value}},{{humidity.value}},{{cloud.value}},{{wind_dir.value}},{{wind_spd.value}},{{mlsp.value}}
+{%endfor%}

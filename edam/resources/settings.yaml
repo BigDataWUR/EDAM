@@ -1,0 +1,21 @@
+DATABASE:
+  drivername: sqlite
+  database: edam.db
+
+OGC SOS:
+  title: EDAM
+  description: EDAM OGC Sensor Observation Service
+  name: First name Last name
+  provider_name: Wageningen University
+  voice: None
+  fax: None
+  delivery_point: WUR
+  city: Wageningen
+  administration_area: Netherlands
+  postal_code:
+  country: Netherlands
+
+SERVER:
+  address: 127.0.0.1
+  port: 5000
+  debug: False

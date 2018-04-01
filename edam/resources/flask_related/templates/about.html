@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% set active_page = 'about' %}
+
+{% block title %}About{% endblock %}
+
+{% block body %}
+
+    <p><strong><code>API</code></strong> <br/>
+        You can submit your query to the system and take responses. Query should have the following format: <br/>
+        <code>{{ request.url_root }}data/?station=STATION_ID&template=TEMPLATE_NAME</code> <br/>
+        Where STATION_ID can be retrieved issuing the following request:</p>
+    <p><code>Get station id</code>: <a href="{{ request.url_root }}Stations" target="_blank">{{ request.url_root }}Stations</a>
+    </p>
+
+    <p>Template name can be retrieved issuing the following request:</p>
+    <p><code>Get template name</code>: <a href="{{ request.url_root }}templates" target="_blank">{{ request.url_root }}templates</a>
+    </p>
+
+{#    <p>Examples:</p>#}
+{#    <p>#}
+{#        <a href="{{ request.url_root }}data/?station=1&template=9" target="_blank">APSIM original</a>#}
+{#        (<a href="{{ request.url_root }}templates/9" target="_blank">Corr. template</a>)#}
+{#    </p>#}
+{#    <p>#}
+{#        <a href="{{ request.url_root }}data/?station=1&template=10" target="_blank">APSIM with condition</a>#}
+{#        (<a href="{{ request.url_root }}templates/10" target="_blank">Corr. template</a>)#}
+{#    </p>#}
+{##}
+{#    <p>Other examples</p>#}
+{#    <p><code>Get dataset</code>: <a href="{{ request.url_root }}data/?station=6&template=4" target="_blank">Swiss#}
+{#        dataset</a>#}
+{#    </p>#}
+
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% set active_page = "sos" %}
+
+{% block title %}OGC SOS examples{% endblock %}
+
+{% block body %}
+
+
+    <title>**`SOS server implementation`**
+
+        `GetCapabilities`
+
+        - Purpose: Returns a metadata for this service
+        - Parameters: request = GetCapabilities
+        - Example</title>
+    
+    <body>
+    <p><strong><code>SOS server implementation</code></strong></p>
+
+    <p><code>GetCapabilities</code></p>
+
+    <ul>
+        <li>Purpose: Returns a metadata for this service</li>
+        <li>Parameters: request = GetCapabilities</li>
+        <li>Example: <a href="{{ request.url_root }}SOS/?request=GetCapabilities">{{ request.url_root }}SOS/?request=GetCapabilities</a>
+        </li>
+    </ul>
+
+
+    <p><code>DescribeSensor</code></p>
+
+    <ul>
+        <li>Purpose: Return sensor characteristics</li>
+        <li>Parameters: request = DescribeSensor <br/>
+            procedure = URN of sensor (see getCapabilities output for sensor's URN)
+        </li>
+        <li>Example: <a
+                href="{{ request.url_root }}SOS/?request=DescribeSensor&amp;procedure=2:13:TX">{{ request.url_root }}SOS/?request=DescribeSensor&amp;procedure=2:13:TX</a>
+        </li>
+    </ul>
+
+
+    <p><code>GetObservation</code></p>
+
+    <ul>
+        <li>Purpose Returns observation data for a station within a user-defined time frame</li>
+        <li>Parameters: request = GetObservation <br/></li>
+        <li><code>offering</code> = URN of sensor (see getCapabilities output for sensor's URN) <br/></li>
+        <li><code>observedProperty</code> = (One of : <em>Temperature, Pressure, Nitrogen_Dioxide, Carbon_Monoxide</em>)
+            <br/></li>
+        <li><code>eventTime</code> = (YYYY-MM-DD HH:MM:SS/YYYY-MM-DD HH:MM:SS). When eventTime = Datetime/
+            <em>AiRCHIVE</em> returns<br/>
+            <em>measurements</em> from <strong>Datetime</strong> until now.
+        </li>
+        <li>Example: <a
+                href="{{ request.url_root }}SOS/?request=GetObservation&procedure=2:13:TX">{{ request.url_root }}SOS/?request=GetObservation&procedure=2:13:TX</a>
+        </li>
+    </ul>
+
+{% endblock %}

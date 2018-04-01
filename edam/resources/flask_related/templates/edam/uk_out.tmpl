@@ -1,0 +1,12 @@
+{{station.name}}
+Location:{{station.location}}, Lat {{station.latitude}} Lon {{station.longitude}}, {{station.tags.altitude}}
+Estimated data is marked with a * after the value.
+Missing data (more than 2 days missing in month) is marked by  ---.
+Sunshine data taken from an automatic Kipp & Zonen sensor marked with a #, otherwise sunshine data taken from a Campbell Stokes recorder.
+   yyyy  mm   tmax    tmin      af    rain     sun
+              degC    degC    days      mm   hours
+{%for timestamp, tmax,tmin,af,rain,sun in resample(station.data, 'Y', 'mean')%}
+{%if tmax.value!="---" and tmin.value!="---" and  af.value!="---" and rain.value !="---" and sun.value !="---"%}
+   {{timestamp.year}}  {{timestamp.month}}   {{"%+05s" | format(tmax.value,)}}    {{"%+04s" | format(tmin.value,)}}     {{"%-04s" | format(af.value,)}}   {{"%+04s" | format(rain.value,)}}   {{"%+05s" | format(sun.value,)}}
+{%endif%}
+{%endfor%}

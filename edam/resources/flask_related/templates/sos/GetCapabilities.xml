@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<sos:Capabilities xmlns:gml="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink"
+                  xmlns:om="http://www.opengis.net/om/1.0"
+                  xmlns="http://www.opengis.net/sos/1.0" xmlns:sos="http://www.opengis.net/sos/1.0"
+                  xmlns:ows="http://www.opengis.net/ows/1.1"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://www.opengis.net/sos/1.0  http://schemas.opengis.net/sos/1.0.0/sosGetCapabilities.xsd "
+                  updateSequence="2007-06-01T11:12:39+02" version="1.0.0">
+    <ows:ServiceIdentification>
+        <ows:Title>{{ info.title }}</ows:Title>
+        <ows:Abstract>{{ info.description }}</ows:Abstract>
+        <ows:Keywords>{% for keyword in keywords %}
+            <ows:Keyword>{{ keyword }}</ows:Keyword>{% endfor %}
+        </ows:Keywords>
+        <ows:ServiceType codeSpace="http://opengeospatial.net">OGC:sos</ows:ServiceType>
+        <ows:ServiceTypeVersion>1.0.0</ows:ServiceTypeVersion>
+        <ows:Fees>NONE</ows:Fees>
+        <ows:AccessConstraints>NONE</ows:AccessConstraints>
+    </ows:ServiceIdentification>
+    <ows:ServiceProvider>
+        <ows:ProviderName>{{ info.provider_name }}</ows:ProviderName>
+        <ows:ProviderSite xlink:href="{{ info.provider_site }}"/>
+        <ows:ServiceContact>
+            <ows:IndividualName>{{ info.name }}</ows:IndividualName>
+            <ows:ContactInfo>
+                <ows:Phone>
+                    <ows:Voice>{{ info.voice }}</ows:Voice>
+                    <ows:Facsimile>{{ info.fax }}</ows:Facsimile>
+                </ows:Phone>
+                <ows:Address>
+                    <ows:DeliveryPoint>{{ info.delivery_point }}</ows:DeliveryPoint>
+                    <ows:City>{{ info.city }}</ows:City>
+                    <ows:AdministrativeArea>{{ info.administration_area }}</ows:AdministrativeArea>
+                    <ows:PostalCode>{{ info.postal_code }}</ows:PostalCode>
+                    <ows:Country>{{ info.country }}</ows:Country>
+                </ows:Address>
+            </ows:ContactInfo>
+        </ows:ServiceContact>
+    </ows:ServiceProvider>
+    <ows:OperationsMetadata>
+        <ows:Operation name="GetCapabilities">
+            <ows:DCP>
+                <ows:HTTP>
+                    <ows:Get xlink:href="{{ request.base_url }}?request=GetCapabilities"/>
+                </ows:HTTP>
+            </ows:DCP>
+            <ows:Parameter name="Sections">
+                <ows:AllowedValues>
+                    <ows:Value>All</ows:Value>
+                    <ows:Value>Contents</ows:Value>
+                    <ows:Value>Filter_Capabilities</ows:Value>
+                    <ows:Value>OperationsMetadata</ows:Value>
+                    <ows:Value>ServiceIdentification</ows:Value>
+                    <ows:Value>ServiceProvider</ows:Value>
+                </ows:AllowedValues>
+            </ows:Parameter>
+        </ows:Operation>
+        <ows:Operation name="GetObservation">
+            <ows:DCP>
+                <ows:HTTP>
+                    <ows:Post xlink:href="{{ request.base_url }}?request=GetObservation"/>
+                </ows:HTTP>
+            </ows:DCP>
+            <ows:Parameter name="observedProperty">
+                <ows:AllowedValues>{% for value in keywords %}
+                    <ows:Value>{{ value }}</ows:Value>{% endfor %}
+                </ows:AllowedValues>
+            </ows:Parameter>
+        </ows:Operation>
+        <ows:Operation name="DescribeSensor">
+            <ows:DCP>
+                <ows:HTTP>
+                    <ows:Get xlink:href="{{ request.base_url }}?request=DescribeSensor"/>
+                </ows:HTTP>
+            </ows:DCP>
+            <ows:Parameter name="outputFormat">
+                <ows:AllowedValues>
+                    <ows:Value>
+                        text/xml; subtype="sensorML/1.0.1"
+                    </ows:Value>
+                </ows:AllowedValues>
+            </ows:Parameter>
+        </ows:Operation>
+        <ows:Parameter name="service">
+            <ows:AllowedValues>
+                <ows:Value>sos</ows:Value>
+            </ows:AllowedValues>
+        </ows:Parameter>
+        <ows:Parameter name="version">
+            <ows:AllowedValues>
+                <ows:Value>1.0.0</ows:Value>
+            </ows:AllowedValues>
+        </ows:Parameter>
+    </ows:OperationsMetadata>
+    <sos:Contents>
+        <sos:ObservationOfferingList>{% for station in stations %}
+            <sos:ObservationOffering gml:id="{{ station.name }}">
+                <gml:description>{{ station.name }} station
+                    located {{ 'in ' + station.region + ' at ' if station.region else 'at' }}
+                    ({{ station.latitude }}, {{ station.longitude }})
+                </gml:description>
+                <gml:name>urn:edam:offering:{{ station.name }}</gml:name>
+                <time>
+                    <gml:TimePeriod>
+                        <gml:beginPosition></gml:beginPosition>
+                        <gml:endPosition></gml:endPosition>
+                    </gml:TimePeriod>
+                </time>
+                {% for helper in helpers %}{% if helper.station_id == station.id %}
+                    <sos:procedure
+                            xlink:href="{{ helper.station_id }}:{{ helper.sensor_id }}:{{ helper.template_id }}"/>
+                    <sos:observedProperty xlink:href="{{ helper.observable.name }}"/>{% endif %}{% endfor %}
+                <sos:featureOfInterest xlink:href="urn:edam:feature:{{ station.name }}"/>
+                <sos:responseFormat>text/xml;subtype="om/1.0.0"</sos:responseFormat>
+                <sos:resultModel>om:Observation</sos:resultModel>
+                <sos:responseMode>inline</sos:responseMode>
+            </sos:ObservationOffering>{% endfor %}
+        </sos:ObservationOfferingList>
+    </sos:Contents>
+</sos:Capabilities>

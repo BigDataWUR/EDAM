@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% set active_page = "home" %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+    <div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-md-6 dash-component WUR">
+            <h2 class="text-justify"> Wageningen INF Group</h2>
+            <ul class="quick-links">
+                <li><a class="dash-doc-link"
+                       href="https://www.wur.nl/en/Expertise-Services/Chair-groups/Social-Sciences/Information-Technology-Group.htm"
+                       target="_blank">Information</a>
+                </li>
+            </ul>
+            <p class="text-justify">
+                Our mission is to contribute to the state-of-the-art of smart systems and system of systems engineering
+                to support innovations in the life sciences application domains. Hereby, we focus on software
+                engineering, knowledge engineering and socio-technical systems engineering.
+            </p>
+        </div>
+
+        <div class="col-xs-12 col-md-6 dash-component ECO">
+            <h2>ecologismico</h2>
+            <ul class="quick-links">
+                <li><a class="dash-doc-link" href="http://eco.logismi.co" target="_blank">Information</a></li>
+            </ul>
+            <p class="text-justify">
+                Ecologismico is a neologism from the Greek words ecology and logismico (the modern Greek word for
+                software), that glues together logos (stands for reasoning in ancient Greek) to define the study of
+                natural systems language and the research of intelligent software systems for the environment.
+                <b>Software Engineering for the Environment</b> is a research group (aka "collaboratory") of the <a
+                    href="http://www.intersys-lab.org" target="_blank">Internetworked Systems Lab</a> of the <a
+                    href="http://www.ee.duth.gr/el/" target="_blank">Electrical and Computer Engineering Department</a>
+                at Democritus University of Thrace.
+            </p>
+        </div>
+</div>
+    </div>
+    <div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-md-6 dash-component SOS">
+            <h2>OGC Sensor Observation Service</h2>
+            <ul class="quick-links">
+                <li><a class="dash-doc-link" href="http://www.opengeospatial.org/standards/sos" target="_blank">Docs</a>
+                </li>
+            </ul>
+            <p class="text-justify">
+                The sos standard is applicable to use cases in which sensor data needs to be managed in an interoperable
+                way. This standard defines a Web service interface which allows querying observations, sensor metadata,
+                as well as representations of observed features.
+            </p>
+        </div>
+    </div>
+    </div>
+
+
+{% endblock %}
