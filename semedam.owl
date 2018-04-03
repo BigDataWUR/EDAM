@@ -1,0 +1,428 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="file:///Users/argyris/Documents/git/edam/semedam.owl#"
+     xml:base="file:///Users/argyris/Documents/git/edam/semedam.owl"
+     xmlns:edam="http://edam.gr#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    <owl:Ontology/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://nasa.org#hasObservable -->
+
+    <owl:ObjectProperty rdf:about="http://nasa.org#hasObservable">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://edam.gr#APSIM -->
+
+    <owl:Class rdf:about="http://edam.gr#APSIM">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://edam.gr#MaxTemperature"/>
+                    <rdf:Description rdf:about="http://edam.gr#MinTemperature"/>
+                    <rdf:Description rdf:about="http://edam.gr#Rain"/>
+                    <rdf:Description rdf:about="http://edam.gr#RelativeHumidity"/>
+                    <rdf:Description rdf:about="http://edam.gr#SolarRadiation"/>
+                    <rdf:Description rdf:about="http://edam.gr#Wind"/>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://edam.gr#Templates"/>
+    </owl:Class>
+    
+
+
+    <!-- http://edam.gr#AvgTemperature -->
+
+    <owl:Class rdf:about="http://edam.gr#AvgTemperature">
+        <rdfs:subClassOf rdf:resource="http://edam.gr#Quantities"/>
+    </owl:Class>
+    
+
+
+    <!-- http://edam.gr#BioMA -->
+
+    <owl:Class rdf:about="http://edam.gr#BioMA">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://edam.gr#MaxRelativeHumidity"/>
+                    <rdf:Description rdf:about="http://edam.gr#MaxTemperature"/>
+                    <rdf:Description rdf:about="http://edam.gr#MinRelativeHumidity"/>
+                    <rdf:Description rdf:about="http://edam.gr#MinTemperature"/>
+                    <rdf:Description rdf:about="http://edam.gr#Rain"/>
+                    <rdf:Description rdf:about="http://edam.gr#SolarRadiation"/>
+                    <rdf:Description rdf:about="http://edam.gr#Wind"/>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://edam.gr#Templates"/>
+    </owl:Class>
+    
+
+
+    <!-- http://edam.gr#DSSAT -->
+
+    <owl:Class rdf:about="http://edam.gr#DSSAT">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://edam.gr#AvgTemperature"/>
+                    <rdf:Description rdf:about="http://edam.gr#DewPoint"/>
+                    <rdf:Description rdf:about="http://edam.gr#MaxTemperature"/>
+                    <rdf:Description rdf:about="http://edam.gr#MinTemperature"/>
+                    <rdf:Description rdf:about="http://edam.gr#Rain"/>
+                    <rdf:Description rdf:about="http://edam.gr#RelativeHumidity"/>
+                    <rdf:Description rdf:about="http://edam.gr#SolarRadiation"/>
+                    <rdf:Description rdf:about="http://edam.gr#Wind"/>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://edam.gr#Templates"/>
+    </owl:Class>
+    
+
+
+    <!-- http://edam.gr#DewPoint -->
+
+    <owl:Class rdf:about="http://edam.gr#DewPoint">
+        <rdfs:subClassOf rdf:resource="http://edam.gr#Quantities"/>
+    </owl:Class>
+    
+
+
+    <!-- http://edam.gr#MaxRelativeHumidity -->
+
+    <owl:Class rdf:about="http://edam.gr#MaxRelativeHumidity">
+        <rdfs:subClassOf rdf:resource="http://edam.gr#Quantities"/>
+    </owl:Class>
+    
+
+
+    <!-- http://edam.gr#MaxTemperature -->
+
+    <owl:Class rdf:about="http://edam.gr#MaxTemperature">
+        <rdfs:subClassOf rdf:resource="http://edam.gr#Quantities"/>
+    </owl:Class>
+    
+
+
+    <!-- http://edam.gr#MinRelativeHumidity -->
+
+    <owl:Class rdf:about="http://edam.gr#MinRelativeHumidity">
+        <rdfs:subClassOf rdf:resource="http://edam.gr#Quantities"/>
+    </owl:Class>
+    
+
+
+    <!-- http://edam.gr#MinTemperature -->
+
+    <owl:Class rdf:about="http://edam.gr#MinTemperature">
+        <rdfs:subClassOf rdf:resource="http://edam.gr#Quantities"/>
+    </owl:Class>
+    
+
+
+    <!-- http://edam.gr#Quantities -->
+
+    <owl:Class rdf:about="http://edam.gr#Quantities">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    </owl:Class>
+    
+
+
+    <!-- http://edam.gr#Rain -->
+
+    <owl:Class rdf:about="http://edam.gr#Rain">
+        <rdfs:subClassOf rdf:resource="http://edam.gr#Quantities"/>
+    </owl:Class>
+    
+
+
+    <!-- http://edam.gr#RelativeHumidity -->
+
+    <owl:Class rdf:about="http://edam.gr#RelativeHumidity">
+        <rdfs:subClassOf rdf:resource="http://edam.gr#Quantities"/>
+    </owl:Class>
+    
+
+
+    <!-- http://edam.gr#SolarRadiation -->
+
+    <owl:Class rdf:about="http://edam.gr#SolarRadiation">
+        <rdfs:subClassOf rdf:resource="http://edam.gr#Quantities"/>
+    </owl:Class>
+    
+
+
+    <!-- http://edam.gr#Templates -->
+
+    <owl:Class rdf:about="http://edam.gr#Templates">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    </owl:Class>
+    
+
+
+    <!-- http://edam.gr#VaporPressure -->
+
+    <owl:Class rdf:about="http://edam.gr#VaporPressure">
+        <rdfs:subClassOf rdf:resource="http://edam.gr#Quantities"/>
+    </owl:Class>
+    
+
+
+    <!-- http://edam.gr#Wind -->
+
+    <owl:Class rdf:about="http://edam.gr#Wind">
+        <rdfs:subClassOf rdf:resource="http://edam.gr#Quantities"/>
+    </owl:Class>
+    
+
+
+    <!-- http://edam.gr#Wofost -->
+
+    <owl:Class rdf:about="http://edam.gr#Wofost">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://edam.gr#MaxTemperature"/>
+                    <rdf:Description rdf:about="http://edam.gr#MinTemperature"/>
+                    <rdf:Description rdf:about="http://edam.gr#Rain"/>
+                    <rdf:Description rdf:about="http://edam.gr#SolarRadiation"/>
+                    <rdf:Description rdf:about="http://edam.gr#VaporPressure"/>
+                    <rdf:Description rdf:about="http://edam.gr#Wind"/>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://edam.gr#Templates"/>
+    </owl:Class>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://edam.gr#RAIN -->
+
+    <owl:NamedIndividual rdf:about="http://edam.gr#RAIN">
+        <rdf:type rdf:resource="http://edam.gr#Rain"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://edam.gr#RH -->
+
+    <owl:NamedIndividual rdf:about="http://edam.gr#RH">
+        <rdf:type rdf:resource="http://edam.gr#RelativeHumidity"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://edam.gr#RH2M -->
+
+    <owl:NamedIndividual rdf:about="http://edam.gr#RH2M">
+        <rdf:type rdf:resource="http://edam.gr#RelativeHumidity"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://edam.gr#SRAD -->
+
+    <owl:NamedIndividual rdf:about="http://edam.gr#SRAD">
+        <rdf:type rdf:resource="http://edam.gr#SolarRadiation"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://edam.gr#T2M -->
+
+    <owl:NamedIndividual rdf:about="http://edam.gr#T2M">
+        <rdf:type rdf:resource="http://edam.gr#AvgTemperature"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://edam.gr#TDEW -->
+
+    <owl:NamedIndividual rdf:about="http://edam.gr#TDEW">
+        <rdf:type rdf:resource="http://edam.gr#DewPoint"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://edam.gr#TMAX -->
+
+    <owl:NamedIndividual rdf:about="http://edam.gr#TMAX">
+        <rdf:type rdf:resource="http://edam.gr#MaxTemperature"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://edam.gr#TMIN -->
+
+    <owl:NamedIndividual rdf:about="http://edam.gr#TMIN">
+        <rdf:type rdf:resource="http://edam.gr#MinTemperature"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://edam.gr#WIND -->
+
+    <owl:NamedIndividual rdf:about="http://edam.gr#WIND">
+        <rdf:type rdf:resource="http://edam.gr#Wind"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://edam.gr#airtmax -->
+
+    <owl:NamedIndividual rdf:about="http://edam.gr#airtmax">
+        <rdf:type rdf:resource="http://edam.gr#MaxTemperature"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://edam.gr#airtmin -->
+
+    <owl:NamedIndividual rdf:about="http://edam.gr#airtmin">
+        <rdf:type rdf:resource="http://edam.gr#MinTemperature"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://edam.gr#emvp -->
+
+    <owl:NamedIndividual rdf:about="http://edam.gr#emvp">
+        <rdf:type rdf:resource="http://edam.gr#VaporPressure"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://edam.gr#gsrad -->
+
+    <owl:NamedIndividual rdf:about="http://edam.gr#gsrad">
+        <rdf:type rdf:resource="http://edam.gr#SolarRadiation"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://edam.gr#irradiation -->
+
+    <owl:NamedIndividual rdf:about="http://edam.gr#irradiation">
+        <rdf:type rdf:resource="http://edam.gr#SolarRadiation"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://edam.gr#maxt -->
+
+    <owl:NamedIndividual rdf:about="http://edam.gr#maxt">
+        <rdf:type rdf:resource="http://edam.gr#MaxTemperature"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://edam.gr#mint -->
+
+    <owl:NamedIndividual rdf:about="http://edam.gr#mint">
+        <rdf:type rdf:resource="http://edam.gr#MinTemperature"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://edam.gr#mwind -->
+
+    <owl:NamedIndividual rdf:about="http://edam.gr#mwind">
+        <rdf:type rdf:resource="http://edam.gr#Wind"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://edam.gr#precip -->
+
+    <owl:NamedIndividual rdf:about="http://edam.gr#precip">
+        <rdf:type rdf:resource="http://edam.gr#Rain"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://edam.gr#radn -->
+
+    <owl:NamedIndividual rdf:about="http://edam.gr#radn">
+        <rdf:type rdf:resource="http://edam.gr#SolarRadiation"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://edam.gr#rain -->
+
+    <owl:NamedIndividual rdf:about="http://edam.gr#rain">
+        <rdf:type rdf:resource="http://edam.gr#Rain"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://edam.gr#relhummn -->
+
+    <owl:NamedIndividual rdf:about="http://edam.gr#relhummn">
+        <rdf:type rdf:resource="http://edam.gr#MinRelativeHumidity"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://edam.gr#relhummx -->
+
+    <owl:NamedIndividual rdf:about="http://edam.gr#relhummx">
+        <rdf:type rdf:resource="http://edam.gr#MaxRelativeHumidity"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://edam.gr#wind -->
+
+    <owl:NamedIndividual rdf:about="http://edam.gr#wind">
+        <rdf:type rdf:resource="http://edam.gr#Wind"/>
+    </owl:NamedIndividual>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.2.8.20170104-2310) https://github.com/owlcs/owlapi -->
+
