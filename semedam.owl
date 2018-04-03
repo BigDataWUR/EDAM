@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <rdf:RDF xmlns="file:///Users/argyris/Documents/git/edam/semedam.owl#"
      xml:base="file:///Users/argyris/Documents/git/edam/semedam.owl"
-     xmlns:edam="http://edam.gr#"
+     xmlns:edam="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
      xmlns:owl="http://www.w3.org/2002/07/owl#"
      xmlns:xml="http://www.w3.org/XML/1998/namespace"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
-    <owl:Ontology/>
+    <owl:Ontology rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl"/>
     
 
 
@@ -41,189 +41,189 @@
     
 
 
-    <!-- http://edam.gr#APSIM -->
+    <!-- https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#APSIM -->
 
-    <owl:Class rdf:about="http://edam.gr#APSIM">
+    <owl:Class rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#APSIM">
         <owl:equivalentClass>
             <owl:Class>
                 <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="http://edam.gr#MaxTemperature"/>
-                    <rdf:Description rdf:about="http://edam.gr#MinTemperature"/>
-                    <rdf:Description rdf:about="http://edam.gr#Rain"/>
-                    <rdf:Description rdf:about="http://edam.gr#RelativeHumidity"/>
-                    <rdf:Description rdf:about="http://edam.gr#SolarRadiation"/>
-                    <rdf:Description rdf:about="http://edam.gr#Wind"/>
+                    <rdf:Description rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#MaxTemperature"/>
+                    <rdf:Description rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#MinTemperature"/>
+                    <rdf:Description rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#Rain"/>
+                    <rdf:Description rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#RelativeHumidity"/>
+                    <rdf:Description rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#SolarRadiation"/>
+                    <rdf:Description rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#Wind"/>
                 </owl:intersectionOf>
             </owl:Class>
         </owl:equivalentClass>
-        <rdfs:subClassOf rdf:resource="http://edam.gr#Templates"/>
+        <rdfs:subClassOf rdf:resource="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#Templates"/>
     </owl:Class>
     
 
 
-    <!-- http://edam.gr#AvgTemperature -->
+    <!-- https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#AvgTemperature -->
 
-    <owl:Class rdf:about="http://edam.gr#AvgTemperature">
-        <rdfs:subClassOf rdf:resource="http://edam.gr#Quantities"/>
+    <owl:Class rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#AvgTemperature">
+        <rdfs:subClassOf rdf:resource="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#Quantities"/>
     </owl:Class>
     
 
 
-    <!-- http://edam.gr#BioMA -->
+    <!-- https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#BioMA -->
 
-    <owl:Class rdf:about="http://edam.gr#BioMA">
+    <owl:Class rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#BioMA">
         <owl:equivalentClass>
             <owl:Class>
                 <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="http://edam.gr#MaxRelativeHumidity"/>
-                    <rdf:Description rdf:about="http://edam.gr#MaxTemperature"/>
-                    <rdf:Description rdf:about="http://edam.gr#MinRelativeHumidity"/>
-                    <rdf:Description rdf:about="http://edam.gr#MinTemperature"/>
-                    <rdf:Description rdf:about="http://edam.gr#Rain"/>
-                    <rdf:Description rdf:about="http://edam.gr#SolarRadiation"/>
-                    <rdf:Description rdf:about="http://edam.gr#Wind"/>
+                    <rdf:Description rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#MaxRelativeHumidity"/>
+                    <rdf:Description rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#MaxTemperature"/>
+                    <rdf:Description rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#MinRelativeHumidity"/>
+                    <rdf:Description rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#MinTemperature"/>
+                    <rdf:Description rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#Rain"/>
+                    <rdf:Description rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#SolarRadiation"/>
+                    <rdf:Description rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#Wind"/>
                 </owl:intersectionOf>
             </owl:Class>
         </owl:equivalentClass>
-        <rdfs:subClassOf rdf:resource="http://edam.gr#Templates"/>
+        <rdfs:subClassOf rdf:resource="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#Templates"/>
     </owl:Class>
     
 
 
-    <!-- http://edam.gr#DSSAT -->
+    <!-- https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#DSSAT -->
 
-    <owl:Class rdf:about="http://edam.gr#DSSAT">
+    <owl:Class rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#DSSAT">
         <owl:equivalentClass>
             <owl:Class>
                 <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="http://edam.gr#AvgTemperature"/>
-                    <rdf:Description rdf:about="http://edam.gr#DewPoint"/>
-                    <rdf:Description rdf:about="http://edam.gr#MaxTemperature"/>
-                    <rdf:Description rdf:about="http://edam.gr#MinTemperature"/>
-                    <rdf:Description rdf:about="http://edam.gr#Rain"/>
-                    <rdf:Description rdf:about="http://edam.gr#RelativeHumidity"/>
-                    <rdf:Description rdf:about="http://edam.gr#SolarRadiation"/>
-                    <rdf:Description rdf:about="http://edam.gr#Wind"/>
+                    <rdf:Description rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#AvgTemperature"/>
+                    <rdf:Description rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#DewPoint"/>
+                    <rdf:Description rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#MaxTemperature"/>
+                    <rdf:Description rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#MinTemperature"/>
+                    <rdf:Description rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#Rain"/>
+                    <rdf:Description rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#RelativeHumidity"/>
+                    <rdf:Description rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#SolarRadiation"/>
+                    <rdf:Description rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#Wind"/>
                 </owl:intersectionOf>
             </owl:Class>
         </owl:equivalentClass>
-        <rdfs:subClassOf rdf:resource="http://edam.gr#Templates"/>
+        <rdfs:subClassOf rdf:resource="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#Templates"/>
     </owl:Class>
     
 
 
-    <!-- http://edam.gr#DewPoint -->
+    <!-- https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#DewPoint -->
 
-    <owl:Class rdf:about="http://edam.gr#DewPoint">
-        <rdfs:subClassOf rdf:resource="http://edam.gr#Quantities"/>
+    <owl:Class rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#DewPoint">
+        <rdfs:subClassOf rdf:resource="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#Quantities"/>
     </owl:Class>
     
 
 
-    <!-- http://edam.gr#MaxRelativeHumidity -->
+    <!-- https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#MaxRelativeHumidity -->
 
-    <owl:Class rdf:about="http://edam.gr#MaxRelativeHumidity">
-        <rdfs:subClassOf rdf:resource="http://edam.gr#Quantities"/>
+    <owl:Class rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#MaxRelativeHumidity">
+        <rdfs:subClassOf rdf:resource="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#Quantities"/>
     </owl:Class>
     
 
 
-    <!-- http://edam.gr#MaxTemperature -->
+    <!-- https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#MaxTemperature -->
 
-    <owl:Class rdf:about="http://edam.gr#MaxTemperature">
-        <rdfs:subClassOf rdf:resource="http://edam.gr#Quantities"/>
+    <owl:Class rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#MaxTemperature">
+        <rdfs:subClassOf rdf:resource="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#Quantities"/>
     </owl:Class>
     
 
 
-    <!-- http://edam.gr#MinRelativeHumidity -->
+    <!-- https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#MinRelativeHumidity -->
 
-    <owl:Class rdf:about="http://edam.gr#MinRelativeHumidity">
-        <rdfs:subClassOf rdf:resource="http://edam.gr#Quantities"/>
+    <owl:Class rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#MinRelativeHumidity">
+        <rdfs:subClassOf rdf:resource="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#Quantities"/>
     </owl:Class>
     
 
 
-    <!-- http://edam.gr#MinTemperature -->
+    <!-- https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#MinTemperature -->
 
-    <owl:Class rdf:about="http://edam.gr#MinTemperature">
-        <rdfs:subClassOf rdf:resource="http://edam.gr#Quantities"/>
+    <owl:Class rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#MinTemperature">
+        <rdfs:subClassOf rdf:resource="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#Quantities"/>
     </owl:Class>
     
 
 
-    <!-- http://edam.gr#Quantities -->
+    <!-- https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#Quantities -->
 
-    <owl:Class rdf:about="http://edam.gr#Quantities">
+    <owl:Class rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#Quantities">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
     </owl:Class>
     
 
 
-    <!-- http://edam.gr#Rain -->
+    <!-- https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#Rain -->
 
-    <owl:Class rdf:about="http://edam.gr#Rain">
-        <rdfs:subClassOf rdf:resource="http://edam.gr#Quantities"/>
+    <owl:Class rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#Rain">
+        <rdfs:subClassOf rdf:resource="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#Quantities"/>
     </owl:Class>
     
 
 
-    <!-- http://edam.gr#RelativeHumidity -->
+    <!-- https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#RelativeHumidity -->
 
-    <owl:Class rdf:about="http://edam.gr#RelativeHumidity">
-        <rdfs:subClassOf rdf:resource="http://edam.gr#Quantities"/>
+    <owl:Class rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#RelativeHumidity">
+        <rdfs:subClassOf rdf:resource="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#Quantities"/>
     </owl:Class>
     
 
 
-    <!-- http://edam.gr#SolarRadiation -->
+    <!-- https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#SolarRadiation -->
 
-    <owl:Class rdf:about="http://edam.gr#SolarRadiation">
-        <rdfs:subClassOf rdf:resource="http://edam.gr#Quantities"/>
+    <owl:Class rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#SolarRadiation">
+        <rdfs:subClassOf rdf:resource="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#Quantities"/>
     </owl:Class>
     
 
 
-    <!-- http://edam.gr#Templates -->
+    <!-- https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#Templates -->
 
-    <owl:Class rdf:about="http://edam.gr#Templates">
+    <owl:Class rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#Templates">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
     </owl:Class>
     
 
 
-    <!-- http://edam.gr#VaporPressure -->
+    <!-- https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#VaporPressure -->
 
-    <owl:Class rdf:about="http://edam.gr#VaporPressure">
-        <rdfs:subClassOf rdf:resource="http://edam.gr#Quantities"/>
+    <owl:Class rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#VaporPressure">
+        <rdfs:subClassOf rdf:resource="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#Quantities"/>
     </owl:Class>
     
 
 
-    <!-- http://edam.gr#Wind -->
+    <!-- https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#Wind -->
 
-    <owl:Class rdf:about="http://edam.gr#Wind">
-        <rdfs:subClassOf rdf:resource="http://edam.gr#Quantities"/>
+    <owl:Class rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#Wind">
+        <rdfs:subClassOf rdf:resource="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#Quantities"/>
     </owl:Class>
     
 
 
-    <!-- http://edam.gr#Wofost -->
+    <!-- https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#Wofost -->
 
-    <owl:Class rdf:about="http://edam.gr#Wofost">
+    <owl:Class rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#Wofost">
         <owl:equivalentClass>
             <owl:Class>
                 <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="http://edam.gr#MaxTemperature"/>
-                    <rdf:Description rdf:about="http://edam.gr#MinTemperature"/>
-                    <rdf:Description rdf:about="http://edam.gr#Rain"/>
-                    <rdf:Description rdf:about="http://edam.gr#SolarRadiation"/>
-                    <rdf:Description rdf:about="http://edam.gr#VaporPressure"/>
-                    <rdf:Description rdf:about="http://edam.gr#Wind"/>
+                    <rdf:Description rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#MaxTemperature"/>
+                    <rdf:Description rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#MinTemperature"/>
+                    <rdf:Description rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#Rain"/>
+                    <rdf:Description rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#SolarRadiation"/>
+                    <rdf:Description rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#VaporPressure"/>
+                    <rdf:Description rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#Wind"/>
                 </owl:intersectionOf>
             </owl:Class>
         </owl:equivalentClass>
-        <rdfs:subClassOf rdf:resource="http://edam.gr#Templates"/>
+        <rdfs:subClassOf rdf:resource="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#Templates"/>
     </owl:Class>
     
 
@@ -239,186 +239,186 @@
     
 
 
-    <!-- http://edam.gr#RAIN -->
+    <!-- https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#RAIN -->
 
-    <owl:NamedIndividual rdf:about="http://edam.gr#RAIN">
-        <rdf:type rdf:resource="http://edam.gr#Rain"/>
+    <owl:NamedIndividual rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#RAIN">
+        <rdf:type rdf:resource="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#Rain"/>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://edam.gr#RH -->
+    <!-- https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#RH -->
 
-    <owl:NamedIndividual rdf:about="http://edam.gr#RH">
-        <rdf:type rdf:resource="http://edam.gr#RelativeHumidity"/>
+    <owl:NamedIndividual rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#RH">
+        <rdf:type rdf:resource="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#RelativeHumidity"/>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://edam.gr#RH2M -->
+    <!-- https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#RH2M -->
 
-    <owl:NamedIndividual rdf:about="http://edam.gr#RH2M">
-        <rdf:type rdf:resource="http://edam.gr#RelativeHumidity"/>
+    <owl:NamedIndividual rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#RH2M">
+        <rdf:type rdf:resource="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#RelativeHumidity"/>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://edam.gr#SRAD -->
+    <!-- https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#SRAD -->
 
-    <owl:NamedIndividual rdf:about="http://edam.gr#SRAD">
-        <rdf:type rdf:resource="http://edam.gr#SolarRadiation"/>
+    <owl:NamedIndividual rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#SRAD">
+        <rdf:type rdf:resource="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#SolarRadiation"/>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://edam.gr#T2M -->
+    <!-- https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#T2M -->
 
-    <owl:NamedIndividual rdf:about="http://edam.gr#T2M">
-        <rdf:type rdf:resource="http://edam.gr#AvgTemperature"/>
+    <owl:NamedIndividual rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#T2M">
+        <rdf:type rdf:resource="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#AvgTemperature"/>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://edam.gr#TDEW -->
+    <!-- https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#TDEW -->
 
-    <owl:NamedIndividual rdf:about="http://edam.gr#TDEW">
-        <rdf:type rdf:resource="http://edam.gr#DewPoint"/>
+    <owl:NamedIndividual rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#TDEW">
+        <rdf:type rdf:resource="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#DewPoint"/>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://edam.gr#TMAX -->
+    <!-- https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#TMAX -->
 
-    <owl:NamedIndividual rdf:about="http://edam.gr#TMAX">
-        <rdf:type rdf:resource="http://edam.gr#MaxTemperature"/>
+    <owl:NamedIndividual rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#TMAX">
+        <rdf:type rdf:resource="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#MaxTemperature"/>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://edam.gr#TMIN -->
+    <!-- https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#TMIN -->
 
-    <owl:NamedIndividual rdf:about="http://edam.gr#TMIN">
-        <rdf:type rdf:resource="http://edam.gr#MinTemperature"/>
+    <owl:NamedIndividual rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#TMIN">
+        <rdf:type rdf:resource="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#MinTemperature"/>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://edam.gr#WIND -->
+    <!-- https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#WIND -->
 
-    <owl:NamedIndividual rdf:about="http://edam.gr#WIND">
-        <rdf:type rdf:resource="http://edam.gr#Wind"/>
+    <owl:NamedIndividual rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#WIND">
+        <rdf:type rdf:resource="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#Wind"/>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://edam.gr#airtmax -->
+    <!-- https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#airtmax -->
 
-    <owl:NamedIndividual rdf:about="http://edam.gr#airtmax">
-        <rdf:type rdf:resource="http://edam.gr#MaxTemperature"/>
+    <owl:NamedIndividual rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#airtmax">
+        <rdf:type rdf:resource="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#MaxTemperature"/>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://edam.gr#airtmin -->
+    <!-- https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#airtmin -->
 
-    <owl:NamedIndividual rdf:about="http://edam.gr#airtmin">
-        <rdf:type rdf:resource="http://edam.gr#MinTemperature"/>
+    <owl:NamedIndividual rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#airtmin">
+        <rdf:type rdf:resource="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#MinTemperature"/>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://edam.gr#emvp -->
+    <!-- https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#emvp -->
 
-    <owl:NamedIndividual rdf:about="http://edam.gr#emvp">
-        <rdf:type rdf:resource="http://edam.gr#VaporPressure"/>
+    <owl:NamedIndividual rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#emvp">
+        <rdf:type rdf:resource="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#VaporPressure"/>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://edam.gr#gsrad -->
+    <!-- https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#gsrad -->
 
-    <owl:NamedIndividual rdf:about="http://edam.gr#gsrad">
-        <rdf:type rdf:resource="http://edam.gr#SolarRadiation"/>
+    <owl:NamedIndividual rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#gsrad">
+        <rdf:type rdf:resource="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#SolarRadiation"/>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://edam.gr#irradiation -->
+    <!-- https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#irradiation -->
 
-    <owl:NamedIndividual rdf:about="http://edam.gr#irradiation">
-        <rdf:type rdf:resource="http://edam.gr#SolarRadiation"/>
+    <owl:NamedIndividual rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#irradiation">
+        <rdf:type rdf:resource="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#SolarRadiation"/>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://edam.gr#maxt -->
+    <!-- https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#maxt -->
 
-    <owl:NamedIndividual rdf:about="http://edam.gr#maxt">
-        <rdf:type rdf:resource="http://edam.gr#MaxTemperature"/>
+    <owl:NamedIndividual rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#maxt">
+        <rdf:type rdf:resource="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#MaxTemperature"/>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://edam.gr#mint -->
+    <!-- https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#mint -->
 
-    <owl:NamedIndividual rdf:about="http://edam.gr#mint">
-        <rdf:type rdf:resource="http://edam.gr#MinTemperature"/>
+    <owl:NamedIndividual rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#mint">
+        <rdf:type rdf:resource="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#MinTemperature"/>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://edam.gr#mwind -->
+    <!-- https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#mwind -->
 
-    <owl:NamedIndividual rdf:about="http://edam.gr#mwind">
-        <rdf:type rdf:resource="http://edam.gr#Wind"/>
+    <owl:NamedIndividual rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#mwind">
+        <rdf:type rdf:resource="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#Wind"/>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://edam.gr#precip -->
+    <!-- https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#precip -->
 
-    <owl:NamedIndividual rdf:about="http://edam.gr#precip">
-        <rdf:type rdf:resource="http://edam.gr#Rain"/>
+    <owl:NamedIndividual rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#precip">
+        <rdf:type rdf:resource="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#Rain"/>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://edam.gr#radn -->
+    <!-- https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#radn -->
 
-    <owl:NamedIndividual rdf:about="http://edam.gr#radn">
-        <rdf:type rdf:resource="http://edam.gr#SolarRadiation"/>
+    <owl:NamedIndividual rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#radn">
+        <rdf:type rdf:resource="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#SolarRadiation"/>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://edam.gr#rain -->
+    <!-- https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#rain -->
 
-    <owl:NamedIndividual rdf:about="http://edam.gr#rain">
-        <rdf:type rdf:resource="http://edam.gr#Rain"/>
+    <owl:NamedIndividual rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#rain">
+        <rdf:type rdf:resource="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#Rain"/>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://edam.gr#relhummn -->
+    <!-- https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#relhummn -->
 
-    <owl:NamedIndividual rdf:about="http://edam.gr#relhummn">
-        <rdf:type rdf:resource="http://edam.gr#MinRelativeHumidity"/>
+    <owl:NamedIndividual rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#relhummn">
+        <rdf:type rdf:resource="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#MinRelativeHumidity"/>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://edam.gr#relhummx -->
+    <!-- https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#relhummx -->
 
-    <owl:NamedIndividual rdf:about="http://edam.gr#relhummx">
-        <rdf:type rdf:resource="http://edam.gr#MaxRelativeHumidity"/>
+    <owl:NamedIndividual rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#relhummx">
+        <rdf:type rdf:resource="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#MaxRelativeHumidity"/>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://edam.gr#wind -->
+    <!-- https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#wind -->
 
-    <owl:NamedIndividual rdf:about="http://edam.gr#wind">
-        <rdf:type rdf:resource="http://edam.gr#Wind"/>
+    <owl:NamedIndividual rdf:about="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#wind">
+        <rdf:type rdf:resource="https://github.com/BigDataWUR/EDAM/blob/features/semantics/semedam.owl#Wind"/>
     </owl:NamedIndividual>
 </rdf:RDF>
 
