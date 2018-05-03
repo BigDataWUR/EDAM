@@ -93,6 +93,10 @@ class PyTest(TestCommand):
         sys.exit(errcode)
 
 
+files = ['resources/configurations/*', 'resources/inputs/*', 'resources/templates/*',
+                 'resources/settings.yaml', 'resources/flask_related/static/*/*',
+                 'resources/flask_related/templates/*/*', ]
+
 setup(
     name='edam',
     version=edam.__version__,
@@ -105,9 +109,8 @@ setup(
     author='Argyrios Samourkasidis',
     setup_requires=['pytest-runner'],
     tests_require=['pytest'],
-    include_package_data=True,
     install_requires=['sqlalchemy', 'requests', 'numpy', 'pandas', 'numexpr', 'geopy', 'Flask-SQLAlchemy',
-                      'Flask', 'Flask-Cache', 'jinja2', 'pyyaml', 'records', 'psycopg2', 'click',
+                      'Flask==0.12', 'flask-cache', 'jinja2', 'pyyaml', 'records', 'psycopg2', 'click',
                       'Flask-GoogleMaps==0.2.4'
                       ],
     cmdclass={'test': PyTest, 'install': CustomInstall},
@@ -115,23 +118,23 @@ setup(
     packages=find_packages(exclude=["tests.*", "tests"]),
     author_email='argysamo@gmail.com',
     package_data={
-        'edam': ['resources/configurations/*', 'resources/inputs/*', 'resources/templates/*',
-                 'resources/settings.yaml', 'resources/flask_related/static/*/*',
-                 'resources/flask_related/templates/*/*', ],
+        'edam': files,
     },
+    # data_files=return_list_with_additional_data(),
+    include_package_data=True,
     entry_points={
         'console_scripts':
             ['edam=bin.edam:cli', 'viewer=bin.viewer:run'],
         
     },
-    # classifiers=[
-    #     'Intended Audience :: e-scientists',
-    #     'Topic :: Environmental data management :: Data acquisition tools',
-    #     'License :: OSI Approved :: GNU General Public License v3.0',
-    #     'Programming Language :: Python :: 3',
-    #     'Programming Language :: Python :: 3.4',
-    #     'Programming Language :: Python :: 3.5',
-    #     'Programming Language :: Python :: 3.6'
-    # ]
+    classifiers=[
+        # 'Intended Audience :: e-scientists',
+        # 'Topic :: Environmental data management :: Data acquisition tools',
+        # "License :: OSI Approved :: GNU General Public License v3.0",
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+    ],
 
 )
