@@ -8,8 +8,7 @@ from geopy.geocoders import GoogleV3
 from edam.reader.manage import DatabaseHandler
 from edam.reader.models import Station, Sensors, AbstractObservables, UnitsOfMeasurement, \
     HelperTemplateIDs
-from edam.reader.utilities import parse_for_iterations, extract_data_from_preamble, check_if_path_exists, \
-    parse_observables_with_reasoner
+from edam.reader.utilities import parse_for_iterations, extract_data_from_preamble, check_if_path_exists
 
 
 def safe_float(value):

@@ -9,11 +9,11 @@ from setuptools.command.install import install
 from setuptools.command.test import test as TestCommand
 
 import edam
-try:
-    import pypandoc
-    long_description = pypandoc.convert('README.md', 'rst')
-except(IOError, ImportError):
-    long_description = open('README.md').read()
+# try:
+#     import pypandoc
+#     long_description = pypandoc.convert('README.md', 'rst')
+# except(IOError, ImportError):
+#     long_description = open('README.md').read()
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -68,17 +68,17 @@ class CustomInstall(install):
                  os.path.join(home_user_directory, '.viewer', 'templates', 'edam'))
 
 
-# def read(*filenames, **kwargs):
-#     encoding = kwargs.get('encoding', 'utf-8')
-#     sep = kwargs.get('sep', '\n')
-#     buf = []
-#     for filename in filenames:
-#         with io.open(filename, encoding=encoding) as f:
-#             buf.append(f.read())
-#     return sep.join(buf)
+def read(*filenames, **kwargs):
+    encoding = kwargs.get('encoding', 'utf-8')
+    sep = kwargs.get('sep', '\n')
+    buf = []
+    for filename in filenames:
+        with io.open(filename, encoding=encoding) as f:
+            buf.append(f.read())
+    return sep.join(buf)
 
 
-# long_description = read('README.md')
+long_description = read('README.md')
 
 
 class PyTest(TestCommand):
