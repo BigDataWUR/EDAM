@@ -9,11 +9,6 @@ from setuptools.command.install import install
 from setuptools.command.test import test as TestCommand
 
 import edam
-# try:
-#     import pypandoc
-#     long_description = pypandoc.convert('README.md', 'rst')
-# except(IOError, ImportError):
-#     long_description = open('README.md').read()
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -40,7 +35,7 @@ class CustomInstall(install):
         # custom stuff here
         # create folders to put staff in.
         directories_to_be_created = [os.path.expanduser("~/.edam/"), os.path.expanduser("~/.edam/templates/"),
-                                     os.path.expanduser("~/.edam/configurations/"),
+                                     os.path.expanduser("~/.edam/metadata/"),
                                      os.path.expanduser("~/.edam/inputs/"),
                                      os.path.expanduser("~/.edam/.viewer/")
                                      ]
@@ -53,12 +48,18 @@ class CustomInstall(install):
         
         resources_directory = os.path.join(here, 'edam', 'resources')
         home_user_directory = os.path.expanduser("~/.edam/")
-        directories_to_be_copied_from_resources = ['inputs', 'templates', 'configurations']
+        directories_to_be_copied_from_resources = ['inputs', 'templates', 'metadata']
         
         for directory in directories_to_be_copied_from_resources:
             copytree(os.path.join(resources_directory, directory), os.path.join(home_user_directory, directory))
         shutil.copyfile(os.path.join(resources_directory, 'settings.yaml'),
                         os.path.join(home_user_directory, 'settings.yaml'))
+
+        shutil.copyfile(os.path.join(resources_directory, 'edam.owl'),
+                        os.path.join(home_user_directory, 'edam.owl'))
+
+        shutil.copyfile(os.path.join(resources_directory, 'edam.owl'),
+                        os.path.join(home_user_directory, 'backup.owl'))
         # Copy flask_related contents into home_directory
         
         copytree(os.path.join(resources_directory, 'flask_related'),
@@ -93,44 +94,36 @@ class PyTest(TestCommand):
         sys.exit(errcode)
 
 
-files = ['resources/configurations/*', 'resources/inputs/*', 'resources/templates/*',
-                 'resources/settings.yaml', 'resources/flask_related/static/*/*',
-                 'resources/flask_related/templates/*/*', ]
-
 setup(
     name='edam',
     version=edam.__version__,
-    url='https://github.com/BigDataWUR/EDAM/',
-    download_url='http://github.com/ecologismico/edam',
+    url='http://github.com/ecologismico/edam',
     description='An input template framework',
     long_description=long_description,
-    long_description_content_type='text/markdown',
     license='GNU General Public License v3.0',
     author='Argyrios Samourkasidis',
     setup_requires=['pytest-runner'],
     tests_require=['pytest'],
+    include_package_data=True,
     install_requires=['sqlalchemy', 'requests', 'numpy', 'pandas', 'numexpr', 'geopy', 'Flask-SQLAlchemy',
-                      'Flask==0.12', 'flask-cache', 'jinja2', 'pyyaml', 'records', 'psycopg2', 'click',
-                      'Flask-GoogleMaps==0.2.4'
+                      'Flask', 'Flask-Caching', 'jinja2', 'pyyaml', 'records', 'psycopg2', 'click',
+                      'Flask-GoogleMaps==0.2.4', 'owlready2', 'pint', 'oyaml'
                       ],
     cmdclass={'test': PyTest, 'install': CustomInstall},
     python_requires='>=3.3',
     packages=find_packages(exclude=["tests.*", "tests"]),
     author_email='argysamo@gmail.com',
     package_data={
-        'edam': files,
+        'edam': ['resources/metadata/*', 'resources/inputs/*', 'resources/templates/*',
+                 'resources/settings.yaml', 'resources/flask_related/static/*/*',
+                 'resources/flask_related/templates/*/*', ],
     },
-    # data_files=return_list_with_additional_data(),
-    include_package_data=True,
     entry_points={
         'console_scripts':
             ['edam=bin.edam:cli', 'viewer=bin.viewer:run'],
         
     },
     classifiers=[
-        # 'Intended Audience :: e-scientists',
-        # 'Topic :: Environmental data management :: Data acquisition tools',
-        # "License :: OSI Approved :: GNU General Public License v3.0",
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
