@@ -1,6 +1,4 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
-[![pipeline status](http://gitlab.logismi.co/ecologismico/TemplateFramework/badges/master/pipeline.svg)](http://gitlab.logismi.co/ecologismico/TemplateFramework/commits/master)
-[![coverage report](http://gitlab.logismi.co/ecologismico/TemplateFramework/badges/master/coverage.svg)](http://gitlab.logismi.co/ecologismico/TemplateFramework/commits/master)
 
 # Table of contents
 
