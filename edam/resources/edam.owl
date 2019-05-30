@@ -1,0 +1,470 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xml:base="https://raw.githubusercontent.com/BigDataWUR/EDAM/master/edam.owl"
+         xmlns="https://raw.githubusercontent.com/BigDataWUR/EDAM/master/edam.owl#">
+
+<owl:Ontology rdf:about="https://raw.githubusercontent.com/BigDataWUR/EDAM/master/edam.owl"/>
+
+<owl:Class rdf:about="#Observables">
+  <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Templates">
+  <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Qualifiers">
+  <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Temporal">
+  <rdfs:subClassOf rdf:resource="#Qualifiers"/>
+  <owl:disjointWith rdf:resource="#Statistical"/>
+  <owl:disjointWith rdf:resource="#Statistical"/>
+  <owl:disjointWith rdf:resource="#Statistical"/>
+  <owl:disjointWith rdf:resource="#Statistical"/>
+  <owl:disjointWith rdf:resource="#Statistical"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Statistical">
+  <rdfs:subClassOf rdf:resource="#Qualifiers"/>
+</owl:Class>
+
+<owl:ObjectProperty rdf:about="#hasObservable">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  <rdfs:domain rdf:resource="#Templates"/>
+  <rdfs:range rdf:resource="#Observables"/>
+</owl:ObjectProperty>
+
+<owl:Class rdf:about="#APSIM">
+  <rdfs:subClassOf rdf:resource="#Templates"/>
+  <owl:equivalentClass>
+    <owl:Class>
+      <owl:intersectionOf rdf:parseType="Collection">
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#hasObservable"/>
+          <owl:someValuesFrom rdf:resource="#minTemperature"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#hasObservable"/>
+          <owl:someValuesFrom rdf:resource="#maxTemperature"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#hasObservable"/>
+          <owl:someValuesFrom rdf:resource="#Rain"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#hasObservable"/>
+          <owl:someValuesFrom rdf:resource="#SolarRadiation"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#hasObservable"/>
+          <owl:someValuesFrom rdf:resource="#WindSpeed"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#hasObservable"/>
+          <owl:someValuesFrom rdf:resource="#RelativeHumidity"/>
+        </owl:Restriction>
+        <rdf:Description rdf:about="#Templates"/>
+      </owl:intersectionOf>
+    </owl:Class>
+  </owl:equivalentClass>
+</owl:Class>
+
+<owl:Class rdf:about="#minTemperature">
+  <rdfs:subClassOf rdf:resource="#Temperature"/>
+</owl:Class>
+
+<owl:Class rdf:about="#maxTemperature">
+  <rdfs:subClassOf rdf:resource="#Temperature"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Rain">
+  <rdfs:subClassOf rdf:resource="#Observables"/>
+</owl:Class>
+
+<owl:Class rdf:about="#SolarRadiation">
+  <rdfs:subClassOf rdf:resource="#Observables"/>
+</owl:Class>
+
+<owl:Class rdf:about="#WindSpeed">
+  <rdfs:subClassOf rdf:resource="#Observables"/>
+</owl:Class>
+
+<owl:Class rdf:about="#RelativeHumidity">
+  <rdfs:subClassOf rdf:resource="#Observables"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Temperature">
+  <rdfs:subClassOf rdf:resource="#Observables"/>
+</owl:Class>
+
+<owl:Class rdf:about="#min">
+  <rdfs:subClassOf rdf:resource="#Statistical"/>
+</owl:Class>
+
+<minTemperature rdf:about="http://APSIM.gr#mint">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+</minTemperature>
+
+<owl:Class rdf:about="#max">
+  <rdfs:subClassOf rdf:resource="#Statistical"/>
+</owl:Class>
+
+<maxTemperature rdf:about="http://APSIM.gr#maxt">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+</maxTemperature>
+
+<Rain rdf:about="http://APSIM.gr#rain">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+</Rain>
+
+<SolarRadiation rdf:about="http://APSIM.gr#radn">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+</SolarRadiation>
+
+<WindSpeed rdf:about="http://APSIM.gr#wind">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+</WindSpeed>
+
+<RelativeHumidity rdf:about="http://APSIM.gr#RH">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+</RelativeHumidity>
+
+<owl:Class rdf:about="#AgMIP">
+  <rdfs:subClassOf rdf:resource="#Templates"/>
+  <owl:equivalentClass>
+    <owl:Class>
+      <owl:intersectionOf rdf:parseType="Collection">
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#hasObservable"/>
+          <owl:someValuesFrom rdf:resource="#minTemperature"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#hasObservable"/>
+          <owl:someValuesFrom rdf:resource="#maxTemperature"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#hasObservable"/>
+          <owl:someValuesFrom rdf:resource="#Rain"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#hasObservable"/>
+          <owl:someValuesFrom rdf:resource="#SolarRadiation"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#hasObservable"/>
+          <owl:someValuesFrom rdf:resource="#WindSpeed"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#hasObservable"/>
+          <owl:someValuesFrom rdf:resource="#RelativeHumidity"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#hasObservable"/>
+          <owl:someValuesFrom rdf:resource="#VaporPressure"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#hasObservable"/>
+          <owl:someValuesFrom rdf:resource="#DewingPoint"/>
+        </owl:Restriction>
+        <rdf:Description rdf:about="#Templates"/>
+      </owl:intersectionOf>
+    </owl:Class>
+  </owl:equivalentClass>
+</owl:Class>
+
+<owl:Class rdf:about="#VaporPressure">
+  <rdfs:subClassOf rdf:resource="#Observables"/>
+</owl:Class>
+
+<owl:Class rdf:about="#DewingPoint">
+  <rdfs:subClassOf rdf:resource="#Observables"/>
+</owl:Class>
+
+<minTemperature rdf:about="http://AgMIP.gr#tmin">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+</minTemperature>
+
+<maxTemperature rdf:about="http://AgMIP.gr#tmax">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+</maxTemperature>
+
+<Rain rdf:about="http://AgMIP.gr#rain">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+</Rain>
+
+<SolarRadiation rdf:about="http://AgMIP.gr#srad">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+</SolarRadiation>
+
+<WindSpeed rdf:about="http://AgMIP.gr#wind">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+</WindSpeed>
+
+<RelativeHumidity rdf:about="http://AgMIP.gr#rhum">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+</RelativeHumidity>
+
+<VaporPressure rdf:about="http://AgMIP.gr#vprs">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+</VaporPressure>
+
+<DewingPoint rdf:about="http://AgMIP.gr#dewp">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+</DewingPoint>
+
+<owl:Class rdf:about="#DSSAT">
+  <rdfs:subClassOf rdf:resource="#Templates"/>
+  <owl:equivalentClass>
+    <owl:Class>
+      <owl:intersectionOf rdf:parseType="Collection">
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#hasObservable"/>
+          <owl:someValuesFrom rdf:resource="#SolarRadiation"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#hasObservable"/>
+          <owl:someValuesFrom rdf:resource="#averageTemperature"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#hasObservable"/>
+          <owl:someValuesFrom rdf:resource="#minTemperature"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#hasObservable"/>
+          <owl:someValuesFrom rdf:resource="#maxTemperature"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#hasObservable"/>
+          <owl:someValuesFrom rdf:resource="#RelativeHumidity"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#hasObservable"/>
+          <owl:someValuesFrom rdf:resource="#DewingPoint"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#hasObservable"/>
+          <owl:someValuesFrom rdf:resource="#Rain"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#hasObservable"/>
+          <owl:someValuesFrom rdf:resource="#WindSpeed"/>
+        </owl:Restriction>
+        <rdf:Description rdf:about="#Templates"/>
+      </owl:intersectionOf>
+    </owl:Class>
+  </owl:equivalentClass>
+</owl:Class>
+
+<owl:Class rdf:about="#averageTemperature">
+  <rdfs:subClassOf rdf:resource="#Temperature"/>
+</owl:Class>
+
+<SolarRadiation rdf:about="http://DSSAT.gr#SRAD">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+</SolarRadiation>
+
+<owl:Class rdf:about="#average">
+  <rdfs:subClassOf rdf:resource="#Statistical"/>
+</owl:Class>
+
+<averageTemperature rdf:about="http://DSSAT.gr#T2M">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+</averageTemperature>
+
+<minTemperature rdf:about="http://DSSAT.gr#TMIN">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+</minTemperature>
+
+<maxTemperature rdf:about="http://DSSAT.gr#TMAX">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+</maxTemperature>
+
+<RelativeHumidity rdf:about="http://DSSAT.gr#RH2M">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+</RelativeHumidity>
+
+<DewingPoint rdf:about="http://DSSAT.gr#TDEW">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+</DewingPoint>
+
+<Rain rdf:about="http://DSSAT.gr#RAIN">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+</Rain>
+
+<WindSpeed rdf:about="http://DSSAT.gr#WIND">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+</WindSpeed>
+
+<owl:Class rdf:about="#KNMI">
+  <rdfs:subClassOf rdf:resource="#Templates"/>
+  <owl:equivalentClass>
+    <owl:Class>
+      <owl:intersectionOf rdf:parseType="Collection">
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#hasObservable"/>
+          <owl:someValuesFrom rdf:resource="#WindSpeed"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#hasObservable"/>
+          <owl:someValuesFrom rdf:resource="#maxTemperature"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#hasObservable"/>
+          <owl:someValuesFrom rdf:resource="#minTemperature"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#hasObservable"/>
+          <owl:someValuesFrom rdf:resource="#SolarRadiation"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#hasObservable"/>
+          <owl:someValuesFrom rdf:resource="#Rain"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#hasObservable"/>
+          <owl:someValuesFrom rdf:resource="#VaporPressure"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#hasObservable"/>
+          <owl:someValuesFrom rdf:resource="#RelativeHumidity"/>
+        </owl:Restriction>
+        <rdf:Description rdf:about="#Templates"/>
+      </owl:intersectionOf>
+    </owl:Class>
+  </owl:equivalentClass>
+</owl:Class>
+
+<WindSpeed rdf:about="http://KNMI.gr#FG">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+</WindSpeed>
+
+<maxTemperature rdf:about="http://KNMI.gr#TG">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+</maxTemperature>
+
+<minTemperature rdf:about="http://KNMI.gr#TN">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+</minTemperature>
+
+<SolarRadiation rdf:about="http://KNMI.gr#Q">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+</SolarRadiation>
+
+<Rain rdf:about="http://KNMI.gr#RH">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+</Rain>
+
+<VaporPressure rdf:about="http://KNMI.gr#PG">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+</VaporPressure>
+
+<RelativeHumidity rdf:about="http://KNMI.gr#UG">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+</RelativeHumidity>
+
+<owl:Class rdf:about="#WOFOST">
+  <rdfs:subClassOf rdf:resource="#Templates"/>
+  <owl:equivalentClass>
+    <owl:Class>
+      <owl:intersectionOf rdf:parseType="Collection">
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#hasObservable"/>
+          <owl:someValuesFrom rdf:resource="#SolarRadiation"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#hasObservable"/>
+          <owl:someValuesFrom rdf:resource="#minTemperature"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#hasObservable"/>
+          <owl:someValuesFrom rdf:resource="#maxTemperature"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#hasObservable"/>
+          <owl:someValuesFrom rdf:resource="#VaporPressure"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#hasObservable"/>
+          <owl:someValuesFrom rdf:resource="#WindSpeed"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#hasObservable"/>
+          <owl:someValuesFrom rdf:resource="#Rain"/>
+        </owl:Restriction>
+        <rdf:Description rdf:about="#Templates"/>
+      </owl:intersectionOf>
+    </owl:Class>
+  </owl:equivalentClass>
+</owl:Class>
+
+<SolarRadiation rdf:about="http://WOFOST.gr#irradiation">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+</SolarRadiation>
+
+<minTemperature rdf:about="http://WOFOST.gr#mint">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+</minTemperature>
+
+<maxTemperature rdf:about="http://WOFOST.gr#maxt">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+</maxTemperature>
+
+<VaporPressure rdf:about="http://WOFOST.gr#emvp">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+</VaporPressure>
+
+<WindSpeed rdf:about="http://WOFOST.gr#mwind">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+</WindSpeed>
+
+<Rain rdf:about="http://WOFOST.gr#precip">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+</Rain>
+
+<owl:AllDisjointClasses>
+  <owl:members rdf:parseType="Collection">
+    <rdf:Description rdf:about="#Templates"/>
+    <rdf:Description rdf:about="#Observables"/>
+    <rdf:Description rdf:about="#Qualifiers"/>
+  </owl:members>
+</owl:AllDisjointClasses>
+
+<owl:AllDisjointClasses>
+  <owl:members rdf:parseType="Collection">
+    <rdf:Description rdf:about="#Templates"/>
+    <rdf:Description rdf:about="#Observables"/>
+    <rdf:Description rdf:about="#Qualifiers"/>
+  </owl:members>
+</owl:AllDisjointClasses>
+
+<owl:AllDisjointClasses>
+  <owl:members rdf:parseType="Collection">
+    <rdf:Description rdf:about="#Templates"/>
+    <rdf:Description rdf:about="#Observables"/>
+    <rdf:Description rdf:about="#Qualifiers"/>
+  </owl:members>
+</owl:AllDisjointClasses>
+
+<owl:AllDisjointClasses>
+  <owl:members rdf:parseType="Collection">
+    <rdf:Description rdf:about="#Templates"/>
+    <rdf:Description rdf:about="#Observables"/>
+    <rdf:Description rdf:about="#Qualifiers"/>
+  </owl:members>
+</owl:AllDisjointClasses>
+
+<owl:AllDisjointClasses>
+  <owl:members rdf:parseType="Collection">
+    <rdf:Description rdf:about="#Templates"/>
+    <rdf:Description rdf:about="#Observables"/>
+    <rdf:Description rdf:about="#Qualifiers"/>
+  </owl:members>
+</owl:AllDisjointClasses>
+
+
+</rdf:RDF>
