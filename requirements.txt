@@ -18,4 +18,4 @@ geopy
 records
 click
 flask_googlemaps
-Werkzeug
+pylint

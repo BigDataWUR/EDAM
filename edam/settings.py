@@ -10,24 +10,30 @@ settings = os.path.join(home_directory, 'settings.yaml')
 
 with open(settings, 'r') as stream:
     try:
-        settings_content = yaml.load(stream, Loader=yaml.FullLoader)
+        settings_content = yaml.load(stream, Loader=yaml.BaseLoader)
     except yaml.YAMLError as exc:
         raise exc
 
 
-def safe_return(section, fields_as_dict):
+def safe_return(section: str, fields: dict) -> dict:
+    """
+    :param section:
+    :param fields:
+    :return:
+    """
     temp_dict = dict()
-    for key, default_value in fields_as_dict.items():
+    for key, default_value in fields.items():
         try:
             value = settings_content[section][key]
-        except:
+        except KeyError:
             value = default_value
         temp_dict[key] = value
-    
+
     if section == 'DATABASE':
         if temp_dict['drivername'] in ['sqlite']:
-            temp_dict['database'] = os.path.join(home_directory, temp_dict['database'])
-    
+            temp_dict['database'] = os.path.join(
+                home_directory, temp_dict['database'])
+
     return temp_dict
 
 

@@ -1,5 +1,5 @@
-from edam.viewer.app.views import app
 from edam.settings import SERVER
+from edam.viewer.app.views import app
 
 
 def run():

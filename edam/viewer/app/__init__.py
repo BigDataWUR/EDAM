@@ -13,6 +13,7 @@ from flask_caching import Cache
 from flask_sqlalchemy import SQLAlchemy
 
 import edam.viewer.config as config
+from edam.reader.models import Station
 from edam.settings import home_directory
 from edam.viewer.app.manage import DatabaseHandler as Data
 from edam.viewer.app.manage import Measurement
@@ -46,7 +47,8 @@ app.jinja_env.lstrip_blocks = True
 #          os.path.join(home_directory, '.viewer', 'templates', 'edam'))
 
 # Change the folder of templates and static files
-app.jinja_loader = jinja2.FileSystemLoader([home_directory + '/.viewer/templates'])
+app.jinja_loader = jinja2.FileSystemLoader(
+    [home_directory + '/.viewer/templates'])
 
 # Don't sort with jsonify
 app.config['JSON_SORT_KEYS'] = False
@@ -73,13 +75,15 @@ def calculate_templates():
     return metatemplates
 
 
-def calculate_data_and_render_from_template(observable_id, station_id):
-    station_object = data.retrieve_object_from_id(table='Station', object_id=int(station_id))  # type: models.Station
+def calculate_data_and_render_from_template(template_name, station_id):
+    station = data.retrieve_object_from_id(table='Station',
+                                           object_id=int(station_id))  # type: Station
+    template = data
     compatible, list_template_for_arguments, template_dictionary = check_template_source_compatibility(
-        observable_id=observable_id,
-        station_object=station_object)
+        template=template_name, station=station)
     if compatible:
-        station, chunk = data.retrieve_stations_data(station_object, list_template_for_arguments)
+        station, chunk = data.retrieve_stations_data(
+            station, list_template_for_arguments)
         return True, template_dictionary, station, chunk
     else:
         return False, redirect(url_for('index')), None, None
@@ -90,7 +94,9 @@ def nocache(view):
     def no_cache(*args, **kwargs):
         response = make_response(view(*args, **kwargs))
         response.headers['Last-Modified'] = datetime.now()
-        response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0'
+        response.headers[
+            'Cache-Control'] = 'no-store, no-cache, must-revalidate, ' \
+                               'post-check=0, pre-check=0, max-age=0'
         response.headers['Pragma'] = 'no-cache'
         response.headers['Expires'] = '-1'
         return response
@@ -112,8 +118,8 @@ def hash(anything):
 app.jinja_env.globals.update(hash=hash)
 
 
-def d2s(datetime):
-    return datetime.strftime("%D %H %M")
+def d2s(datetime_object):
+    return datetime_object.strftime("%D %H %M")
 
 
 app.jinja_env.globals.update(d2s=d2s)
@@ -129,26 +135,37 @@ def same_timestamp(*args):
 app.jinja_env.globals.update(same_timestamp=same_timestamp)
 
 
-def resample(df: pd.DataFrame, rule, how=None, axis=0, fill_method=None, closed=None, label=None, convention='start',
+def resample(df: pd.DataFrame, rule, how=None, axis=0, fill_method=None, closed=None, label=None,
+             convention='start',
              kind=None, loffset=None, limit=None, base=0, on=None, level=None):
     # observables_list = list(df)
     # pd.set_option('precision', 3)
     observables_list = ['timestamp', 'tmax', 'tmin', 'af', 'rain', 'sun']
     # observables_list = ['timestamp', 'radn', 'maxt', 'mint', 'rain', 'wind', 'RH']
     observables_list.remove('timestamp')
-    available_operations = ['bfill', 'max', 'median', 'sum', 'min', 'interpolate', 'ffill']
+    available_operations = [
+        'bfill',
+        'max',
+        'median',
+        'sum',
+        'min',
+        'interpolate',
+        'ffill']
 
     try:
         for observable in observables_list:
             df[observable] = df[observable].apply(lambda x: float(x))
-
+            
     except Exception as e:
         print(e.args)
-        print("I can't transform string value to float. Wind maybe? Check edam.viewer.__init__.py - downsample func")
+        print(
+            "I can't transform string value to float. "
+            "Wind maybe? Check edam.viewer.__init__.py - downsample func")
         exit()
-    resampled = df.resample("A", axis, fill_method, closed, label, convention, kind, loffset, limit, base, on,
+    resampled = df.resample("A", None, axis, fill_method, closed, label, convention, kind, loffset,
+                            limit, base, on,
                             level)
-
+    
     resampled = resampled.mean()
     resampled = resampled.round(3)
     resampled = resampled.fillna('---')
@@ -158,9 +175,10 @@ def resample(df: pd.DataFrame, rule, how=None, axis=0, fill_method=None, closed=
             # resampled = getattr(resampled, "interpolate")(method)
             resampled = getattr(resampled, how)()
     resampled["timestamp"] = resampled.index
-
+    
     for observable in observables_list:
-        resampled[observable] = resampled[observable].apply(lambda x: Measurement(x))
+        resampled[observable] = resampled[observable].apply(
+            lambda x: Measurement(x))
     # TODO: This is soooooo dangerous. Please re-implement......
     # observables_list.append('timestamp')
     observables_list = ['timestamp', 'tmax', 'tmin', 'af', 'rain', 'sun']

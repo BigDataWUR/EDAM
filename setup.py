@@ -33,7 +33,8 @@ class CustomInstall(install):
         install.run(self)
         # custom stuff here
         # create folders to put staff in.
-        directories_to_be_created = [os.path.expanduser("~/.edam/"), os.path.expanduser("~/.edam/templates/"),
+        directories_to_be_created = [os.path.expanduser("~/.edam/"),
+                                     os.path.expanduser("~/.edam/templates/"),
                                      os.path.expanduser("~/.edam/metadata/"),
                                      os.path.expanduser("~/.edam/inputs/"),
                                      os.path.expanduser("~/.edam/.viewer/")
@@ -50,7 +51,8 @@ class CustomInstall(install):
         directories_to_be_copied_from_resources = ['inputs', 'templates', 'metadata']
 
         for directory in directories_to_be_copied_from_resources:
-            copytree(os.path.join(resources_directory, directory), os.path.join(home_user_directory, directory))
+            copytree(os.path.join(resources_directory, directory),
+                     os.path.join(home_user_directory, directory))
         shutil.copyfile(os.path.join(resources_directory, 'settings.yaml'),
                         os.path.join(home_user_directory, 'settings.yaml'))
 
