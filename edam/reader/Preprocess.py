@@ -118,8 +118,7 @@ class Preprocess(object):
 
 
 if __name__ == "__main__":
-    template = Template(path=os.path.join(test_resources, "templates", "bom_as_csv.tmpl"),
-                        filename="Bom")
+    template = Template(path=os.path.join(test_resources, "templates", "bom_as_csv.tmpl"))
     # print(template.get_observable_ids())
     # print(remove_template_placeholders_from_string(template.get_preamble()))
     print(remove_template_placeholders_from_string(template.get_header))

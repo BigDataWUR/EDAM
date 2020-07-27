@@ -136,8 +136,7 @@ class SourceConfiguration:
         # With the following command I serialize a Station object from the
         # .yaml file
         if parse_from_yaml is not None:
-            station = Station.fromdictionary(
-                self.content['Station'])  # type: Station
+            station = Station(**self.content['Station'])  # type: Station
         else:
             station = Station()
 
@@ -192,7 +191,7 @@ class SourceConfiguration:
             observable_as_dict = observables[obs]  # type: dict
             # Deprecated
             # observable_as_dict['station_id'] = self.station_id
-            observable = AbstractObservables.fromdictionary(observable_as_dict)
+            observable = AbstractObservables(**observable_as_dict)
             exists, respective_abstract_observable_id = self.database.__check_observable_is_in_db__(
                 observable)
             if exists:
@@ -218,14 +217,13 @@ class SourceConfiguration:
                 temp, ignore_index=True)
 
     def set_helper_observable_ids(self, helper_template_as_dictionary):
-        helperTemplateID = HelperTemplateIDs.instantiate_with_dictionary(
-            helper_template_as_dictionary)
+        helper_template_id = HelperTemplateIDs(**helper_template_as_dictionary)
         exists, _ = self.database.__chech_helperTemplateID_is_in_db__(
-            helperTemplateID)
+            helper_template_id)
         if exists:
             pass
         else:
-            _, _ = self.database.__add_item__(helperTemplateID)
+            _, _ = self.database.__add_item__(helper_template_id)
 
     def set_units_of_measurement(self):
 
@@ -234,8 +232,7 @@ class SourceConfiguration:
             default_empty_uom['name'] = "unknown"
             relevant_observables = self.all_observable_ids
 
-            unit = UnitsOfMeasurement.instantiate_with_dictionary(
-                default_empty_uom)
+            unit = UnitsOfMeasurement(**default_empty_uom)
 
             exists, unit_id = self.database.check_item_in_db(unit)
             if exists:
@@ -262,8 +259,7 @@ class SourceConfiguration:
                     relevant_observables = map(str.strip, relevant_observables)
                     # No need to keep it any more
                 del uom_as_dict['relevant_observables']
-                unit = UnitsOfMeasurement.instantiate_with_dictionary(
-                    uom_as_dict)
+                unit = UnitsOfMeasurement(**uom_as_dict)
 
                 exists, unit_id = self.database.check_item_in_db(unit)
                 if exists:
@@ -351,7 +347,7 @@ class SourceConfiguration:
                              'observable_id'] == observable_observable_id), 'sensor_id'] = sensor_id
 
     def update_sensor(self, observable_observable_id, sensor, sensor_as_dict):
-        sensor = Sensors.instantiate_with_dictionary(sensor_as_dict)
+        sensor = Sensors(**sensor_as_dict)
         # abstract_observable_id = None or id
         abstract_observable_id = \
             self.helper_template.loc[(self.helper_template['station_id'] == self.station_id[0]) &
@@ -412,5 +408,5 @@ class SourceConfiguration:
 
 if __name__ == "__main__":
     test = SourceConfiguration(
-        'configurations/knmi.yaml',
+        'metadata/knmi.yaml',
         'inputs/Yucheng.csv')

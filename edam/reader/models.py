@@ -1,17 +1,18 @@
 import json
 import logging
+import os
 import re
 from contextlib import contextmanager
+from enum import Enum
 
+import yaml
 from nltk.tokenize import RegexpTokenizer
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, Float
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
+from edam.reader.database import Base
 from edam.reader.regular_expressions import template_file_header, for_loop_variables
 from edam.utilities.exceptions import ErrorWithTemplate
-
-Base = declarative_base()
 
 module_logger = logging.getLogger('edam.reader.models')
 
@@ -44,35 +45,13 @@ class Station(Base):
         backref='station',
         lazy='dynamic')
 
-    @classmethod
-    def fromdictionary(cls, d):
-        allowed = (
-            'name',
-            'mobile',
-            'location',
-            'latitude',
-            'longitude',
-            'region',
-            'license',
-            'url',
-            'tags')
-        df = {k: v for k, v in d.items() if k in allowed}
-        return cls(**df)
-
-    def update(self, newdata_in_dict):
-        allowed = (
-            'name',
-            'mobile',
-            'location',
-            'latitude',
-            'longitude',
-            'region',
-            'license',
-            'url',
-            'tags')
-        for key, value in newdata_in_dict.items():
-            if key in allowed:
+    def update(self, new_values: dict):
+        for key, value in new_values.items():
+            try:
                 setattr(self, key, value)
+            except:
+                module_logger.warning("{key} does not exist".format(key=key))
+                pass
 
     def __init__(self, name="Test Station", mobile=False, location="", latitude=None,
                  longitude=None, region=None,
@@ -108,7 +87,7 @@ class Station(Base):
         return NotImplemented
 
     def __repr__(self):
-        return '<Name %r>' % (self.name)
+        return '<Name %r>' % self.name
 
 
 class AbstractObservables(Base):
@@ -122,13 +101,7 @@ class AbstractObservables(Base):
         backref='observable',
         lazy='dynamic')
 
-    @classmethod
-    def fromdictionary(cls, d):
-        allowed = ('name', 'ontology')
-        df = {k: v for k, v in d.items() if k in allowed}
-        return cls(**df)
-
-    def __init__(self, name="Temperature", ontology=None):
+    def __init__(self, name="Temperature", ontology=None, **kwargs):
         self.name = name
         self.ontology = ontology
 
@@ -142,12 +115,6 @@ class UnitsOfMeasurement(Base):
 
     unit_2 = relationship('Sensors', backref='unit', lazy='dynamic')
     unit1 = relationship('HelperTemplateIDs', backref='uom', lazy='dynamic')
-
-    @classmethod
-    def instantiate_with_dictionary(cls, d):
-        allowed = ('name', 'ontology', 'symbol')
-        df = {k: v for k, v in d.items() if k in allowed}
-        return cls(**df)
 
     def __init__(self, name=None, ontology=None, symbol=None):
         self.name = name
@@ -173,29 +140,13 @@ class Sensors(Base):
 
     sens1 = relationship('HelperTemplateIDs', backref='sensor', lazy='dynamic')
 
-    @classmethod
-    def instantiate_with_dictionary(cls, d):
-        allowed = (
-            'generic',
-            'name',
-            'manufacturer',
-            'tags',
-            'abstract_observable_id',
-            'unit_id')
-        df = {k: v for k, v in d.items() if k in allowed}
-        return cls(**df)
-
     def update(self, new_data_in_dict):
-        allowed = (
-            'generic',
-            'name',
-            'manufacturer',
-            'tags',
-            'abstract_observable_id',
-            'unit_id')
         for key, value in new_data_in_dict.items():
-            if key in allowed:
+            try:
                 setattr(self, key, value)
+            except:
+                module_logger.warning("{key} does not exist".format(key=key))
+                pass
 
     def __init__(self, generic=False, name="Test sensor", manufacturer="Test manufacturer",
                  abstract_observable_id=None, unit_id=None,
@@ -221,12 +172,6 @@ class Observations(Base):
     value = Column(String(60))
     helper_observable_id = Column(Integer, ForeignKey('HelperTemplateIDs.id'))
 
-    @classmethod
-    def fromdictionary(cls, d):
-        allowed = ('timestamp', 'value', 'helper_observable_id')
-        df = {k: v for k, v in d.items() if k in allowed}
-        return cls(**df)
-
     def __init__(self, timestamp=None, value=None, helper_observable_id=None):
         """
         :param timestamp:
@@ -239,7 +184,7 @@ class Observations(Base):
         self.helper_observable_id = helper_observable_id
 
     def __repr__(self):
-        return '<id %r>' % (self.id)
+        return '<id %r>' % self.id
 
 
 class HelperTemplateIDs(Base):
@@ -269,27 +214,12 @@ class HelperTemplateIDs(Base):
     helper_observable_id = relationship(
         'Observations', backref='helper', lazy='dynamic')
 
-    @classmethod
-    def instantiate_with_dictionary(cls, d):
-        allowed = (
-            'observable_id',
-            'sensor_id',
-            'station_id',
-            'abstract_observable_id',
-            'unit_id')
-        df = {k: v for k, v in d.items() if k in allowed}
-        return cls(**df)
-
     def update(self, new_data_in_dict):
-        allowed = (
-            'observable_id',
-            'sensor_id',
-            'station_id',
-            'abstract_observable_id',
-            'unit_id')
         for key, value in new_data_in_dict.items():
-            if key in allowed:
+            try:
                 setattr(self, key, value)
+            except:
+                module_logger.warning("{key} does not exist".format(key=key))
 
     def update_metadata(self, metadata_in_dict):
         # TODO: If we append values, we have to change number of observations
@@ -324,8 +254,77 @@ class HelperTemplateIDs(Base):
         self.number_of_observations = None
         self.frequency = None
 
+    @staticmethod
+    def add_metadata_file(observable_id: str, station: Station, observables: [AbstractObservables]
+                          , sensors: [Sensors], units_of_measurement: [UnitsOfMeasurement]):
+        pass
+
     def __repr__(self):
         return f'<id {self.id!r}>'
+
+
+class MetadataFile:
+    def __init__(self, path=None):
+        self.path = path
+
+    @property
+    def restructured_metadata(self):
+        restructured_metadata = dict()
+        sensors = self.sensors
+        observables = self.observables
+        units_of_measurement = self.units_of_measurement
+        for observable_id in self.observable_ids:
+            restructured_metadata['station'] = self.station
+            restructured_metadata[observable_id] = dict()
+            restructured_metadata[observable_id]['sensor'] = sensors[observable_id]
+            restructured_metadata[observable_id]['observable'] = observables[observable_id]
+            restructured_metadata[observable_id]['unit_of_measurement'] = units_of_measurement[observable_id]
+
+        return restructured_metadata
+
+    @property
+    def filename(self):
+        return os.path.basename(self.path)
+
+    @property
+    def contents(self):
+        try:
+            with open(self.path, 'r') as f:
+                return yaml.load(f.read(), Loader=yaml.FullLoader)
+        except yaml.YAMLError as exc:
+            return exc.args
+
+    @property
+    def observable_ids(self):
+        return list(self.observables.keys())
+
+    @property
+    def station(self) -> Station:
+        return Station(**self.contents['Station'])
+
+    @property
+    def observables(self) -> [AbstractObservables]:
+        return {item.pop('observable_id'): AbstractObservables(**item) for item in self.contents['Observables']}
+
+    @property
+    def sensors(self):
+        sensors = dict()
+        for sensor in self.contents['Sensors']:
+            relevant_observables = map(lambda rel_obs: rel_obs.strip().lstrip().rstrip(),
+                                       sensor.pop('relevant_observables').split(','))
+            for observable_id in relevant_observables:
+                sensors[observable_id] = Sensors(**sensor)
+        return sensors
+
+    @property
+    def units_of_measurement(self):
+        units_of_measurement = dict()
+        for sensor in self.contents['Units of Measurement']:
+            relevant_observables = map(lambda rel_obs: rel_obs.strip().lstrip().rstrip(),
+                                       sensor.pop('relevant_observables').split(','))
+            for observable_id in relevant_observables:
+                units_of_measurement[observable_id] = UnitsOfMeasurement(**sensor)
+        return units_of_measurement
 
 
 class Template(Base):
@@ -335,9 +334,12 @@ class Template(Base):
     path = Column(String(360))
     variables = Column(String(400))
 
-    def __init__(self, path=None, filename=None):
+    def __init__(self, path=None):
         self.path = path
-        self.filename = filename
+
+    @property
+    def filename(self):
+        return os.path.basename(self.path)
 
     @property
     def header(self) -> str:
@@ -353,14 +355,21 @@ class Template(Base):
         matches = re.findall(regex_header_from_template_file, template_contents)
         if matches:
             header = matches[0][0].strip("\r\n")
-
+            return header
             tokenizer = RegexpTokenizer(r'\w+')
 
             return tokenizer.tokenize(header)
         module_logger.warning("{template} does not have header".format(template=self.filename))
 
     @property
-    def observable_ids(self):
+    def header_line(self):
+        with read_template(self) as f:
+            for line_number, line in enumerate(f, 0):
+                if self.header in line:
+                    return line_number
+
+    @property
+    def observable_ids(self) -> [str]:
         """
                This function parses a template file and returns
                the variables for the template in "for loop" (i.e. observable_id's).
@@ -387,7 +396,7 @@ class Template(Base):
                                 format(filename=self.filename, path=self.path))
 
     @property
-    def preamble(self):
+    def preamble(self) -> str:
         """
         Gets the template's preamble text (if applicable)
         :return:
@@ -403,19 +412,78 @@ class Template(Base):
         return "{name} located at {path}".format(name=self.filename, path=self.path)
 
 
-class InputDocumentResource:
-    def __init__(self, path, resource_type, template: Template):
-        self.path = path
-        self.resource_type = resource_type
-        self.associated_template = template
+class StorageType(Enum):
+    FILE = 'file'
+    MEMORY = 'memory'
 
-    @property
-    def preamble(self):
-        pass
 
-    @property
-    def header(self):
-        pass
+# class VerifiedResource:
+#     """
+#     Wraps a resource location given as input by a user. This resource location
+#     can be: file, folder (i.e. list of files), database, http (url.
+#     """
+#
+#     def __init__(self, path: str, resource_type: InputType):
+#         self.path = path
+#         self.resource_type = resource_type
+#
+#     @property
+#     def path(self):
+#         return self._path
+#
+#     @path.setter
+#     def path(self):
+#
+#     """
+#     This utility function checks if the given `input_parameter` is either a *file* or *folder*.
+#     Firstly, it checks if the input_parameter exists.
+#     It checks whether the `input_parameter` contains the full path (e.g. ~/user/this/file.txt, or ~/user/folder).
+#     In case it doesn't  it searches in the three folders located in user's home path (e.g. ~/.edam/inputs/, etc.)
+#
+#     :rtype: VerifiedInputParameter
+#     :param input_parameter: The name of the file (e.g. Yucheng.met, or ~/user/this/Yucheng.met)
+#     :return: VerifiedInputParameter
+#     """
+#     if os.path.exists(input_parameter):
+#         # It means user gave full path. It may be a file or a folder
+#         if os.path.isfile(input_parameter):
+#
+#             return VerifiedInputParameter(path=input_parameter, parameter_type=InputType.FILE)
+#         else:
+#             # return True, InputType.FOLDER, input_parameter, None
+#             return VerifiedInputParameter(path=input_parameter, parameter_type=InputType.FOLDER)
+#     else:
+#         # It means we have to find it
+#         for folder, included_folder, filenames in os.walk(home_directory):
+#             if '.viewer' in included_folder:
+#                 included_folder.remove('.viewer')
+#             temp_path = os.path.join(folder, input_parameter)
+#
+#             if os.path.exists(temp_path):
+#                 # It means user gave full path. It may be a file or a folder
+#
+#                 if os.path.isfile(temp_path):
+#                     return VerifiedInputParameter(path=temp_path, parameter_type=InputType.FILE)
+#                 else:
+#                     return VerifiedInputParameter(path=input_parameter, parameter_type=InputType.FOLDER)
+#
+#     raise InputParameterDoesNotExist("{input_param} does not exist".format(input_param=input_parameter))
+#
+#     def __eq__(self, other):
+#         if isinstance(other, self.__class__):
+#             return (self.path == other.path) and (self.resource_type == other.resource_type)
+
+
+class FolderResolver:
+    pass
+
+
+class UrlResolver:
+    pass
+
+
+class DatabaseResolver:
+    pass
 
 
 @contextmanager

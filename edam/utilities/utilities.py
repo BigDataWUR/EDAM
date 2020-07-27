@@ -8,32 +8,19 @@ import logging
 import os
 import re
 from datetime import datetime
-from enum import Enum
 
 import numpy as np
 import pandas as pd
 import records
 import requests
 
-from edam.reader.manage import DatabaseHandler
+# from edam.reader.manage import DatabaseHandler
 from edam.reader.models import Station
 from edam.reader.models import Template
 from edam.settings import database_type, home_directory
 from edam.utilities.exceptions import InputParameterDoesNotExist
 
 utilities_logger = logging.getLogger('edam.reader.utilities')
-
-
-class InputType(Enum):
-    FILE = 1
-    FOLDER = 2
-    DATABASE = 3
-    HTTP = 4
-
-
-class StorageType(Enum):
-    FILE = 'file'
-    MEMORY = 'memory'
 
 
 def find_templates_in_directory(directory: str = home_directory) -> [Template]:
@@ -50,7 +37,7 @@ def find_templates_in_directory(directory: str = home_directory) -> [Template]:
             if fnmatch.fnmatch(file, '*.tmpl'):
                 path = os.path.join(folder, file)
                 filename, _ = os.path.splitext(file)
-                template = Template(path=path, filename=filename)
+                template = Template(path=path)
                 list_of_templates.append(template)
     return list_of_templates
 
@@ -547,19 +534,6 @@ def download_and_check_with_tmpl_html_content_via_http(url: list, template, temp
             utilities_logger.warning("There is an error with: %s" % unique_url)
 
     return input_list, template
-
-
-class VerifiedInputParameter:
-    """
-
-    """
-
-    def __init__(self, path, parameter_type):
-        self.path = path
-        self.parameter_type = parameter_type
-
-    def __eq__(self, other):
-        return (self.path == other.path) and (self.parameter_type == other.parameter_type)
 
 
 def handle_input_parameter(input_parameter: str):

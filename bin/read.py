@@ -30,7 +30,7 @@ def cli(input_file, template, query, config, var, storage, drop):
         create_tables()
 
     verified_template = handle_input_parameter(template)
-    template = Template(verified_template.path, os.path.splitext(os.path.split(verified_template.path)[-1])[0])
+    template = Template(verified_template.path)
     verified_configuration = handle_input_parameter(config)
 
     verified_input_file = "TODO"

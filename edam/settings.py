@@ -5,7 +5,7 @@ from sqlalchemy.engine.url import URL
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 home_directory = os.path.join(os.path.expanduser('~'), '.edam')
-test_resources = os.path.join(ROOT_DIR, '../', 'tests', 'resources')
+test_resources = os.path.join(ROOT_DIR, os.pardir, 'tests', 'resources')
 settings = os.path.join(home_directory, 'settings.yaml')
 
 with open(settings, 'r') as stream:

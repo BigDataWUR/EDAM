@@ -603,7 +603,7 @@ class TemplateReader:
 
 if __name__ == "__main__":
     conf = SourceConfiguration(
-        input_yaml="/Users/argyris/Documents/git/templateFramework/configurations/knmi.yaml",
+        input_yaml="/Users/argyris/Documents/git/templateFramework/metadata/knmi.yaml",
         input_file_data="/Users/argyris/Documents/git/templateFramework/inputs/knmi_alldata_data.txt")
     t = TemplateReader(config=conf,
                        input_file="/Users/argyris/Documents/git/templateFramework/inputs/knmi_alldata_data.txt",
