@@ -4,16 +4,8 @@ import pytest
 
 from edam.reader.models import Template, StorageType
 from edam.settings import test_resources
-from edam.utilities.exceptions import ErrorWithTemplate, InputParameterDoesNotExist
 from edam.utilities.utilities import remove_template_placeholders_from_string, \
-    evaluate_variable_part, generate_uri, determine_storage_type, handle_input_parameter
-
-resources_folder = os.path.join(os.path.abspath(os.getcwd()), os.pardir, 'resources')
-
-
-def test_read_yaml_correct_file():
-    # TODO
-    pass
+    evaluate_variable_part, generate_uri, determine_storage_type
 
 
 def test_get_observables_from_template_with_observables():
@@ -27,7 +19,7 @@ def test_get_observables_from_template_with_observables():
 def test_get_observables_from_template_without_observables():
     template_path = os.path.join(test_resources, 'templates', 'doesnot.exist')
     template = Template(path=template_path)
-    with pytest.raises(ErrorWithTemplate):
+    with pytest.raises(FileNotFoundError):
         template.observable_ids
 
 
@@ -126,13 +118,6 @@ def test_generate_uri_extra_vars_without_vars():
 # assert test_output == desired_output1
 
 
-def test_handle_input_parameter_non_existing_file():
-    # Tests a non-existing file
-    test_filename2 = os.path.join(test_resources, 'inputs', 'it_doesnt_exist.gr')
-    with pytest.raises(InputParameterDoesNotExist):
-        handle_input_parameter(test_filename2)
-
-
 # def test_handle_input_parameter_existing_folder():
 #     # Tests an existing folder
 #     test_filename3 = os.path.join(test_resources, 'inputs')
@@ -140,13 +125,6 @@ def test_handle_input_parameter_non_existing_file():
 #     desired_output3 = VerifiedInputParameter(path=test_filename3, parameter_type=InputType.FOLDER)
 #
 #     assert test_output3 == desired_output3
-
-
-def test_handle_input_parameter_non_existing_folder():
-    # Tests a non-existing folder
-    test_filename4 = os.path.join(test_resources, 'doesnt_exist_folder')
-    with pytest.raises(InputParameterDoesNotExist):
-        handle_input_parameter(test_filename4)
 
 
 def test_determine_storage_type_correct():

@@ -10,7 +10,7 @@ from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, F
 from sqlalchemy.orm import relationship
 
 from edam.reader.database import Base
-from edam.reader.regular_expressions import template_file_header, for_loop_variables
+from edam.reader.regular_expressions import template_file_header, for_loop_variables, var_for_line
 from edam.utilities.exceptions import ErrorWithTemplate
 
 module_logger = logging.getLogger('edam.reader.models')
@@ -412,12 +412,11 @@ class Template(Base):
     def stripped_contents(self) -> str:
         with read_template(self) as template_file_object:
             template_contents = template_file_object.read()
-        if self.preamble:
-            template_contents.replace(self.preamble, '')
-        if self.header:
-            template_contents = template_contents.replace(self.header, '')
-        template_contents = template_contents.replace('\n', '')
-        return template_contents
+        matches = re.findall(var_for_line, template_contents)
+        try:
+            return matches.pop()
+        except Exception as exc:
+            raise ErrorWithTemplate(exc)
 
     @property
     def delimiter(self) -> str:
@@ -431,62 +430,6 @@ class StorageType(Enum):
     FILE = 'file'
     MEMORY = 'memory'
 
-
-# class VerifiedResource:
-#     """
-#     Wraps a resource location given as input by a user. This resource location
-#     can be: file, folder (i.e. list of files), database, http (url.
-#     """
-#
-#     def __init__(self, path: str, resource_type: InputType):
-#         self.path = path
-#         self.resource_type = resource_type
-#
-#     @property
-#     def path(self):
-#         return self._path
-#
-#     @path.setter
-#     def path(self):
-#
-#     """
-#     This utility function checks if the given `input_parameter` is either a *file* or *folder*.
-#     Firstly, it checks if the input_parameter exists.
-#     It checks whether the `input_parameter` contains the full path (e.g. ~/user/this/file.txt, or ~/user/folder).
-#     In case it doesn't  it searches in the three folders located in user's home path (e.g. ~/.edam/inputs/, etc.)
-#
-#     :rtype: VerifiedInputParameter
-#     :param input_parameter: The name of the file (e.g. Yucheng.met, or ~/user/this/Yucheng.met)
-#     :return: VerifiedInputParameter
-#     """
-#     if os.path.exists(input_parameter):
-#         # It means user gave full path. It may be a file or a folder
-#         if os.path.isfile(input_parameter):
-#
-#             return VerifiedInputParameter(path=input_parameter, parameter_type=InputType.FILE)
-#         else:
-#             # return True, InputType.FOLDER, input_parameter, None
-#             return VerifiedInputParameter(path=input_parameter, parameter_type=InputType.FOLDER)
-#     else:
-#         # It means we have to find it
-#         for folder, included_folder, filenames in os.walk(home_directory):
-#             if '.viewer' in included_folder:
-#                 included_folder.remove('.viewer')
-#             temp_path = os.path.join(folder, input_parameter)
-#
-#             if os.path.exists(temp_path):
-#                 # It means user gave full path. It may be a file or a folder
-#
-#                 if os.path.isfile(temp_path):
-#                     return VerifiedInputParameter(path=temp_path, parameter_type=InputType.FILE)
-#                 else:
-#                     return VerifiedInputParameter(path=input_parameter, parameter_type=InputType.FOLDER)
-#
-#     raise InputParameterDoesNotExist("{input_param} does not exist".format(input_param=input_parameter))
-#
-#     def __eq__(self, other):
-#         if isinstance(other, self.__class__):
-#             return (self.path == other.path) and (self.resource_type == other.resource_type)
 
 @contextmanager
 def read_template(template: Template):

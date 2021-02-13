@@ -18,7 +18,6 @@ import requests
 from edam.reader.models import Station, StorageType
 from edam.reader.models import Template
 from edam.settings import database_type, home_directory
-from edam.utilities.exceptions import InputParameterDoesNotExist
 
 logger = logging.getLogger('edam.reader.utilities')
 
@@ -360,7 +359,7 @@ def evaluate_variable_part(variable):
     variable = variable.strip('{}').split('-')
     if len(variable) > 2 or len(variable) < 2:
         logger.error('Range %s is not correct in the correct format '
-                               '{starting_int - ending_int}' % initial_var)
+                     '{starting_int - ending_int}' % initial_var)
         raise Exception('Range %s is not correct in the correct format '
                         '{starting_int - ending_int}' % initial_var)
 
@@ -534,43 +533,6 @@ def download_and_check_with_tmpl_html_content_via_http(url: list, template, temp
             logger.warning("There is an error with: %s" % unique_url)
 
     return input_list, template
-
-
-def handle_input_parameter(input_parameter: str):
-    """
-    This utility function checks if the given `input_parameter` is either a *file* or *folder*.
-    Firstly, it checks if the input_parameter exists.
-    It checks whether the `input_parameter` contains the full path (e.g. ~/user/this/file.txt, or ~/user/folder).
-    In case it doesn't  it searches in the three folders located in user's home path (e.g. ~/.edam/inputs/, etc.)
-
-    :rtype: VerifiedInputParameter
-    :param input_parameter: The name of the file (e.g. Yucheng.met, or ~/user/this/Yucheng.met)
-    :return: VerifiedInputParameter
-    """
-    if os.path.exists(input_parameter):
-        # It means user gave full path. It may be a file or a folder
-        if os.path.isfile(input_parameter):
-
-            return VerifiedInputParameter(path=input_parameter, parameter_type=InputType.FILE)
-        else:
-            # return True, InputType.FOLDER, input_parameter, None
-            return VerifiedInputParameter(path=input_parameter, parameter_type=InputType.FOLDER)
-    else:
-        # It means we have to find it
-        for folder, included_folder, filenames in os.walk(home_directory):
-            if '.viewer' in included_folder:
-                included_folder.remove('.viewer')
-            temp_path = os.path.join(folder, input_parameter)
-
-            if os.path.exists(temp_path):
-                # It means user gave full path. It may be a file or a folder
-
-                if os.path.isfile(temp_path):
-                    return VerifiedInputParameter(path=temp_path, parameter_type=InputType.FILE)
-                else:
-                    return VerifiedInputParameter(path=input_parameter, parameter_type=InputType.FOLDER)
-
-    raise InputParameterDoesNotExist("{input_param} does not exist".format(input_param=input_parameter))
 
 
 def determine_storage_type(storage_as_string):

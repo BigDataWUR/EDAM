@@ -19,12 +19,8 @@ def test_timeseries():
     assert False
 
 
-def test_preamble():
-    assert False
-
-
-def test_header():
-    assert False
+def test_non_existing_preamble(input_document_resource):
+    assert input_document_resource.preamble is None
 
 
 def test_header_correct(input_document_resource):
