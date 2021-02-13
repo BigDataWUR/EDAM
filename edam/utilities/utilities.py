@@ -15,21 +15,21 @@ import records
 import requests
 
 # from edam.reader.manage import DatabaseHandler
-from edam.reader.models import Station
+from edam.reader.models import Station, StorageType
 from edam.reader.models import Template
 from edam.settings import database_type, home_directory
 from edam.utilities.exceptions import InputParameterDoesNotExist
 
-utilities_logger = logging.getLogger('edam.reader.utilities')
+logger = logging.getLogger('edam.reader.utilities')
 
 
 def find_templates_in_directory(directory: str = home_directory) -> [Template]:
     """
-    Returns a list of templates located in a given directory.
-    Directory defaults to the home_directory(~/.edam)
-    :rtype: [Template]
-    :param directory: Directory to search for templates
-    :return: list of Template objects
+        Returns a list of templates located in a given directory.
+        Directory defaults to the home_directory(~/.edam)
+        :rtype: [Template]
+        :param directory: Directory to search for templates
+        :return: list of Template objects
     """
     list_of_templates = list()
     for folder, _, files in os.walk(os.path.join(directory, 'templates')):
@@ -333,10 +333,10 @@ def template_matches_input_file(template_file: Template, data_input: Template):
     # utilities_logger.debug("Template: %s" % template_file.read())
 
     header = template_file.header
-    utilities_logger.debug("Check lines: %s")
+    logger.debug("Check lines: %s")
     matching_percentage = int()
 
-    utilities_logger.debug("Input file: %s" % data_input)
+    logger.debug("Input file: %s" % data_input)
 
     for header_item in header:
         if header_item in ":":
@@ -359,7 +359,7 @@ def evaluate_variable_part(variable):
     initial_var = copy.deepcopy(variable)
     variable = variable.strip('{}').split('-')
     if len(variable) > 2 or len(variable) < 2:
-        utilities_logger.error('Range %s is not correct in the correct format '
+        logger.error('Range %s is not correct in the correct format '
                                '{starting_int - ending_int}' % initial_var)
         raise Exception('Range %s is not correct in the correct format '
                         '{starting_int - ending_int}' % initial_var)
@@ -377,7 +377,7 @@ def evaluate_variable_part(variable):
         # range() is not inclusive!
         ending_number = int(ending_number) + 1
     except BaseException:
-        utilities_logger.error(
+        logger.error(
             "Can't convert variables to integers %s, %s" % (starting_number, ending_number))
         raise Exception("Can't convert variables to integers")
 
@@ -449,7 +449,7 @@ def generate_uri(uri: str, static_variables=None):
                         "{$var}", static_var.strip())
                     uris_in_a_list.append(iteration_uri)
             except AttributeError:
-                utilities_logger.error(
+                logger.error(
                     '--extra parameter was not given (Station variables). generate_uri()')
                 raise AttributeError(
                     '--extra parameter (static vars) was empty')
@@ -531,7 +531,7 @@ def download_and_check_with_tmpl_html_content_via_http(url: list, template, temp
 
                 input_list.append(io.StringIO(data_input))
         else:
-            utilities_logger.warning("There is an error with: %s" % unique_url)
+            logger.warning("There is an error with: %s" % unique_url)
 
     return input_list, template
 
@@ -582,7 +582,7 @@ def determine_storage_type(storage_as_string):
     try:
         return StorageType(storage_as_string)
     except BaseException:
-        utilities_logger.error(
+        logger.error(
             'Storage option should be \'file\' or \'memory\'. Not %s' % storage_as_string)
         raise SystemExit("Wrong storage option")
 
@@ -675,9 +675,9 @@ def identify_input_type(input_file: str, template, template_object, sql_query=No
             raise SystemExit("%s does not exist" % input_file)
     if not verified_inputs_as_list:
         # It means we didn't find a single input to match with a template
-        utilities_logger.warning(
+        logger.warning(
             "identify_input_type(): No verified inputs found")
-        utilities_logger.info("No verified inputs found")
+        logger.info("No verified inputs found")
         return False, None, None
     else:
         return True, verified_inputs_as_list, file_type

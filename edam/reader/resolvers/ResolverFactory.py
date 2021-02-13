@@ -4,7 +4,6 @@ from os.path import expanduser
 
 import requests
 
-from edam.reader.input_resources.InputDocumentResource import InputDocumentResource
 from edam.reader.models import Template, MetadataFile
 from edam.reader.resolvers.FileResolver import FileResolver
 from edam.reader.resolvers.HttpResolver import HttpResolver
@@ -67,14 +66,18 @@ class ResolverFactory:
 
     @template.setter
     def template(self, value):
-        if os.path.isfile(value):
-            # user gave full path
-            self._template = Template(path=os.path.abspath(value))
-        elif os.path.isfile(os.path.join(expanduser("~"), 'edam', 'templates', value)):
-            # user gave relative path inside the ~/edam/templates directory
-            self._template = Template(path=os.path.abspath(os.path.join(expanduser("~"), 'edam', 'templates', value)))
+        if value:
+            if os.path.isfile(value):
+                # user gave full path
+                self._template = Template(path=os.path.abspath(value))
+            elif os.path.isfile(os.path.join(expanduser("~"), 'edam', 'templates', value)):
+                # user gave relative path inside the ~/edam/templates directory
+                self._template = Template(
+                    path=os.path.abspath(os.path.join(expanduser("~"), 'edam', 'templates', value)))
+            else:
+                raise TemplateDoesNotExist(f"{value} does not exist")
         else:
-            raise TemplateDoesNotExist("{template} does not exist".format(template=value))
+            raise TemplateDoesNotExist("No template was given")
 
     @property
     def metadata_file(self):
@@ -95,8 +98,7 @@ class ResolverFactory:
     def resolver(self):
         if self.__input_type is InputType.FILE:
             return FileResolver(template=self.template, metadata=self.metadata_file,
-                                input_document=InputDocumentResource(file_uri=self.input_uri, resource_type="file",
-                                                                     template=self.template))
+                                input_uri=self.input_uri)
         elif self.__input_type is InputType.HTTP:
             return HttpResolver()
             pass

@@ -19,3 +19,4 @@ records
 click
 flask_googlemaps
 pylint
+detect_delimiter

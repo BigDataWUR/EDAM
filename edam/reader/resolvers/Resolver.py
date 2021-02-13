@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
 
+import pandas as pd
+
 
 class Resolver(ABC):
 
@@ -16,9 +18,9 @@ class Resolver(ABC):
         pass
 
     @abstractmethod
-    def timeseries(self):
+    def timeseries(self) -> pd.DataFrame:
         pass
 
     @abstractmethod
-    def input_template_match(self) -> bool:
+    def template_matches_input(self) -> bool:
         pass

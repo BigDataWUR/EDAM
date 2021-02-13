@@ -14,5 +14,5 @@ class HttpResolver(Resolver):
     def timeseries(self):
         pass
 
-    def input_template_match(self) -> bool:
+    def template_matches_input(self) -> bool:
         pass

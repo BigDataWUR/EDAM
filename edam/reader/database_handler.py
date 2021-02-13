@@ -17,10 +17,10 @@ def add_item(item):
     session.expire_on_commit = False
     try:
         session.add(item)
-        database_handler.debug("Added {item} in db".format(item=item))
+        database_handler.debug(f"Added {item} in db")
         session.commit()
     except BaseException:
-        database_handler.error('Exception when adding {item}. Check __add_item__()'.format(item=item))
+        database_handler.error(f'Exception when adding {item}. Check __add_item__()')
         session.rollback()
         raise
     finally:
@@ -36,5 +36,5 @@ def update_item(item, metadata_dict):
     if returned_item:
         returned_item.update_metadata(metadata_dict)
         session.commit()
-        database_handler.debug("Updated {item}".format(item=item))
+        database_handler.debug(f"Updated {item}")
         session.close()

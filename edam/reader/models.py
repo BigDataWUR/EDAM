@@ -6,7 +6,6 @@ from contextlib import contextmanager
 from enum import Enum
 
 import yaml
-from nltk.tokenize import RegexpTokenizer
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, Float
 from sqlalchemy.orm import relationship
 
@@ -50,7 +49,7 @@ class Station(Base):
             try:
                 setattr(self, key, value)
             except:
-                module_logger.warning("{key} does not exist".format(key=key))
+                module_logger.warning(f"{key} does not exist")
                 pass
 
     def __init__(self, name="Test Station", mobile=False, location="", latitude=None,
@@ -87,7 +86,7 @@ class Station(Base):
         return NotImplemented
 
     def __repr__(self):
-        return '<Name %r>' % self.name
+        return f'<Name {self.name!r}>'
 
 
 class AbstractObservables(Base):
@@ -356,9 +355,9 @@ class Template(Base):
         if matches:
             header = matches[0][0].strip("\r\n")
             return header
-            tokenizer = RegexpTokenizer(r'\w+')
+            # tokenizer = RegexpTokenizer(r'\w+')
 
-            return tokenizer.tokenize(header)
+            # return tokenizer.tokenize(header)
         module_logger.warning("{template} does not have header".format(template=self.filename))
 
     @property
@@ -371,17 +370,17 @@ class Template(Base):
     @property
     def observable_ids(self) -> [str]:
         """
-               This function parses a template file and returns
-               the variables for the template in "for loop" (i.e. observable_id's).
-               It returns a list with the variables
+           This function parses a template file and returns
+           the variables for the template in "for loop" (i.e. observable_id's).
+           It returns a list with the variables
 
-               This function is useful for "viewing" purposes.
-               A user can submit a query to the web portal and find
-               all available templates along with the corresponding observable_id's
+           This function is useful for "viewing" purposes.
+           A user can submit a query to the web portal and find
+           all available templates along with the corresponding observable_id's
 
-               :rtype: [str]
-               :return: List of observable IDs
-               """
+           :rtype: [str]
+           :return: List of observable IDs
+        """
         with read_template(self) as template_file_object:
             template_contents = template_file_object.read()
         matches = re.findall(for_loop_variables, template_contents)
@@ -392,8 +391,7 @@ class Template(Base):
                     template_observables.split(',')))
 
             return template_observables_as_list
-        raise ErrorWithTemplate("I couldn't extract variables from {filename} located at {path}".
-                                format(filename=self.filename, path=self.path))
+        raise ErrorWithTemplate(f"I couldn't extract variables from {self.filename} located at {self.path}")
 
     @property
     def preamble(self) -> str:
@@ -406,10 +404,27 @@ class Template(Base):
 
         preamble, _, _ = template_contents.partition(self.header)
         preamble = preamble.rstrip('\n\r')
+        if preamble == "":
+            return None
         return preamble
 
+    @property
+    def stripped_contents(self) -> str:
+        with read_template(self) as template_file_object:
+            template_contents = template_file_object.read()
+        if self.preamble:
+            template_contents.replace(self.preamble, '')
+        if self.header:
+            template_contents = template_contents.replace(self.header, '')
+        template_contents = template_contents.replace('\n', '')
+        return template_contents
+
+    @property
+    def delimiter(self) -> str:
+        pass
+
     def __repr__(self):
-        return "{name} located at {path}".format(name=self.filename, path=self.path)
+        return f"{self.filename} located at {self.path}"
 
 
 class StorageType(Enum):
@@ -472,19 +487,6 @@ class StorageType(Enum):
 #     def __eq__(self, other):
 #         if isinstance(other, self.__class__):
 #             return (self.path == other.path) and (self.resource_type == other.resource_type)
-
-
-class FolderResolver:
-    pass
-
-
-class UrlResolver:
-    pass
-
-
-class DatabaseResolver:
-    pass
-
 
 @contextmanager
 def read_template(template: Template):

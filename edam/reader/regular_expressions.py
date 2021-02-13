@@ -14,7 +14,7 @@ same_timestamp_bom = re.compile(
 # With that regex we are going to determine the existence of those observables
 multicolumn_values_bom = re.compile(r"{{.*?\..*?(\[[0-9]\])*}}")
 
-# For the following regex, line has to be splitted to ',' and then
+# For the following regex, line has to be split to ',' and then
 # each individual var to be parsed with var_name
 var_for_line = re.compile(r"{%\s?for .*? in .*?%}\n(.*)\n{%\s?endfor\s?%}")
 var_parse_header = re.compile(r"(.*?)\n*{%\s?for .*? in .*?%}")
