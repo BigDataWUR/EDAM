@@ -8,6 +8,7 @@ import logging
 import os
 import re
 from datetime import datetime
+from enum import Enum
 
 import numpy as np
 import pandas as pd
@@ -20,6 +21,16 @@ from edam.reader.models import Template
 from edam.settings import database_type, home_directory
 
 logger = logging.getLogger('edam.reader.utilities')
+
+
+class DatetimeDirectives(Enum):
+    year = '%Y'
+    month = '%m'
+    day = '%d'
+    dayofyear = '%j'
+    hour = '%H'
+    minutes = '%M'
+    seconds = '%S'
 
 
 def find_templates_in_directory(directory: str = home_directory) -> [Template]:

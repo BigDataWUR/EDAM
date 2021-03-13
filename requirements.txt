@@ -12,7 +12,6 @@ pytest
 tox
 coverage
 Flask-SQLAlchemy
-bokeh
 jinja2
 geopy
 records

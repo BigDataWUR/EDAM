@@ -5,16 +5,13 @@ import re
 from contextlib import contextmanager
 from enum import Enum
 
-import yaml
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, Integer, String
 
 from edam.reader.database import Base
 from edam.reader.regular_expressions import template_file_header, for_loop_variables, var_for_line
 from edam.utilities.exceptions import ErrorWithTemplate
 
 module_logger = logging.getLogger('edam.reader.models')
-
 
 
 class Template(Base):
