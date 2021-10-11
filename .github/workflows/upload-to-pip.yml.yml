@@ -23,6 +23,8 @@ jobs:
 
       - name: "Builds and uploads to PyPI"
         run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "action@github.com"
           semantic-release version --patch
           git push --tags
           python3 setup.py sdist
