@@ -9,7 +9,7 @@ import jinja2
 import pandas as pd
 from flask import Flask, url_for, redirect
 from flask import make_response
-from flask_cache import Cache
+from flask_caching import Cache
 from flask_sqlalchemy import SQLAlchemy
 
 import edam.viewer.config as config
@@ -94,7 +94,7 @@ def nocache(view):
         response.headers['Pragma'] = 'no-cache'
         response.headers['Expires'] = '-1'
         return response
-    
+
     return update_wrapper(no_cache, view)
 
 
@@ -124,13 +124,13 @@ def same_timestamp(*args):
         return args[0]
     else:
         return None
-    
-    
+
+
 app.jinja_env.globals.update(same_timestamp=same_timestamp)
 
 
 def resample(df: pd.DataFrame, rule, how=None, axis=0, fill_method=None, closed=None, label=None, convention='start',
-               kind=None, loffset=None, limit=None, base=0, on=None, level=None):
+             kind=None, loffset=None, limit=None, base=0, on=None, level=None):
     # observables_list = list(df)
     # pd.set_option('precision', 3)
     observables_list = ['timestamp', 'tmax', 'tmin', 'af', 'rain', 'sun']
@@ -141,14 +141,14 @@ def resample(df: pd.DataFrame, rule, how=None, axis=0, fill_method=None, closed=
     try:
         for observable in observables_list:
             df[observable] = df[observable].apply(lambda x: float(x))
-            
+
     except Exception as e:
         print(e.args)
         print("I can't transform string value to float. Wind maybe? Check edam.viewer.__init__.py - downsample func")
         exit()
     resampled = df.resample("A", None, axis, fill_method, closed, label, convention, kind, loffset, limit, base, on,
                             level)
-    
+
     resampled = resampled.mean()
     resampled = resampled.round(3)
     resampled = resampled.fillna('---')
@@ -158,7 +158,7 @@ def resample(df: pd.DataFrame, rule, how=None, axis=0, fill_method=None, closed=
             # resampled = getattr(resampled, "interpolate")(method)
             resampled = getattr(resampled, how)()
     resampled["timestamp"] = resampled.index
-    
+
     for observable in observables_list:
         resampled[observable] = resampled[observable].apply(lambda x: Measurement(x))
     # TODO: This is soooooo dangerous. Please re-implement......
@@ -166,11 +166,11 @@ def resample(df: pd.DataFrame, rule, how=None, axis=0, fill_method=None, closed=
     observables_list = ['timestamp', 'tmax', 'tmin', 'af', 'rain', 'sun']
     # observables_list = ['timestamp', 'radn', 'maxt', 'mint', 'rain', 'wind', 'RH']
     zip_argument = map(lambda x: "resampled." + x, observables_list)
-    
+
     zip_argument = ",".join(zip_argument)
-    
+
     zip_argument = eval("zip(%s)" % zip_argument)
-    
+
     return zip_argument
 
 

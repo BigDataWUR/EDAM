@@ -340,7 +340,7 @@ Units of Measurement:
 Following command downloads and stores data from 27 weather stations. 
 It is executed in approximately 9 seconds.   
 
-`edam --input "http://www.metoffice.gov.uk/pub/data/weather/uk/climate/stationdata/{\$var}data.txt" --template uk.tmpl --metadata uk.yaml --var "aberporth,armagh, ballypatrick, camborne, cambridge, cardiff, chivenor, cwmystwyth, dunstaffnage, durham, eastbourne, eskdalemuir" --drop yes`
+`edam --input "http://www.metoffice.gov.uk/pub/data/weather/uk/climate/stationdata/{{ var }}data.txt" --template uk.tmpl --metadata uk.yaml --var "aberporth,armagh, ballypatrick, camborne, cambridge, cardiff, chivenor, cwmystwyth, dunstaffnage, durham, eastbourne, eskdalemuir" --drop yes`
 
 ## **Australian Bureau of Meteorology (Online)**
 

@@ -2,6 +2,7 @@ import copy
 import io
 import logging
 import re
+from datetime import datetime
 
 import numpy as np
 import pandas as pd
@@ -288,7 +289,7 @@ class TemplateReader:
             if self.parse_dates['timestamp']['format']:
                 def date_parser(x):
                     try:
-                        return pd.datetime.strptime(x, ' '.join(self.parse_dates['timestamp']['format']))
+                        return datetime.strptime(x, ' '.join(self.parse_dates['timestamp']['format']))
                     except:
                         # This exception catches the case where in datetime column we have litter (e.g. Site closed)
                         return x
@@ -549,7 +550,7 @@ class TemplateReader:
 
 
 if __name__ == "__main__":
-    conf = SourceConfiguration(input_yaml="/Users/argyris/Documents/git/templateFramework/configurations/knmi.yaml",
+    conf = SourceConfiguration(input_yaml="/Users/argyris/Documents/git/templateFramework/metadata/knmi.yaml",
                                input_file_data="/Users/argyris/Documents/git/templateFramework/inputs/knmi_alldata_data.txt")
     t = TemplateReader(config=conf,
                        input_file="/Users/argyris/Documents/git/templateFramework/inputs/knmi_alldata_data.txt",

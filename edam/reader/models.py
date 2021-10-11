@@ -261,7 +261,7 @@ class HelperTemplateIDs(Base):
         self.frequency = None
     
     def __repr__(self):
-        return '<id %r>' % (self.id)
+        return f'<id {self.id!r}>'
 
 
 class Templates(Base):

@@ -18,7 +18,7 @@ def copytree(src, dst, symlinks=False, ignore=None):
         s = os.path.join(src, item)
         d = os.path.join(dst, item)
         if os.path.isdir(s):
-            
+
             try:
                 shutil.copytree(s, d, symlinks, ignore)
             except OSError as e:
@@ -45,11 +45,11 @@ class CustomInstall(install):
             except OSError as e:
                 if e.errno != errno.EEXIST:
                     raise
-        
+
         resources_directory = os.path.join(here, 'edam', 'resources')
         home_user_directory = os.path.expanduser("~/.edam/")
         directories_to_be_copied_from_resources = ['inputs', 'templates', 'metadata']
-        
+
         for directory in directories_to_be_copied_from_resources:
             copytree(os.path.join(resources_directory, directory), os.path.join(home_user_directory, directory))
         shutil.copyfile(os.path.join(resources_directory, 'settings.yaml'),
@@ -61,7 +61,7 @@ class CustomInstall(install):
         shutil.copyfile(os.path.join(resources_directory, 'edam.owl'),
                         os.path.join(home_user_directory, 'backup.owl'))
         # Copy flask_related contents into home_directory
-        
+
         copytree(os.path.join(resources_directory, 'flask_related'),
                  os.path.join(home_user_directory, '.viewer/'))
         # Copy edam templates into flask edam/templates
@@ -87,7 +87,7 @@ class PyTest(TestCommand):
         TestCommand.finalize_options(self)
         self.test_args = []
         self.test_suite = True
-    
+
     def run_tests(self):
         import pytest
         errcode = pytest.main(self.test_args)
@@ -107,7 +107,7 @@ setup(
     include_package_data=True,
     install_requires=['sqlalchemy', 'requests', 'numpy', 'pandas', 'numexpr', 'geopy', 'Flask-SQLAlchemy',
                       'Flask', 'Flask-Caching', 'jinja2', 'pyyaml', 'records', 'psycopg2', 'click',
-                      'Flask-GoogleMaps==0.2.4', 'owlready2', 'pint', 'oyaml'
+                      'Flask-GoogleMaps==0.2.4', 'owlready2', 'pint', 'oyaml', 'Werkzeug'
                       ],
     cmdclass={'test': PyTest, 'install': CustomInstall},
     python_requires='>=3.3',
@@ -121,7 +121,7 @@ setup(
     entry_points={
         'console_scripts':
             ['edam=bin.edam:cli', 'viewer=bin.viewer:run'],
-        
+
     },
     classifiers=[
         'Programming Language :: Python :: 3',
