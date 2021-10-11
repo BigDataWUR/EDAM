@@ -100,6 +100,7 @@ setup(
     url='http://github.com/ecologismico/edam',
     description='An input template framework',
     long_description=long_description,
+    long_description_content_type="text/markdown",
     license='GNU General Public License v3.0',
     author='Argyrios Samourkasidis',
     setup_requires=['pytest-runner'],
