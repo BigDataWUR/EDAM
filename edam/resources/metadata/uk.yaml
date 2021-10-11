@@ -1,39 +1,39 @@
 Station:
-    license: Attribution
-    region: United Kingdom
-    url: http://www.metoffice.gov.uk/
-    tags:
-        key1:value1
-        key2:value2
+  license: Attribution
+  region: United Kingdom
+  url: http://www.metoffice.gov.uk/
+  tags:
+    key1:value1
+    key2:value2
 Observables:
   - observable_id: tmin
-        name: Temperature minimum
+    name: Temperature minimum
   - observable_id: tmax
-        name: Temperature Max
+    name: Temperature Max
   - observable_id: rain
-        name: Rain
+    name: Rain
   - observable_id: af
-        name: Days of air frost
+    name: Days of air frost
   - observable_id: sun
-        name: Sunshine duration
+    name: Sunshine duration
 Units of Measurement:
   - name: Days
-        symbol: D
-        ontology:
-        relevant_observables: af, sun
+    symbol: D
+    ontology:
+    relevant_observables: af, sun
   - name: Celcius
-        symbol: C
-        ontology: something
-        relevant_observables: tmin, tmax
+    symbol: C
+    ontology: something
+    relevant_observables: tmin, tmax
   - name: Millimeters
-        symbol: mm
-        ontology: something
-        relevant_observables: rain
+    symbol: mm
+    ontology: something
+    relevant_observables: rain
 Sensors:
   - generic: True
-        name: Generic test sensor
-        manufacturer: test Consortium
-        relevant_observables: tmin, tmax, rain, sun, af
-        tags:
-            old: True
-            analog: False
+    name: Generic test sensor
+    manufacturer: test Consortium
+    relevant_observables: tmin, tmax, rain, sun, af
+    tags:
+      old: True
+      analog: False
