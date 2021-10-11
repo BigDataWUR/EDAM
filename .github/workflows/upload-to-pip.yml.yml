@@ -11,6 +11,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-python@v2
         with:
@@ -25,8 +27,7 @@ jobs:
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "action@github.com"
-          semantic-release version --patch
-          git push --tags
+          semantic-release publish --patch
           python3 setup.py sdist
           python3 -m twine upload dist/*
         env:
