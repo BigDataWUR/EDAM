@@ -495,7 +495,7 @@ def generate_uri(uri: str(), static_variables=None):
     """
     # variable_regex is more generic. It matches both {01-09} AND {$var} (i.e. static_variable_regex)
     variable_regex = r"({.*?})"
-    static_variable_regex = r"({{ var }})"
+    static_variable_regex = r"({_var_})"
     match = re.search(variable_regex, uri)
     uris_in_a_list = list()
     if match:
@@ -505,7 +505,7 @@ def generate_uri(uri: str(), static_variables=None):
                 static_variables_in_a_list = static_variables.split(',')
                 for static_var in static_variables_in_a_list:
                     iteration_uri = copy.deepcopy(uri)
-                    iteration_uri = iteration_uri.replace("{{ var }}", static_var.strip())
+                    iteration_uri = iteration_uri.replace("{_var_}", static_var.strip())
                     uris_in_a_list.append(iteration_uri)
             except AttributeError:
                 utilities_logger.error('--extra parameter was not given (Station variables). generate_uri()')
