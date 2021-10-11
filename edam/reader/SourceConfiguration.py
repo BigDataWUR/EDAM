@@ -63,7 +63,7 @@ class SourceConfiguration:
     
     def check_yaml(self):
         try:
-            return yaml.load(self.input_yaml)
+            return yaml.load(self.input_yaml, Loader=yaml.FullLoader)
         except yaml.YAMLError as exc:
             return exc
     
@@ -375,4 +375,4 @@ class SourceConfiguration:
 
 
 if __name__ == "__main__":
-    test = SourceConfiguration('configurations/knmi.yaml', 'inputs/Yucheng.csv')
+    test = SourceConfiguration('metadata/knmi.yaml', 'inputs/Yucheng.csv')

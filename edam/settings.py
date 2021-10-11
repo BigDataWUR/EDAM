@@ -10,7 +10,7 @@ settings = os.path.join(home_directory, 'settings.yaml')
 
 with open(settings, 'r') as stream:
     try:
-        settings_content = yaml.load(stream)
+        settings_content = yaml.load(stream, Loader=yaml.FullLoader)
     except yaml.YAMLError as exc:
         raise exc
 

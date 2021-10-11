@@ -79,7 +79,7 @@ def specific_template(template):
             response.headers['Content-type'] = 'text/plain'
             return response
     except KeyError:
-        raise InvalidUsage('%s template does not exist' % template, status_code=410)
+        raise InvalidUsage(f'{template} template does not exist', status_code=410)
 
 
 @app.route('/data/')
