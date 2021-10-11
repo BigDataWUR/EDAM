@@ -53,7 +53,7 @@ def cli(input, template, query, metadata, var, storage, drop):
         else:
             click.echo(f"{input} does not exist")
             exit(2)
-        run()
+        # run()
     else:
         click.echo(f"{input} does not exist")
         exit(4)
