@@ -1,4 +1,4 @@
-pyyaml[yaml]
+PyYAML>=5.1
 sqlalchemy
 requests
 bs4

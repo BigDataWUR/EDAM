@@ -106,11 +106,11 @@ setup(
     tests_require=['pytest'],
     include_package_data=True,
     install_requires=['sqlalchemy', 'requests', 'numpy', 'pandas', 'numexpr', 'geopy', 'Flask-SQLAlchemy',
-                      'Flask', 'Flask-Caching', 'jinja2', 'pyyaml', 'records', 'psycopg2', 'click',
+                      'Flask', 'Flask-Caching', 'jinja2', 'PyYAML==5.4.1', 'records', 'psycopg2', 'click',
                       'Flask-GoogleMaps==0.2.4', 'owlready2', 'pint', 'Werkzeug'
                       ],
     cmdclass={'test': PyTest, 'install': CustomInstall},
-    python_requires='>=3.3',
+    python_requires='>=3.6',
     packages=find_packages(exclude=["tests.*", "tests"]),
     author_email='argysamo@gmail.com',
     package_data={
