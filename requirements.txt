@@ -7,7 +7,7 @@ numpy
 pandas
 numexpr
 flask
-Flask-Cache
+flask-caching
 pytest
 tox
 coverage
@@ -18,3 +18,4 @@ geopy
 records
 click
 flask_googlemaps
+Werkzeug
