@@ -168,7 +168,7 @@ class SourceConfiguration:
             # This is where we should parse metadata of observables
             # parse_observables_with_reasoner(observables=observables)
         for obs in observables:
-            observable_as_dict = observables[obs]  # type: dict
+            observable_as_dict = obs  # type: dict
             # Deprecated
             # observable_as_dict['station_id'] = self.station_id
             observable = AbstractObservables.fromdictionary(observable_as_dict)
@@ -223,7 +223,7 @@ class SourceConfiguration:
         
         else:
             for uom in self.content['Units of Measurement']:
-                uom_as_dict = self.content['Units of Measurement'][uom]  # type: dict
+                uom_as_dict = uom  # type: dict
                 if uom_as_dict['relevant_observables'] == '':
                     relevant_observables = self.all_observable_ids
                 else:
@@ -287,7 +287,7 @@ class SourceConfiguration:
         else:
             
             for sensor in self.content['Sensors']:
-                sensor_as_dict = self.content['Sensors'][sensor]  # type: dict
+                sensor_as_dict = sensor  # type: dict
                 if sensor_as_dict['relevant_observables'] == '':
                     relevant_observables = self.all_observable_ids
                 else:
