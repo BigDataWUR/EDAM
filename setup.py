@@ -8,8 +8,7 @@ from setuptools import setup, find_packages
 from setuptools.command.install import install
 from setuptools.command.test import test as TestCommand
 
-import edam
-
+__version__ = '1.1.0'
 here = os.path.abspath(os.path.dirname(__file__))
 
 
@@ -96,7 +95,7 @@ class PyTest(TestCommand):
 
 setup(
     name='edam',
-    version=edam.__version__,
+    version=__version__,
     url='http://github.com/ecologismico/edam',
     description='An input template framework',
     long_description=long_description,
