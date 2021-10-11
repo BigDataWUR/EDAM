@@ -121,7 +121,7 @@ setup(
     },
     entry_points={
         'console_scripts':
-            ['edam=bin.edam:cli', 'viewer=bin.viewer:run'],
+            ['edam=bin.reader:cli', 'viewer=bin.viewer:run'],
 
     },
     classifiers=[
