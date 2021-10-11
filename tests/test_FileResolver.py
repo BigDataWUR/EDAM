@@ -2,7 +2,8 @@ import os
 
 import pytest
 
-from edam.reader.models import MetadataFile, Template
+from edam.reader.models import MetadataFile
+from edam.reader.models import Template
 from edam.reader.resolvers.FileResolver import FileResolver
 from tests import resources_folder
 
