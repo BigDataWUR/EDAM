@@ -6,40 +6,31 @@ Station:
         key1:value1
         key2:value2
 Observables:
-    1:
-        observable_id: tmin
+  - observable_id: tmin
         name: Temperature minimum
-    2:
-        observable_id: tmax
+  - observable_id: tmax
         name: Temperature Max
-    3:
-        observable_id: rain
+  - observable_id: rain
         name: Rain
-    4:
-        observable_id: af
+  - observable_id: af
         name: Days of air frost
-    5:
-        observable_id: sun
+  - observable_id: sun
         name: Sunshine duration
 Units of Measurement:
-    1:
-        name: Days
+  - name: Days
         symbol: D
         ontology:
         relevant_observables: af, sun
-    3:
-        name: Celcius
+  - name: Celcius
         symbol: C
         ontology: something
         relevant_observables: tmin, tmax
-    4:
-        name: Millimeters
+  - name: Millimeters
         symbol: mm
         ontology: something
         relevant_observables: rain
 Sensors:
- 1:
-        generic: True
+  - generic: True
         name: Generic test sensor
         manufacturer: test Consortium
         relevant_observables: tmin, tmax, rain, sun, af
