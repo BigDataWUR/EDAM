@@ -108,7 +108,7 @@ setup(
     include_package_data=True,
     install_requires=['sqlalchemy', 'requests', 'numpy', 'pandas', 'numexpr', 'geopy', 'Flask-SQLAlchemy',
                       'Flask', 'Flask-Caching', 'jinja2', 'pyyaml', 'records', 'psycopg2', 'click',
-                      'Flask-GoogleMaps==0.2.4', 'owlready2', 'pint', 'oyaml', 'Werkzeug'
+                      'Flask-GoogleMaps==0.2.4', 'owlready2', 'pint', 'Werkzeug'
                       ],
     cmdclass={'test': PyTest, 'install': CustomInstall},
     python_requires='>=3.3',
