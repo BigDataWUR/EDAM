@@ -146,7 +146,7 @@ def resample(df: pd.DataFrame, rule, how=None, axis=0, fill_method=None, closed=
         print(e.args)
         print("I can't transform string value to float. Wind maybe? Check edam.viewer.__init__.py - downsample func")
         exit()
-    resampled = df.resample("A", None, axis, fill_method, closed, label, convention, kind, loffset, limit, base, on,
+    resampled = df.resample("A", axis, fill_method, closed, label, convention, kind, loffset, limit, base, on,
                             level)
 
     resampled = resampled.mean()
