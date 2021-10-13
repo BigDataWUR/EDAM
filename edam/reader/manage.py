@@ -21,8 +21,7 @@ def db_connect():
     Returns sqlalchemy engine instance
     """
     module_logger.debug(
-        'Received a call to `db_connect()`. Database url is: %s' %
-        database_url)
+        f'Received a call to `db_connect()`. Database url is: {database_url}')
     return create_engine(database_url)
 
 

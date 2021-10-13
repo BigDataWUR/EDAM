@@ -2,6 +2,7 @@ import copy
 import io
 import logging
 import re
+from datetime import datetime
 
 import numpy as np
 import pandas as pd
@@ -304,7 +305,7 @@ class TemplateReader:
             if self.parse_dates['timestamp']['format']:
                 def date_parser(x):
                     try:
-                        return pd.datetime.strptime(x, ' '.join(
+                        return datetime.strptime(x, ' '.join(
                             self.parse_dates['timestamp']['format']))
                     except BaseException:
                         # This exception catches the case where in datetime

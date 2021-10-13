@@ -7,10 +7,10 @@ from enum import Enum
 import json
 import logging
 
-from sqlalchemy import Column, Integer, String, Boolean, Float
-from sqlalchemy.orm import relationship
+import jinja2schema
+from jinja2 import BaseLoader
+from sqlalchemy import Boolean, Float
 
-from edam.reader.database import Base
 import yaml
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
@@ -27,11 +27,6 @@ class AbstractObservables(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(60))
     ontology = Column(String(160))
-
-    obs1 = relationship(
-        'HelperTemplateIDs',
-        backref='observable',
-        lazy='dynamic')
 
     def __init__(self, name="Temperature", ontology=None, **kwargs):
         self.name = name
@@ -82,7 +77,6 @@ class UnitsOfMeasurement(Base):
 class Sensors(Base):
     __tablename__ = "Sensors"
     """
-
     """
     id = Column(Integer, primary_key=True)
     generic = Column(Boolean)
@@ -105,7 +99,8 @@ class Sensors(Base):
                 module_logger.warning("{key} does not exist".format(key=key))
                 pass
 
-    def __init__(self, generic=False, name="Test sensor", manufacturer="Test manufacturer",
+    def __init__(self, generic=False, name="Test sensor",
+                 manufacturer="Test manufacturer",
                  abstract_observable_id=None, unit_id=None,
                  tags=json.dumps({})):
         self.generic = generic
@@ -116,7 +111,7 @@ class Sensors(Base):
         self.tags = json.dumps(tags)
 
     def __repr__(self):
-        return '<id %r>' % self.id
+        return f'<id {self.id!r}>'
 
 
 class Template(Base):
@@ -151,7 +146,7 @@ class Template(Base):
             # tokenizer = RegexpTokenizer(r'\w+')
 
             # return tokenizer.tokenize(header)
-        module_logger.warning("{template} does not have header".format(template=self.filename))
+        module_logger.warning(f"{self.filename} does not have header")
 
     @property
     def header_line(self):
@@ -159,6 +154,11 @@ class Template(Base):
             for line_number, line in enumerate(f, 0):
                 if self.header in line:
                     return line_number
+
+    @property
+    def used_columns(self):
+        variables = jinja2schema.infer(self.stripped_contents)
+        return variables.keys()
 
     @property
     def observable_ids(self) -> [str]:
@@ -184,7 +184,8 @@ class Template(Base):
                     template_observables.split(',')))
 
             return template_observables_as_list
-        raise ErrorWithTemplate(f"I couldn't extract variables from {self.filename} located at {self.path}")
+        raise ErrorWithTemplate(f"I couldn't extract variables from "
+                                f"{self.filename} located at {self.path}")
 
     @property
     def preamble(self) -> str:
@@ -243,10 +244,7 @@ class Station(Base):
 
     tags = Column(String(500))
 
-    station = relationship(
-        'HelperTemplateIDs',
-        backref='station',
-        lazy='dynamic')
+    helper = relationship('HelperTemplateIDs', back_populates='station')
 
     def update(self, new_values: dict):
         for key, value in new_values.items():
@@ -360,7 +358,6 @@ class MetadataFile:
 class HelperTemplateIDs(Base):
     __tablename__ = "HelperTemplateIDs"
     """
-
     """
     id = Column(Integer, primary_key=True)
     observable_id = Column(String(30))
@@ -375,12 +372,9 @@ class HelperTemplateIDs(Base):
     end_date = Column(DateTime)
     number_of_observations = Column(Integer)
     frequency = Column(String(10))
-
-    helper = relationship(
-        'Station',
-        backref="helper",
-        cascade="all",
-        single_parent=True)
+    observable = relationship('AbstractObservables')
+    station = relationship('Station',
+                           back_populates="helper", cascade="all", single_parent=True)
     helper_observable_id = relationship(
         'Observations', backref='helper', lazy='dynamic')
 

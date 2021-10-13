@@ -94,4 +94,5 @@ def test_template_contents(template_object):
 
 
 def test_template_used_columns(template_object):
-    assert template_object.used_columns == "test"
+    assert set(template_object.used_columns) == {'rain', 'vprs', 'srad', 'tmax', 'tmin', 'wind', 'dewp', 'timestamp',
+                                                 'rhum'}

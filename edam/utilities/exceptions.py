@@ -8,6 +8,11 @@ class TemplateDoesNotExist(Error):
     pass
 
 
+class MetadataFileDoesNotExist(Error):
+    """Raised when template does not exist"""
+    pass
+
+
 class ErrorWithTemplate(Error):
     """Raised when template does not exist"""
     pass

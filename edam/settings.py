@@ -55,7 +55,7 @@ ogc_sos_fields = {'title': 'EDAM',
                   'country': 'Netherlands'}
 
 OGC_SOS_CONFIGURATION = safe_return('OGC SOS', ogc_sos_fields)
-database_url = URL(**DATABASE)
+database_url = URL.create(**DATABASE)
 database_type = DATABASE['drivername']
 
 if __name__ == "__main__":

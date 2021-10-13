@@ -15,8 +15,9 @@ class FileResolver(Resolver):
     def template_matches_input(self) -> bool:
         pass
 
+    @property
     def timeseries(self):
-        pass
+        return pd.read_fwf(self.input_uri)
 
     @property
     def preamble(self) -> str:
@@ -48,4 +49,5 @@ class FileResolver(Resolver):
         if self.template.header == header:
             return header
         else:
-            raise TemplateInputHeaderMismatch("Template/Input header mismatch.\ntemplate: {template_header}")
+            raise TemplateInputHeaderMismatch(f"Template/Input header mismatch.\n"
+                                              f"template: {self.template.template_header}")
