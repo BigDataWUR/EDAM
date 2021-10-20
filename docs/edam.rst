@@ -1,4 +1,4 @@
-edam package
+EDAM package
 ============
 
 Module contents
