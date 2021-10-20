@@ -1,5 +1,6 @@
-Welcome to edam's documentation!
+EDAM: Environmental Data Acquisition Module
 ================================
+Release v\ |version|. (:ref:`Installation <install>`)
 
 .. toctree::
     :maxdepth: 4

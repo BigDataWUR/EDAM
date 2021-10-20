@@ -1,2 +1,3 @@
 edam
 myst_parser
+pygments-csv-lexer

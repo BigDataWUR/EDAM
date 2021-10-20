@@ -45,13 +45,13 @@ templates_path = ['_templates']
 # You can specify multiple suffix as a list of string:
 #
 # source_suffix = ['.rst', '.md']
-source_suffix = '.rst'
+source_suffix = '.md'
 
 # The master toctree document.
 master_doc = 'index'
 
 # General information about the project.
-project = 'edam'
+project = 'EDAM'
 copyright = '2017, Argyrios Samourkasidis'
 author = 'Argyrios Samourkasidis'
 
