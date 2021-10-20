@@ -1,4 +1,6 @@
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com) 
+[![Documentation Status](https://readthedocs.org/projects/edam/badge/?version=latest)](https://edam.readthedocs.io/en/latest/?badge=latest)
+
 
 # Table of contents
 

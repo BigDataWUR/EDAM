@@ -5,21 +5,14 @@ Module contents
 ---------------
 
 .. automodule:: edam
-:members:
-        :undoc-members:
-        :show-inheritance:
+   :members:
 
-.. automodule:: edam.reader.template_reader.models
-:members:
-        :undoc-members:
-        :show-inheritance:
+.. automodule:: edam.reader.models
+   :members:
 
-.. automodule:: edam.reader.template_reader.TemplateReader
-:members:
-        :undoc-members:
-        :show-inheritance:
+.. automodule:: edam.reader.TemplateReader
+   :members:
 
-.. automodule:: edam.reader.template_reader.utilities
-:members:
-        :undoc-members:
-        :show-inheritance:
+.. automodule:: edam.reader.utilities
+   :members:
+
