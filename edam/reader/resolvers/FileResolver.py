@@ -1,16 +1,21 @@
 import pandas as pd
 
-from edam.reader.models import Template, MetadataFile
+from edam.reader.database_handler import add_item, add_items
+from edam.reader.models import Template, Metadata
 from edam.reader.resolvers.Resolver import Resolver
 from edam.utilities.exceptions import TemplateInputHeaderMismatch
 
 
 class FileResolver(Resolver):
-    def __init__(self, input_uri, template: Template, metadata: MetadataFile):
+    def __init__(self, input_uri, template: Template, metadata: Metadata):
         self.template = template
         self.metadata = metadata
         self.input_uri = input_uri
         self.file_contents = input_uri
+        add_items(self.metadata.sensors.values())
+        add_items(self.metadata.observables.values())
+        add_items(self.metadata.units_of_measurement.values())
+        add_item(self.metadata.station)
 
     def template_matches_input(self) -> bool:
         pass

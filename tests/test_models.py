@@ -2,7 +2,7 @@ import os
 
 import pytest
 
-from edam.reader.models import MetadataFile, Station, Sensors, AbstractObservables, Template
+from edam.reader.models import Metadata, Station, Sensors, AbstractObservables, Template
 from edam.reader.resolvers.ResolverFactory import ResolverFactory
 from edam.utilities.exceptions import InputParameterDoesNotExist
 from tests import metadata_folder, resources_folder
@@ -10,7 +10,7 @@ from tests import metadata_folder, resources_folder
 
 @pytest.fixture
 def metadata_object():
-    return MetadataFile(path=os.path.join(metadata_folder, 'Agmip.yaml'))
+    return Metadata(path=os.path.join(metadata_folder, 'Agmip.yaml'))
 
 
 @pytest.fixture

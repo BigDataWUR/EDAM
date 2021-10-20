@@ -29,6 +29,30 @@ def add_item(item):
     return item
 
 
+def add_items(items):
+    """
+    Tries to store an item in the database. In case insertion is successful
+    it returns the item (complemented with the database id). In case it's not
+    it will raise an exception.
+    :param item:
+    :return: item
+    """
+    session = db_session
+    session.expire_on_commit = False
+    try:
+        session.add_all(items)
+        database_handler.debug(f"Added {items} in db")
+        session.commit()
+    except BaseException:
+        database_handler.error(f'Exception when adding {items}. Check __add_item__()')
+        session.rollback()
+        raise
+    finally:
+        session.flush()
+    session.close()
+    return items
+
+
 def update_item(item, metadata_dict):
     session = db_session
     returned_item = session.query(item.__class__).filter(

@@ -2,7 +2,7 @@ import os
 
 import pytest
 
-from edam.reader.models import MetadataFile
+from edam.reader.models import Metadata
 from edam.reader.models import Template
 from edam.reader.resolvers.FileResolver import FileResolver
 from tests import resources_folder
@@ -10,7 +10,7 @@ from tests import resources_folder
 
 @pytest.fixture
 def input_document_resource():
-    metadata = MetadataFile(path=os.path.join(resources_folder, 'metadata', 'Agmip.yaml'))
+    metadata = Metadata(path=os.path.join(resources_folder, 'metadata', 'Agmip.yaml'))
     template = Template(path=os.path.join(resources_folder, "templates", "Agmip.tmpl"))
     input_uri = os.path.join(resources_folder, "inputs", "Agmip.csv")
     return FileResolver(input_uri=input_uri, template=template, metadata=metadata)

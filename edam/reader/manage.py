@@ -4,7 +4,6 @@ from io import StringIO
 import pandas as pd
 from sqlalchemy import and_
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Query
 from sqlalchemy.orm import scoped_session, sessionmaker
 
@@ -28,27 +27,6 @@ def db_connect():
 engine = db_connect()
 
 db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
-
-Base = declarative_base(bind=engine)
-Base.query = db_session.query_property()
-
-
-def create_tables():
-    """
-    Creates a database tables
-    :return:
-    """
-    module_logger.debug('Creating new database tables')
-    Base.metadata.create_all(engine)
-
-
-def drop_tables():
-    """
-    Drops all database tables
-    """
-    module_logger.debug('Dropping database tables')
-    Base.metadata.drop_all(engine)
-    create_tables()
 
 
 class DatabaseHandler(object):

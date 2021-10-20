@@ -291,7 +291,7 @@ class Station(Base):
         return f'<Name {self.name!r}>'
 
 
-class MetadataFile:
+class Metadata:
     def __init__(self, path=None):
         self.path = path
 

@@ -5,7 +5,7 @@ from os.path import expanduser
 import requests
 
 from edam.reader.models import Template
-from edam.reader.models import MetadataFile
+from edam.reader.models import Metadata
 from edam.reader.resolvers.FileResolver import FileResolver
 from edam.reader.resolvers.HttpResolver import HttpResolver
 from edam.reader.resolvers.Resolver import Resolver
@@ -90,10 +90,10 @@ class ResolverFactory:
     def metadata_file(self, value):
         if os.path.isfile(value):
             # user gave full path
-            self._metadata_file = MetadataFile(path=os.path.abspath(value))
+            self._metadata_file = Metadata(path=os.path.abspath(value))
         elif os.path.isfile(os.path.join(expanduser("~"), '.edam', 'metadata', value)):
             # user gave relative path inside the ~/edam/templates directory
-            self._metadata_file = MetadataFile(path=os.path.abspath(os.path.join(expanduser("~"),
+            self._metadata_file = Metadata(path=os.path.abspath(os.path.join(expanduser("~"),
                                                                                  '.edam', 'metadata', value)))
         else:
             raise MetadataFileDoesNotExist(f"{value} does not exist")

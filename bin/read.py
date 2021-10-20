@@ -4,8 +4,8 @@ from datetime import datetime
 import click
 
 from edam.reader.Workflow import Workflow
-from edam.reader.manage import create_tables, drop_tables
-from edam.reader.models import Template, MetadataFile
+from edam.reader.database import recreate_database
+from edam.reader.models import Template, Metadata
 from edam.reader.resolvers.ResolverFactory import ResolverFactory
 from edam.settings import SERVER
 from edam.utilities.utilities import identify_input_type, \
@@ -25,9 +25,9 @@ from edam.viewer.app.views import app
 def cli(input, template, metadata, var, storage, drop):
     now = datetime.now()
     if drop == "yes":
-        drop_tables()
+        recreate_database()
     else:
-        create_tables()
+        pass
 
     factory = ResolverFactory(input_uri=input,
                               template=template,
