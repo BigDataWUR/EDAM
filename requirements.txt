@@ -2,7 +2,6 @@ PyYAML>=5.1
 sqlalchemy
 requests
 bs4
-psycopg2
 numpy
 pandas
 numexpr
