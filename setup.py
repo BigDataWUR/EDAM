@@ -96,7 +96,7 @@ class PyTest(TestCommand):
 setup(
     name='edam',
     version=__version__,
-    url='http://github.com/ecologismico/edam',
+    url='https://github.com/BigDataWUR/EDAM',
     description='An input template framework',
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -125,8 +125,6 @@ setup(
     },
     classifiers=[
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
