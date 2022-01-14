@@ -9,10 +9,8 @@ data reuse via transformations across different formats.
 [![Downloads](https://pepy.tech/badge/edam)](https://pepy.tech/project/edam)
 [![Documentation Status](https://readthedocs.org/projects/edam/badge/?version=latest)](https://edam.readthedocs.io/en/latest/?badge=latest)
 [![Supported Versions](https://img.shields.io/pypi/pyversions/edam.svg)](https://pypi.org/project/edam)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 ---
-
 
 # Installation
 
@@ -37,17 +35,10 @@ More information about the proposed workflow can be found in the [proposed-workf
 - [EDAM template language](#edam-template-language)   
 - [Proposed workflow](#proposed-workflow)
 - [Test cases](#test-cases)   
-    - [AgMIP and APSIM weather data files](#agmip-and-apsim-weather-data-files)
-        - [AgMIP data files](#agmip-data-files)
-            - [AgMIP dataset](#agmip-dataset)
-            - [AgMIP template](#agmip-template)
-            - [AgMIP metadata](#agmip-metadata)
-            - [Parse AgMIP](#parse-agmip)
-        - [APSIM station](#apsim-station)
-            - [APSIM dataset](#apsim-dataset)
-            - [APSIM template](#apsim-template)
-            - [APSIM metadata](#apsim-metadata)
-            - [Parse APSIM](#parse-apsim)
+  - [AgMIP and APSIM weather data files](#agmip-and-apsim-weather-data-files)
+     - [AgMIP data files](#agmip-data-files)
+     - [APSIM station](#apsim-station)
+  - [UK Meteorological Office](#uk-meteorological-office)
 
 
 # EDAM template language
@@ -69,14 +60,14 @@ A *template_id* can have certain attributes.
 These are:
 1. value (e.g.`{{wind.value}}`)
 2. timestamp. In case the table (csv) has a dedicated column which denotes the timestamp of a **specific observable**, this will be defined as `{{wind.timestamp.time}}` (if it's in the hh:mm format).
-3. In case the one column-timestamp refers to more than one observable (e.g. BoM wind_direction_max and wind_speed_max), this should be defined as `{{same_timestamp(windm_spd.timestamp.time, windm_dir.timestamp.time)}}`
+3. In case the one column-timestamp refers to more than one observables (e.g. BoM wind_direction_max and wind_speed_max), this should be defined as `{{same_timestamp(windm_spd.timestamp.time, windm_dir.timestamp.time)}}`
 
 In case a column has the timestamp which corresponds to **all observables in each row**, users will use the `{{timestamp.}}`.  
 
 # Proposed workflow
 
 1. Edit `setting.yaml` to correspond to your database system 
-1. Draft a metadata file and put it into metadata folder (`~/.edam/metadata`)
+1. Draft a metadata file and put it into metadata folder (~/.edam/metadata)
 2. Draft a template file (`~/.edam/templates`)
 3. Add your input csv file into inputs folder (`~/.edam/inputs`)
 
@@ -105,7 +96,8 @@ The APSIM data files share the same structure, so these preamble-encoded metadat
 
 ### AgMIP data files
 
-#### AgMIP dataset
+<details>
+    <summary><code>AgMIP dataset</code></summary>
 
 ```csv
 @DATE    YYYY  MM  DD  SRAD  TMAX  TMIN  RAIN  WIND  DEWP  VPRS  RHUM
@@ -117,8 +109,11 @@ The APSIM data files share the same structure, so these preamble-encoded metadat
 1980006  1980   1   6  15.0  23.0  11.8   0.0   2.7   2.8   7.5    26
 1980007  1980   1   7  16.5  22.2  11.4   0.0   2.5  -0.5   5.9    22
 ```
+</details>
 
-#### AgMIP template
+<details>
+    <summary><code>AgMIP template</code></summary>
+
 
 ```csv
 @DATE    YYYY  MM  DD  SRAD  TMAX  TMIN  RAIN  WIND  DEWP  VPRS  RHUM
@@ -126,9 +121,10 @@ The APSIM data files share the same structure, so these preamble-encoded metadat
 1980001  {{timestamp.year}}   {{timestamp.month}}   {{timestamp.day}}  {{srad.value}}  {{tmax.value}}  {{tmin.value}}   {{rain.value}}   {{wind.value}}   {{dewp.value}}   {{vprs.value}}    {{rhum.value}}
 {%endfor%}
 ```
+</details>
 
-#### AgMIP metadata
-
+<details>
+    <summary><code>AgMIP metadata</code></summary>
 ```yaml
 Station:
     name: Agmip
@@ -142,30 +138,30 @@ Station:
 Observables:
     - observable_id: tmin
       name: Temperature Min
-      ontology: http://edam.gr#Temperature
-      qualifiers: http://edam.gr#min
+      ontology: https://edam.org#Temperature
+      qualifiers: https://edam.org#min
     - observable_id: tmax
       name: Temperature Max
-      ontology: http://edam.gr#Temperature
-      qualifiers: http://edam.gr#max
+      ontology: https://edam.org#Temperature
+      qualifiers: https://edam.org#max
     - observable_id: rain
       name: Rain
-      ontology: http://edam.gr#Rain
+      ontology: https://edam.org#Rain
     - observable_id: srad
       name: Solar radiation
-      ontology: http://edam.gr#SolarRadiation
+      ontology: https://edam.org#SolarRadiation
     - observable_id: wind
       name: Wind
-      ontology: http://edam.gr#WindSpeed
+      ontology: https://edam.org#WindSpeed
     - observable_id: rhum
       name: Humidity
-      ontology: http://edam.gr#RelativeHumidity
+      ontology: https://edam.org#RelativeHumidity
     - observable_id: vprs
       name: Vprs
-      ontology: http://edam.gr#VaporPressure
+      ontology: https://edam.org#VaporPressure
     - observable_id: dewp
       name: Dewing point
-      ontology: http://edam.gr#DewingPoint
+      ontology: https://edam.org#DewingPoint
 Units of Measurement:
     - name: Megajoule per square metre
       symbol: MJ/m^2
@@ -186,6 +182,7 @@ Units of Measurement:
       symbol: km/hr
       relevant_observables: wind
 ```
+</details>
 
 #### Parse AgMIP
 
@@ -196,7 +193,8 @@ Following command is executed in approximately 2 seconds:
 
 ### APSIM station
 
-#### APSIM dataset
+<details>
+    <summary><code>APSIM dataset</code></summary>
 
 ```csv
 [weather.met.weather]
@@ -216,8 +214,10 @@ amp   =   28.2   (oC)   !   annual   amplitude   in   mean   monthly   temperatu
   279   2002   13.4   19.9   10.9   0   3   38
   280   2002   15.7   19.3   8.2   0   2.5   47
 ```
+</details>
 
-#### APSIM template
+<details>
+    <summary><code>APSIM template</code></summary>
 
 ```csv
 [weather.met.weather]
@@ -232,8 +232,10 @@ amp   =   {{station.tags.amp}}
 {{timestamp.dayofyear}}  {{timestamp.year}}  {{radn.value}}  {{maxt.value}}  {{mint.value}}  {{rain.value}}  {{wind.value}}  {{RH.value}}
 {%endfor%}
 ```
+</details>
 
-#### APSIM metadata
+<details>
+    <summary><code>APSIM metadata</code></summary>
 
 ```yaml
 Station:
@@ -242,24 +244,24 @@ Station:
 Observables:
     - observable_id: mint
       name: Temperature
-      ontology: http://edam.gr#Temperature
-      qualifiers: http://edam.gr#min
+      ontology: https://edam.org#Temperature
+      qualifiers: https://edam.org#min
     - observable_id: maxt
       name: Max Temperature
-      ontology: http://edam.gr#Temperature
-      qualifiers: http://edam.gr#max
+      ontology: https://edam.org#Temperature
+      qualifiers: https://edam.org#max
     - observable_id: rain
       name: Rain
-      ontology: http://edam.gr#Rain
+      ontology: https://edam.org#Rain
     - observable_id: radn
       name: Solar radiation
-      ontology: http://edam.gr#SolarRadiation
+      ontology: https://edam.org#SolarRadiation
     - observable_id: wind
       name: Wind
-      ontology: http://edam.gr#WindSpeed
+      ontology: https://edam.org#WindSpeed
     - observable_id: RH
       name: Relative humidity
-      ontology: http://edam.gr#RelativeHumidity
+      ontology: https://edam.org#RelativeHumidity
 Units of Measurement:
     - name: Millijoule per square meters
       symbol: mJ/m^2
@@ -277,6 +279,8 @@ Units of Measurement:
       symbol: m/s
       relevant_observables: wind
 ```
+
+</details>
 
 #### Parse APSIM
 
@@ -299,7 +303,10 @@ This relation, expressed using natural language, is defined in each document's p
 For example, "estimated data is marked with a * after the value". 
 These types of metadata are essential, so they have to be parsed and stored. 
 
-### UK Met dataset
+
+
+<details>
+    <summary><code>UK Met dataset</code></summary>
 
 ```csv
 Cwmystwyth
@@ -323,7 +330,10 @@ Sunshine data taken from an automatic Kipp & Zonen sensor marked with a #, other
   1959   12    7.2     2.5       3    ---     19.2
 ```
 
-### UK Met template
+</details>
+
+<details>
+    <summary><code>UK Met template</code></summary>
 
 ```csv
 {{station.name}}
@@ -338,7 +348,10 @@ Sunshine data taken from an automatic Kipp & Zonen sensor marked with a #, other
 {%endfor%}
 ```
 
-### UK Met metadata
+</details>
+
+<details>
+    <summary><code>UK Met metadata</code></summary>
 
 ```yaml
 Station:
@@ -351,21 +364,21 @@ Station:
 Observables:
     -   observable_id: tmin
         name: Temperature minimum
-        ontology: http://edam.gr#Temperature
-        qualifiers: http://edam.gr#min
+        ontology: https://edam.org#Temperature
+        qualifiers: https://edam.org#min
     -   observable_id: tmax
         name: Temperature Max
-        ontology: http://edam.gr#Temperature
-        qualifiers: http://edam.gr#max
+        ontology: https://edam.org#Temperature
+        qualifiers: https://edam.org#max
     -   observable_id: rain
         name: Rain
-        ontology: http://edam.gr#Rain
+        ontology: https://edam.org#Rain
     -   observable_id: af
         name: Days of air frost
-        ontology: http://edam.gr#AirFrostDays
+        ontology: https://edam.org#AirFrostDays
     -   observable_id: sun
         name: Sunshine duration
-        ontology: http://edam.gr#SunShineDuration
+        ontology: https://edam.org#SunShineDuration
 Units of Measurement:
     -   name: Days
         symbol: D
@@ -377,6 +390,8 @@ Units of Measurement:
         symbol: mm
         relevant_observables: rain
 ```
+
+</details>
 
 ### Parse all UK Met weather stations
 

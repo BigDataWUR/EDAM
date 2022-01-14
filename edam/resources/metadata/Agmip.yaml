@@ -10,27 +10,27 @@ Station:
 Observables:
   - observable_id: tmin
     name: Temperature Min
-    ontology: http://edam.gr#TemperatureMin
+    ontology: https://edam.org#TemperatureMin
   - observable_id: tmax
     name: Temperature Max
     ontology: http://sweet.com#TemperatureMaximum
   - observable_id: rain
     name: Rain
-    ontology: http://edam.gr#Rain
+    ontology: https://edam.org#Rain
   - observable_id: srad
     name: Solar radiation
-    ontology: http://edam.gr#SolarRadiation
+    ontology: https://edam.org#SolarRadiation
   - observable_id: wind
     name: Wind
-    ontology: http://edam.gr#Wind
+    ontology: https://edam.org#Wind
   - observable_id: rhum
     name: Humidity
-    ontology: http://edam.gr#RelativeHumidity
+    ontology: https://edam.org#RelativeHumidity
   - observable_id: vprs
     name: Vprs
   - observable_id: dewp
     name: Dewing point
-    ontology: http://edam.gr#DewingPoint
+    ontology: https://edam.org#DewingPoint
 Units of Measurement:
   - name: unknown
     symbol:
