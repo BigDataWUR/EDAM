@@ -93,6 +93,11 @@ def test_template_contents(template_object):
     assert template_object.stripped_contents == "1980001  {{timestamp.year}}   {{timestamp.month}}   {{timestamp.day}}  {{srad.value}}  {{tmax.value}}  {{tmin.value}}   {{rain.value}}   {{wind.value}}   {{dewp.value}}   {{vprs.value}}    {{rhum.value}}"
 
 
-def test_template_used_columns(template_object):
-    assert set(template_object.used_columns) == {'rain', 'vprs', 'srad', 'tmax', 'tmin', 'wind', 'dewp', 'timestamp',
-                                                 'rhum'}
+def test_template_variables(template_object):
+    assert set(template_object.variables) == {'rain', 'vprs', 'srad', 'tmax', 'tmin', 'wind', 'dewp', 'timestamp',
+                                              'rhum'}
+
+
+# def test_template_used_columns(template_object):
+#     assert set(template_object.used_columns) == {'rain', 'vprs', 'srad', 'tmax', 'tmin', 'wind', 'dewp', 'timestamp',
+#                                                  'rhum'}

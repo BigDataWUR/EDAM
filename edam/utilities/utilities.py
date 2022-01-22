@@ -164,29 +164,6 @@ def extract_data_from_preamble(station: Station, preamble_template: str,
     return station
 
 
-def determine_if_file_is_csv_or_not(input_data: io.StringIO, template_data):
-    """
-    This function is based on a dummy assumption:
-    If the count of `space` characters is bigger than the  count of `comma` characters in a document
-    then it is not a csv.
-    Following this, it transforms it using space_delimitted_to_csv
-    :param input_data: input's data as a io.StringIO()
-    :param template_data: template's data as a io.StringIO()
-    :return: input_data, template_data (converted as csv or remained intact)
-    """
-    input_data.seek(0)
-    input_text = input_data.read()
-    if (input_text.count(' ') > input_text.count(
-            ',')) and input_text.count(',') < 10:
-        # Change them!
-        # TODO: Return dataframe: pd.csv or pd.fw
-        input_data = input_data
-        template_data = template_data
-        template_data.seek(0)
-    input_data.seek(0)
-    return input_data, template_data
-
-
 def parse_for_iterations(input_iteration_file,
                          template_iteration_file, iterable_type='Station'):
     """

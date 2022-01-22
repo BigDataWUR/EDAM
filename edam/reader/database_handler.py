@@ -1,3 +1,4 @@
+import copy
 import logging
 
 from edam.reader.database import db_session
@@ -16,9 +17,16 @@ def add_item(item):
     session = db_session
     session.expire_on_commit = False
     try:
-        session.add(item)
-        database_handler.debug(f"Added {item} in db")
-        session.commit()
+        item_dict = copy.deepcopy(item.__dict__)  # type: dict
+
+        item_dict.pop('_sa_instance_state')
+        item_exists = session.query(item.__class__).filter_by(**item_dict)
+        if item_exists.count() > 0:
+            return item_exists.first()
+        else:
+            session.add(item)
+            database_handler.debug(f"Added {item} in db")
+            session.commit()
     except BaseException:
         database_handler.error(f'Exception when adding {item}. Check __add_item__()')
         session.rollback()
@@ -34,23 +42,14 @@ def add_items(items):
     Tries to store an item in the database. In case insertion is successful
     it returns the item (complemented with the database id). In case it's not
     it will raise an exception.
-    :param item:
+    :param items:
     :return: item
     """
-    session = db_session
-    session.expire_on_commit = False
-    try:
-        session.add_all(items)
-        database_handler.debug(f"Added {items} in db")
-        session.commit()
-    except BaseException:
-        database_handler.error(f'Exception when adding {items}. Check __add_item__()')
-        session.rollback()
-        raise
-    finally:
-        session.flush()
-    session.close()
-    return items
+    items_to_return = list()
+
+    for item in items:
+        items_to_return.append(add_item(item))
+    return items_to_return
 
 
 def update_item(item, metadata_dict):

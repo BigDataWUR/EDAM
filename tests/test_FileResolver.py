@@ -16,8 +16,9 @@ def input_document_resource():
     return FileResolver(input_uri=input_uri, template=template, metadata=metadata)
 
 
-def test_timeseries():
-    assert False
+def test_timeseries(input_document_resource):
+    timeseries = input_document_resource.timeseries
+    assert len(timeseries) == len(input_document_resource.template.variables) - 1
 
 
 def test_non_existing_preamble(input_document_resource):

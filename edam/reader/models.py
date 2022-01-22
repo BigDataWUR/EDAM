@@ -2,6 +2,7 @@ import csv
 import logging
 import os
 import re
+from collections import OrderedDict
 from contextlib import contextmanager
 from enum import Enum
 import json
@@ -15,7 +16,7 @@ import yaml
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 
-from edam.reader.database import Base
+from edam.reader.database import Base, recreate_database
 from edam.reader.regular_expressions import template_file_header, for_loop_variables, var_for_line
 from edam.utilities.exceptions import ErrorWithTemplate
 
@@ -156,7 +157,28 @@ class Template(Base):
                     return line_number
 
     @property
+    def dataframe_header(self):
+        return list(filter(lambda x: x != '', self.stripped_contents.split(self.delimiter)))
+
+    @property
     def used_columns(self):
+        columns = list(filter(lambda x: x != '', self.stripped_contents.split(self.delimiter)))
+        used_columns = list()
+        for column in columns:
+            variable = jinja2schema.infer(column)
+            if len(variable.keys()) > 0:
+                for key, value in variable.items():
+                    attribute = list(value.keys()).pop()
+                    if attribute == "value":
+                        used_columns.append(f"{key}")
+                    else:
+                        used_columns.append(f"{key}.{attribute}")
+            else:
+                used_columns.append(column)
+        return used_columns
+
+    @property
+    def variables(self):
         variables = jinja2schema.infer(self.stripped_contents)
         return variables.keys()
 
@@ -241,7 +263,7 @@ class Station(Base):
     region = Column(String(200))
     license = Column(String(100))
     url = Column(String(100))
-
+    missing_data = Column(String(20))
     tags = Column(String(500))
 
     helper = relationship('HelperTemplateIDs', back_populates='station')
@@ -256,7 +278,7 @@ class Station(Base):
 
     def __init__(self, name="Test Station", mobile=False, location="", latitude=None,
                  longitude=None, region=None,
-                 license=None, url=None, tags=json.dumps({})):
+                 license=None, url=None, missing_data=None, tags=json.dumps({})):
         """
         :param name:
         :param mobile:
@@ -271,6 +293,7 @@ class Station(Base):
         self.longitude = longitude
         self.region = region
         self.license = license
+        self.missing_data = missing_data
         self.url = url
 
         self.tags = json.dumps(tags)
@@ -442,3 +465,7 @@ def read_template(template: Template):
     f = open(template.path, 'r')
     yield f
     f.close()
+
+
+if __name__ == "__main__":
+    recreate_database()

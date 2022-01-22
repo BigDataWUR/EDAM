@@ -22,7 +22,20 @@ class FileResolver(Resolver):
 
     @property
     def timeseries(self):
-        return pd.read_fwf(self.input_uri)
+        timestamp_columns = list(filter(lambda column: "timestamp." in column, self.template.used_columns))
+        if self.header != '':
+            df = pd.read_fwf(self.input_uri, names=self.template.used_columns, skiprows=[0],
+                             parse_dates={"timestamp": timestamp_columns})
+        else:
+            df = pd.read_fwf(self.input_uri, names=self.template.used_columns,
+                             parse_dates={"timestamp": timestamp_columns})
+        df.set_index(keys=['timestamp'], inplace=True)
+        timeseries = dict()
+        for variable in self.template.variables:
+            if variable == "timestamp":
+                continue
+            timeseries[variable] = df[variable]
+        return timeseries
 
     @property
     def preamble(self) -> str:
