@@ -12,12 +12,16 @@ from edam.reader.resolvers.Resolver import Resolver
 
 bucket = "edam"
 org = "my-org"
-token = ""
+token = "aRMDKzxX01mfEahbo5wOSZHhsaIvIY4Ucw0Np7csotqbvUbuli04F14mZiqfYZZ4tsM43VP3R8UFCs7pUC4edA=="
 # Store the URL of your InfluxDB instance
 url = "http://127.0.0.1:8086"
 
 
-def store_data(resolver: Resolver):
+def store_data_sqlite(resolver: Resolver):
+    for measurement, dataframe in resolver.timeseries.items():
+        print("x")
+
+def store_data_influx(resolver: Resolver):
     for measurement, dataframe in resolver.timeseries.items():
         dataframe.index = pd.to_datetime(dataframe.index, unit='s')
         try:

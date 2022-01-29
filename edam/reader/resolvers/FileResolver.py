@@ -5,7 +5,8 @@ import re
 import pandas as pd
 
 from edam.reader.database_handler import add_item, add_items
-from edam.reader.models import Template, Metadata
+from edam.reader.models.Template import Template
+from edam.reader.models.Metadata import Metadata
 from edam.reader.resolvers.Resolver import Resolver
 from edam.reader.resolvers.utilities import extract_station_from_preamble
 from edam.utilities.exceptions import TemplateInputHeaderMismatch

@@ -2,7 +2,11 @@ import os
 
 import pytest
 
-from edam.reader.models import Metadata, Station, Sensors, AbstractObservables, Template
+from edam.reader.models.Metadata import Metadata, Station
+from edam.reader.models.Station import Station
+from edam.reader.models.Sensor import Sensor
+from edam.reader.models.AbstractObservable import AbstractObservable
+from edam.reader.models.Template import Template
 from edam.reader.resolvers.ResolverFactory import ResolverFactory
 from edam.utilities.exceptions import InputParameterDoesNotExist
 from tests import metadata_folder, resources_folder
@@ -44,12 +48,12 @@ def test_metadata_file_get_stations(metadata_object):
 
 def test_metadata_file_get_sensors(metadata_object):
     sensors = metadata_object.sensors
-    assert type(sensors) is dict and type(sensors["dewp"]) is Sensors
+    assert type(sensors) is dict and type(sensors["dewp"]) is Sensor
 
 
 def test_metadata_file_get_observables(metadata_object):
     observables = metadata_object.observables
-    assert type(observables) is dict and type(observables["dewp"]) is AbstractObservables
+    assert type(observables) is dict and type(observables["dewp"]) is AbstractObservable
 
 
 @pytest.mark.skip(reason="Local setup fails to resolve http")

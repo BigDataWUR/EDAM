@@ -2,9 +2,9 @@ from datetime import datetime
 
 import click
 
-from edam.reader.database import recreate_database
+from edam.reader.models.database import recreate_database
 from edam.reader.resolvers.ResolverFactory import ResolverFactory
-from edam.reader.resolvers.utilities import store_data, retrieve_data
+from edam.reader.resolvers.utilities import store_data_influx, retrieve_data, store_data_sqlite
 from edam.settings import SERVER
 from edam.viewer.app.views import app
 
@@ -29,7 +29,7 @@ def cli(input, template, metadata, var, drop):
     # Workflow
     if resolver.template_matches_input():
         dfs = resolver.timeseries
-        store_data(resolver=resolver)
+        store_data_sqlite(resolver=resolver)
         # retrieve_data(resolver=resolver)
         print("x")
 

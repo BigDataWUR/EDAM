@@ -1,7 +1,7 @@
 import copy
 import logging
 
-from edam.reader.database import db_session
+from edam.reader.base import db_session
 
 database_handler = logging.getLogger('edam.reader.database_handler')
 

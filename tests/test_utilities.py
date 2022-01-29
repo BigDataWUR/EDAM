@@ -2,10 +2,10 @@ import os
 
 import pytest
 
-from edam.reader.models import Template, StorageType
+from edam.reader.models.Template import Template
 from edam.settings import test_resources
 from edam.utilities.utilities import remove_template_placeholders_from_string, \
-    evaluate_variable_part, generate_uri, determine_storage_type
+    evaluate_variable_part, generate_uri
 
 
 def test_get_observables_from_template_with_observables():
@@ -127,16 +127,16 @@ def test_generate_uri_extra_vars_without_vars():
 #     assert test_output3 == desired_output3
 
 
-def test_determine_storage_type_correct():
-    test = 'file'
-    output = determine_storage_type(storage_as_string=test)
-    desired = StorageType.FILE
-    assert output == desired
+# def test_determine_storage_type_correct():
+#     test = 'file'
+#     output = determine_storage_type(storage_as_string=test)
+#     desired = StorageType.FILE
+#     assert output == desired
 
 
-def test_determine_storage_type_wrong():
-    test = 'memory!'
-
-    with pytest.raises(SystemExit) as excinfo:
-        determine_storage_type(storage_as_string=test)
-        assert 'Wrong storage option' in str(excinfo.value)
+# def test_determine_storage_type_wrong():
+#     test = 'memory!'
+#
+#     with pytest.raises(SystemExit) as excinfo:
+#         determine_storage_type(storage_as_string=test)
+#         assert 'Wrong storage option' in str(excinfo.value)

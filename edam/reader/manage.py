@@ -7,8 +7,11 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Query
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-from edam.reader.models import Sensors, Station, Observations, AbstractObservables, \
-    UnitsOfMeasurement, HelperTemplateIDs
+from edam.reader.models.AbstractObservable import AbstractObservable
+from edam.reader.models.Sensor import Sensor
+from edam.reader.models.Station import Station
+from edam.reader.models.UnitOfMeasurement import UnitOfMeasurement
+
 from edam.settings import database_url, database_type
 
 module_logger = logging.getLogger('edam.reader.manage')
@@ -196,170 +199,6 @@ class DatabaseHandler(object):
         returned_item.update_metadata(metadata_dict)
         session.commit()
         session.close()
-
-    def __get_observations_by_id_as_df__(self, observable_id):
-        """
-
-        :return: A list with all Observations.
-        """
-        session = self.Session()
-        df = pd.DataFrame()
-        q = session.query(Observations).filter(
-            Observations.observable_id == observable_id)  # type: Query
-        q = q.order_by(Observations.timestamp.asc())
-        df = pd.read_sql(
-            sql=q.statement,
-            con=self.engine,
-            index_col='timestamp')
-        df.drop('id', axis=1, inplace=True)
-        session.rollback()
-        session.close()
-        return df
-
-    def __get_helper_table_row_input_file_observable_id__(self, observable_id,
-                                                          station_id) -> HelperTemplateIDs:
-        """
-
-
-        :rtype: HelperTemplateIDs
-        :param observable_id: This is usually a short of the Observables \
-        name, which is used in templates E.g. temp is used for Temperature.
-        :param station_id:
-        :return:
-        """
-        session = self.Session()
-        q = session.query(HelperTemplateIDs).filter(and_(HelperTemplateIDs.station_id == station_id,
-                                                         HelperTemplateIDs.observable_id == observable_id
-                                                         )).first()  # type: HelperTemplateIDs
-        session.expunge(q)
-        # session.rollback()
-        session.close()
-        return q
-
-    def __get_observable_by__id__(self, database_id) -> AbstractObservables:
-        """
-
-        :param database_id: This is the id of the stored Observable
-         E.g. 1
-        :return:
-        """
-        session = self.Session()
-
-        q = session.query(AbstractObservables).filter(
-            AbstractObservables.id == database_id)  # type: Query
-        session.rollback()
-        session.close()
-        return q.first()
-
-    def __update_helper_observable_ids_with_unit_id__(self, station_id, observable_observable_id,
-                                                      unit_id):
-        # TODO: This should be more generic
-        session = self.Session()
-
-        result = session.query(HelperTemplateIDs).filter(
-            and_(HelperTemplateIDs.station_id == station_id,
-                 HelperTemplateIDs.observable_id == observable_observable_id
-                 )).first()  # type: HelperTemplateIDs
-        # Above query MUST return one result
-        # We update this one
-        result.unit_id = unit_id
-
-        session.commit()
-        session.close()
-
-    def __update_helper_observable_ids_with_sensor_id__(self, station_id, observable_observable_id,
-                                                        sensor_id):
-        # TODO: This should be more generic
-        session = self.Session()
-
-        result = session.query(HelperTemplateIDs).filter(
-            and_(HelperTemplateIDs.station_id == station_id,
-                 HelperTemplateIDs.observable_id == observable_observable_id
-                 )).first()  # type: HelperTemplateIDs
-        # Above query MUST return one result
-        # We update this one
-        result.sensor_id = sensor_id
-
-        session.commit()
-        session.close()
-
-    def __get_abstract_observable_id_from_observable_id__(self, station_id,
-                                                          observable_observable_id):
-        session = self.Session()
-        result = session.query(HelperTemplateIDs).filter(
-            and_(HelperTemplateIDs.station_id == station_id,
-                 HelperTemplateIDs.observable_id == observable_observable_id
-                 )).first()  # type: HelperTemplateIDs
-        session.expunge_all()
-        session.close()
-        return result.abstract_observable_id or None
-
-    def __get_station_id_by_tags_station_id__(self, tags_station_id):
-        session = self.Session()
-        string_to_find = "\"station_id\":\"%d\"" % tags_station_id
-        exists = session.query(Station.id).filter(
-            Station.tags.contains(string_to_find))
-
-        if exists.first() is not None:
-            database_station_id = exists.first().id
-        else:
-            database_station_id = None
-        session.close()
-        return database_station_id
-
-    def get_all_observables(self) -> [AbstractObservables]:
-        session = self.Session()
-        session.close()
-        return session.query(AbstractObservables).all()
-
-    def get_all_stations(self) -> [Station]:
-        session = self.Session()
-        session.close()
-        return session.query(Station).all()
-
-    def get_all_helper_observable_ids(self) -> [HelperTemplateIDs]:
-        session = self.Session()
-        session.close()
-        return session.query(HelperTemplateIDs).all()
-
-    def get_helper_for_describe_sensor(
-            self, station_id, sensor_id, observable_id):
-        session = self.Session()
-        exists = session.query(HelperTemplateIDs).filter(
-            and_(HelperTemplateIDs.station_id == station_id,
-                 HelperTemplateIDs.sensor_id == sensor_id,
-                 HelperTemplateIDs.observable_id == observable_id
-                 ))
-
-        if exists.first() is not None:
-            print(exists.first().observable_id)
-            session.expunge_all()
-            session.close()
-            return exists.first()
-
-        return None
-
-    def get_observations_by_helper_id(
-            self, helper_id: int) -> HelperTemplateIDs:
-        """
-        Retrieves observations for an associated helper_id
-
-        :param helper_id:
-        :return:
-        """
-        session = self.Session()
-        exists = session.query(Observations).filter(
-            Observations.helper_observable_id == helper_id)
-
-        if exists.first() is not None:
-            session.expunge_all()
-            session.close()
-            return exists.all()
-        return None
-
-
-def props(cls):
-    return [i for i in cls.__dict__.keys() if i[:1] != '_']
 
 
 if __name__ == "__main__":
