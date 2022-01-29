@@ -31,7 +31,7 @@ def test_metadata_file_filename(metadata_object):
     assert metadata_object.filename == "Agmip.yaml"
 
 
-def test_metadata_file_contents(metadata_object):
+def test_metadata_content(metadata_object):
     contents = metadata_object.contents
     assert type(contents) is dict and 'Station' in contents.keys() \
            and 'Observables' in contents.keys() and 'Sensors' in contents.keys()

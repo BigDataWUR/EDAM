@@ -1,15 +1,11 @@
-import os
 from datetime import datetime
 
 import click
 
-from edam.reader.Workflow import Workflow
 from edam.reader.database import recreate_database
-from edam.reader.models import Template, Metadata
 from edam.reader.resolvers.ResolverFactory import ResolverFactory
+from edam.reader.resolvers.utilities import store_data, retrieve_data
 from edam.settings import SERVER
-from edam.utilities.utilities import identify_input_type, \
-    determine_storage_type
 from edam.viewer.app.views import app
 
 
@@ -24,8 +20,6 @@ def cli(input, template, metadata, var, drop):
     now = datetime.now()
     if drop == "yes":
         recreate_database()
-    else:
-        pass
 
     factory = ResolverFactory(input_uri=input,
                               template=template,
@@ -34,7 +28,10 @@ def cli(input, template, metadata, var, drop):
     resolver = factory.resolver
     # Workflow
     if resolver.template_matches_input():
-        pass
+        dfs = resolver.timeseries
+        store_data(resolver=resolver)
+        # retrieve_data(resolver=resolver)
+        print("x")
 
 
 def run():

@@ -4,10 +4,6 @@ variable_name = re.compile(r"{{(.*?)}}")
 for_loop_variables = re.compile(r"{%\s?for (.*?) in (.*?)%}")
 end_for_loop = re.compile(r"{%endfor%}")
 template_file_header = r"((.*\n){1}){%\s?for.*%}"
-# Below regex is for the case of same_timestamp(function) found in BoM template
-same_timestamp_bom = re.compile(
-    r"(same_timestamp)\s?\((?P<args>(?P<arg>[\w.]+(,\s?)?)+)\)")
-
 # This var corresponds to observables which value is located in more than one columns
 # In our templating language they are represented as:
 # {{observable.value[0]}},{{observable.value[1]}}, etc.

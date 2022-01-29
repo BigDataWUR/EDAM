@@ -31,8 +31,7 @@ Units of Measurement:
     ontology: something
     relevant_observables: rain
 Sensors:
-  - generic: True
-    name: Generic test sensor
+  - name: Generic test sensor
     manufacturer: test Consortium
     relevant_observables: tmin, tmax, rain, sun, af
     tags:

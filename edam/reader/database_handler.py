@@ -22,6 +22,8 @@ def add_item(item):
         item_dict.pop('_sa_instance_state')
         item_exists = session.query(item.__class__).filter_by(**item_dict)
         if item_exists.count() > 0:
+            session.flush()
+            session.close()
             return item_exists.first()
         else:
             session.add(item)

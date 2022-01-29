@@ -14,6 +14,7 @@ from sqlalchemy import Boolean, Float
 
 import yaml
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
 
 from edam.reader.database import Base, recreate_database
@@ -80,7 +81,6 @@ class Sensors(Base):
     """
     """
     id = Column(Integer, primary_key=True)
-    generic = Column(Boolean)
     name = Column(String(60))
     manufacturer = Column(String(60))
     tags = Column(String(500))
@@ -100,11 +100,10 @@ class Sensors(Base):
                 module_logger.warning("{key} does not exist".format(key=key))
                 pass
 
-    def __init__(self, generic=False, name="Test sensor",
+    def __init__(self, name="Test sensor",
                  manufacturer="Test manufacturer",
                  abstract_observable_id=None, unit_id=None,
                  tags=json.dumps({})):
-        self.generic = generic
         self.name = name
         self.manufacturer = manufacturer
         self.abstract_observable_id = abstract_observable_id
@@ -263,22 +262,30 @@ class Station(Base):
     region = Column(String(200))
     license = Column(String(100))
     url = Column(String(100))
-    missing_data = Column(String(20))
-    tags = Column(String(500))
+    _tags = Column('tags', String(500))
+    _qualifiers = Column('qualifiers', String(500))
 
     helper = relationship('HelperTemplateIDs', back_populates='station')
 
     def update(self, new_values: dict):
         for key, value in new_values.items():
             try:
+                if key in ['tags', 'qualifiers']:
+                    temp = getattr(self, key)  # type: dict
+                    try:
+                        value.update(temp)
+                    except ValueError as e:
+                        module_logger.warning(f"{e}")
                 setattr(self, key, value)
-            except:
+            except AttributeError:
                 module_logger.warning(f"{key} does not exist")
-                pass
+
+
 
     def __init__(self, name="Test Station", mobile=False, location="", latitude=None,
                  longitude=None, region=None,
-                 license=None, url=None, missing_data=None, tags=json.dumps({})):
+                 license=None, url=None, missing_data=None,
+                 qualifiers=json.dumps({}), tags=json.dumps({})):
         """
         :param name:
         :param mobile:
@@ -293,10 +300,33 @@ class Station(Base):
         self.longitude = longitude
         self.region = region
         self.license = license
-        self.missing_data = missing_data
         self.url = url
 
-        self.tags = json.dumps(tags)
+        self.qualifiers = qualifiers
+        self.tags = tags
+
+    @hybrid_property
+    def tags(self):
+        return json.loads(self._tags)
+
+    @tags.setter
+    def tags(self, value):
+        self._tags = json.dumps(value)
+
+    @hybrid_property
+    def qualifiers(self):
+        return json.loads(self._qualifiers)
+
+    @qualifiers.setter
+    def qualifiers(self, value):
+        self._qualifiers = json.dumps(value)
+
+    @property
+    def missing_data(self):
+        try:
+            return self.qualifiers['missing_data']
+        except KeyError:
+            return ''
 
     def __eq__(self, other):
         """Override the default Equals behavior"""
@@ -351,7 +381,14 @@ class Metadata:
 
     @property
     def station(self) -> Station:
-        return Station(**self.contents['Station'])
+        try:
+            return self._station
+        except AttributeError:
+            return Station(**self.contents['Station'])
+
+    @station.setter
+    def station(self, value):
+        self._station = value
 
     @property
     def observables(self) -> [AbstractObservables]:
@@ -360,6 +397,8 @@ class Metadata:
     @property
     def sensors(self):
         sensors = dict()
+        if self.contents['Sensors'] is None:
+            return sensors
         for sensor in self.contents['Sensors']:
             relevant_observables = map(lambda rel_obs: rel_obs.strip().lstrip().rstrip(),
                                        sensor.pop('relevant_observables').split(','))

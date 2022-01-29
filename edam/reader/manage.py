@@ -216,62 +216,6 @@ class DatabaseHandler(object):
         session.close()
         return df
 
-    def __check_station_is_in_db__(self, station: Station):
-        session = self.Session()
-
-        exists = session.query(Station.id).filter(
-            and_(Station.name == station.name, Station.location == station.location, Station.mobile == station.mobile)
-        )
-        session.rollback()
-        session.close()
-        return exists.scalar() is not None, exists.first()
-
-    def check_item_in_db(self, item: UnitsOfMeasurement):
-        session = self.Session()
-        exists = session.query(item.__class__.id).filter_by(
-            and_(UnitsOfMeasurement.name == item.name, UnitsOfMeasurement.symbol == item.symbol
-                 )
-        )
-        session.rollback()
-        session.close()
-        return exists.scalar() is not None, exists.first()
-
-    def __check_observable_is_in_db__(self, observable: AbstractObservables):
-        session = self.Session()
-        exists = session.query(AbstractObservables.id).filter(
-            and_(AbstractObservables.name == observable.name,
-                 AbstractObservables.ontology == observable.ontology)
-        )
-        session.rollback()
-        session.close()
-        return exists.scalar() is not None, exists.first()
-
-    def __chech_helperTemplateID_is_in_db__(
-            self, helperTemplateID: HelperTemplateIDs):
-        session = self.Session()
-        exists = session.query(HelperTemplateIDs.id). \
-            filter(and_(HelperTemplateIDs.observable_id == helperTemplateID.observable_id,
-                        HelperTemplateIDs.unit_id == helperTemplateID.unit_id,
-                        HelperTemplateIDs.station_id == helperTemplateID.station_id,
-                        HelperTemplateIDs.abstract_observable_id == helperTemplateID.abstract_observable_id,
-                        HelperTemplateIDs.sensor_id == helperTemplateID.sensor_id))
-        session.rollback()
-        session.close()
-        return exists.scalar() is not None, exists.first()
-
-    def __check_sensor_is_in_db__(self, sensor: Sensors):
-        session = self.Session()
-        # TODO: Fix the filter parameters. Needs to be more generic
-        # TODO: Implement tags equality check (json error)
-        exists = session.query(Sensors.id).filter(and_(Sensors.generic == sensor.generic,
-                                                       Sensors.abstract_observable_id == sensor.abstract_observable_id,
-                                                       Sensors.manufacturer == sensor.manufacturer,
-                                                       Sensors.name == sensor.name
-                                                       ))
-        session.rollback()
-        session.close()
-        return exists.scalar() is not None, exists.first()
-
     def __get_helper_table_row_input_file_observable_id__(self, observable_id,
                                                           station_id) -> HelperTemplateIDs:
         """
