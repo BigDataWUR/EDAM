@@ -8,6 +8,8 @@ from influxdb_client.client.write_api import PointSettings, \
     WriteOptions, WriteType
 import pandas as pd
 
+from edam.reader.database_handler import add_items
+from edam.reader.models.Observation import Observation
 from edam.reader.resolvers.Resolver import Resolver
 
 bucket = "edam"
@@ -19,7 +21,21 @@ url = "http://127.0.0.1:8086"
 
 def store_data_sqlite(resolver: Resolver):
     for measurement, dataframe in resolver.timeseries.items():
+        observations = []
+        abstract_observable_id = resolver.metadata.restructured_metadata[measurement]['observable'].id
+        sensor_id = resolver.metadata.restructured_metadata[measurement]['sensor'].id
+        unit_of_measurement_id = resolver.metadata.restructured_metadata[measurement]['unit_of_measurement'].id
+        station_id = resolver.metadata.station.id
+        for timestamp, value in dataframe.to_dict().items():
+            observations.append(Observation(timestamp=timestamp,
+                                            value=str(value),
+                                            abstract_observable_id=abstract_observable_id,
+                                            sensor_id=sensor_id,
+                                            unit_id=unit_of_measurement_id,
+                                            station_id=station_id))
+        add_items(observations)
         print("x")
+
 
 def store_data_influx(resolver: Resolver):
     for measurement, dataframe in resolver.timeseries.items():

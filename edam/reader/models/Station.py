@@ -4,9 +4,9 @@ import logging
 from sqlalchemy.ext.hybrid import hybrid_property
 
 from sqlalchemy import Column, Integer, String, Boolean, Float
-from sqlalchemy.orm import relationship
 
 from edam.reader.base import Base
+from edam.reader.database_handler import update_item, update_object
 
 module_logger = logging.getLogger('edam.reader.models')
 
@@ -34,8 +34,6 @@ class Station(Base):
     _tags = Column('tags', String(500))
     _qualifiers = Column('qualifiers', String(500))
 
-    helper = relationship("TagJunction", back_populates="station")
-
     def update(self, new_values: dict):
         for key, value in new_values.items():
             try:
@@ -48,6 +46,7 @@ class Station(Base):
                 setattr(self, key, value)
             except AttributeError:
                 module_logger.warning(f"{key} does not exist")
+        update_object(self)
 
     def __init__(self,
                  name=None, mobile=False,

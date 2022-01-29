@@ -13,7 +13,7 @@ from flask_caching import Cache
 from flask_sqlalchemy import SQLAlchemy
 
 import edam.viewer.config as config
-from edam.reader.models import Station
+from edam.reader.models.Station import Station
 from edam.settings import home_directory
 from edam.viewer.app.manage import DatabaseHandler as Data
 from edam.viewer.app.manage import Measurement

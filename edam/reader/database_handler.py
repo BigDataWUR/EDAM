@@ -15,7 +15,7 @@ def add_item(item):
     :return: item
     """
     session = db_session
-    session.expire_on_commit = False
+    # session.expire_on_commit = False
     try:
         item_dict = copy.deepcopy(item.__dict__)  # type: dict
 
@@ -23,6 +23,7 @@ def add_item(item):
         item_exists = session.query(item.__class__).filter_by(**item_dict)
         if item_exists.count() > 0:
             session.flush()
+            session.expunge_all()
             session.close()
             return item_exists.first()
         else:
@@ -33,8 +34,7 @@ def add_item(item):
         database_handler.error(f'Exception when adding {item}. Check __add_item__()')
         session.rollback()
         raise
-    finally:
-        session.flush()
+    session.expunge_all()
     session.close()
     return item
 
@@ -52,6 +52,14 @@ def add_items(items):
     for item in items:
         items_to_return.append(add_item(item))
     return items_to_return
+
+
+def update_object(item):
+    session = db_session
+
+    session.merge(item)
+    session.commit()
+    session.close()
 
 
 def update_item(item, metadata_dict):

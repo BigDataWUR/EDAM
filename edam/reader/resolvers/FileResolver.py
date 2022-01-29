@@ -19,10 +19,10 @@ class FileResolver(Resolver):
         self.input_uri = input_uri
         self.content_as_list = input_uri
         self.complement_stations_from_preamble()
-        add_items(self.metadata.sensors.values())
-        add_items(self.metadata.observables.values())
-        add_items(self.metadata.units_of_measurement.values())
-        add_item(self.metadata.station)
+        # add_items(self.metadata.sensors.values())
+        # add_items(self.metadata.observables.values())
+        # add_items(self.metadata.units_of_measurement.values())
+        # add_item(self.metadata.station)
 
     def store_timeseries(self):
         pass
@@ -70,7 +70,7 @@ class FileResolver(Resolver):
     def complement_stations_from_preamble(self):
         if self.template.preamble and self.preamble:
             station_dictionary = extract_station_from_preamble(self)
-            station = copy.deepcopy(self.metadata.station)
+            station = self.metadata.station
             station.update(station_dictionary)
             self.metadata.station = station
 

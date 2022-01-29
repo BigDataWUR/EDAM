@@ -3,7 +3,6 @@ from edam.reader.models.Station import Station
 from edam.reader.models.AbstractObservable import AbstractObservable
 from edam.reader.models.Sensor import Sensor
 from edam.reader.models.UnitOfMeasurement import UnitOfMeasurement
-from edam.reader.models.TagJunction import TagJunction
 from edam.reader.models.Observation import Observation
 
 

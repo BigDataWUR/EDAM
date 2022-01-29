@@ -2,6 +2,7 @@ import os
 
 import yaml
 
+from edam.reader.database_handler import add_item
 from edam.reader.models.AbstractObservable import AbstractObservable
 from edam.reader.models.UnitOfMeasurement import UnitOfMeasurement
 from edam.reader.models.Sensor import Sensor
@@ -48,7 +49,7 @@ class Metadata:
         try:
             return self._station
         except AttributeError:
-            return Station(**self.contents['Station'])
+            return add_item(Station(**self.contents['Station']))
 
     @station.setter
     def station(self, value):
@@ -56,7 +57,7 @@ class Metadata:
 
     @property
     def observables(self) -> [AbstractObservable]:
-        return {item.pop('observable_id'): AbstractObservable(**item) for item in self.contents['Observables']}
+        return {item.pop('observable_id'): add_item(AbstractObservable(**item)) for item in self.contents['Observables']}
 
     @property
     def sensors(self):
@@ -67,7 +68,7 @@ class Metadata:
             relevant_observables = map(lambda rel_obs: rel_obs.strip().lstrip().rstrip(),
                                        sensor.pop('relevant_observables').split(','))
             for observable_id in relevant_observables:
-                sensors[observable_id] = Sensor(**sensor)
+                sensors[observable_id] = add_item(Sensor(**sensor))
         return sensors
 
     @property
@@ -77,5 +78,5 @@ class Metadata:
             relevant_observables = map(lambda rel_obs: rel_obs.strip().lstrip().rstrip(),
                                        sensor.pop('relevant_observables').split(','))
             for observable_id in relevant_observables:
-                units_of_measurement[observable_id] = UnitOfMeasurement(**sensor)
+                units_of_measurement[observable_id] = add_item(UnitOfMeasurement(**sensor))
         return units_of_measurement

@@ -17,14 +17,23 @@ class Observation(Base):
     station_id = Column(Integer, ForeignKey('Station.id'))
     sensor_id = Column(Integer, ForeignKey('Sensor.id'))
 
-    def __init__(self, timestamp=None, value=None, helper_observable_id=None):
+    def __init__(self,
+                 timestamp=None,
+                 value=None,
+                 abstract_observable_id=None,
+                 unit_id=None,
+                 station_id=None,
+                 sensor_id=None):
         """
         :param timestamp:
         :param value:
         """
         self.timestamp = timestamp
         self.value = value
-        self.helper_observable_id = helper_observable_id
+        self.abstract_observable_id = abstract_observable_id
+        self.unit_id = unit_id
+        self.station_id = station_id
+        self.sensor_id = sensor_id
 
     def __repr__(self):
         return f'<id {self.id!r}>'

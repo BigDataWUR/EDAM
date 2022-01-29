@@ -30,8 +30,6 @@ def cli(input, template, metadata, var, drop):
     if resolver.template_matches_input():
         dfs = resolver.timeseries
         store_data_sqlite(resolver=resolver)
-        # retrieve_data(resolver=resolver)
-        print("x")
 
 
 def run():

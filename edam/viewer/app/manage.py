@@ -1,12 +1,15 @@
 import copy
-import json
+
 
 import numpy as np
 import pandas as pd
 from sqlalchemy.dialects import sqlite
-
-import edam.reader.models as models
-from edam.reader.manage import db_connect, db_session
+from edam.reader.models.Station import Station
+from edam.reader.models.Observation import Observation
+from edam.reader.models.AbstractObservable import AbstractObservable
+from edam.reader.models.Sensor import Sensor
+from edam.reader.base import db_session as session
+from edam.reader.base import engine
 from edam.utilities.utilities import find_templates_in_directory
 
 
@@ -21,7 +24,7 @@ class Measurement(object):
         self.value = str(value).translate(table)
         self.timestamp = timestamp
         # TODO: Implement those. Observable and uom should be
-        # models.AbstractObservable and model.Uoms respectively
+        # AbstractObservable and model.Uoms respectively
         self.observable = observable
         self.uom = uom
         self.station = station
@@ -31,44 +34,16 @@ class Measurement(object):
         return self.value
 
 
-class Station(object):
-    def __init__(self, station: models.Station, df: pd.DataFrame):
-        self.name = station.name
-        self.mobile = station.mobile
-        self.location = station.location
-        self.latitude = station.latitude
-        self.longitude = station.longitude
-        self.id = station.id
-
-        self.tags = json.loads(station.tags)
-
-        self.data = df
-
-    def __repr__(self):
-        return self.name
-
-
 class DatabaseHandler(object):
-    """"""
-
-    def __init__(self):
-        """
-        Initializes database connection and sessionmaker.
-        """
-
-        self.engine = db_connect()
-
-        self.Session = db_session
 
     def retrieve_stations_data(
-            self, station: models.Station, template_for_lines):
+            self, station: Station, template_for_lines):
         # print(template_for_lines)
-        session = self.Session()
-        engine = self.engine
+
         dict_with_relevant_to_station_help_ids = {
             helper.id: helper.observable_id for helper in station.helper}
-        sql = session.query(models.Observations). \
-            filter(models.Observations.helper_observable_id.in_(
+        sql = session.query(Observation). \
+            filter(Observation.helper_observable_id.in_(
             list(dict_with_relevant_to_station_help_ids)))
         sql_literal = str(
             sql.statement.compile(
@@ -116,17 +91,18 @@ class DatabaseHandler(object):
         return Station(station, df=station_df), zip_argument
 
     def retrieve_object_from_id(self, table, object_id):
-        session = self.Session()
-        item = session.query(
-            getattr(
-                models,
-                table)).filter(
-            getattr(
-                models,
-                table).id == object_id)
-        session.close()
-
-        return item.first()
+        # session = self.Session()
+        # # item = session.query(
+        # #     getattr(
+        # #         models,
+        # #         table)).filter(
+        # #     getattr(
+        # #         models,
+        # #         table).id == object_id)
+        # # session.close()
+        #
+        # return item.first()
+        return None
 
     @staticmethod
     def retrieve_templates():
@@ -134,8 +110,7 @@ class DatabaseHandler(object):
         return find_templates_in_directory()
 
     def retrieve_stations(self):
-        session = self.Session()
-        items = session.query(models.Station).all()
+        items = session.query(Station).all()
         dictionary = dict()
         for station in items:
             dictionary[station.id] = self.station2json(station)
@@ -143,22 +118,21 @@ class DatabaseHandler(object):
         return dictionary
 
     @staticmethod
-    def station2json(station: models.Station):
-        tags = json.loads(station.tags)
+    def station2json(station: Station):
+        tags = station.tags
         dictionary = copy.deepcopy(station.__dict__)
 
         dictionary['tags'] = tags
 
         dictionary['observables'] = dict()
         for helper in station.helper:
-            helper: models.HelperTemplateIDs
             dictionary['observables'][helper.observable_id] = dict()
             dictionary['observables'][helper.observable_id]['start_date'] = str(
                 helper.start_date)
             dictionary['observables'][helper.observable_id]['end_date'] = str(
                 helper.end_date)
             dictionary['observables'][helper.observable_id][
-                'observations'] = helper.number_of_observations
+                'Observation'] = helper.number_of_Observation
             dictionary['observables'][helper.observable_id]['frequency'] = helper.frequency
             dictionary['observables'][helper.observable_id]['observable'] = helper.observable.name
             dictionary['observables'][helper.observable_id]['observed_in'] = helper.uom.name
@@ -179,7 +153,7 @@ if __name__ == "__main__":
     # test.retrieve_stations()
     # template_for_arguments = "timestamp,radn,maxt,mint,rain,wind,RH"
     # list_template_for_arguments = template_for_arguments.split(',')
-    # station_object = test.retrieve_object_from_id(table='Station', object_id=1)  # type: models.Station
+    # station_object = test.retrieve_object_from_id(table='Station', object_id=1)  # type: Station
     # results = test.retrieve_stations_data(station_object, list_template_for_arguments)
     results = test.retrieve_templates()
     print(results)

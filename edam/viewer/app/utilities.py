@@ -1,4 +1,5 @@
-from edam.reader.models import Station, Template
+from edam.reader.models.Station import Station
+from edam.reader.models.Template import Template
 
 
 def check_template_source_compatibility(template: Template, station: Station):
