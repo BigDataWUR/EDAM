@@ -4,7 +4,6 @@ import click
 
 from edam.reader.models.database import recreate_database
 from edam.reader.resolvers.resolver_factory import ResolverFactory
-from edam.reader.resolvers.utilities import store_data_sqlite
 from edam.settings import SERVER
 from edam.viewer.app.views import app
 
@@ -33,7 +32,7 @@ def cli(input_file, template, metadata, var, drop):
     # Workflow
     if resolver.template_matches_input():
         dataframes = resolver.timeseries
-        store_data_sqlite(resolver=resolver)
+        resolver.store_timeseries()
 
 
 def run():

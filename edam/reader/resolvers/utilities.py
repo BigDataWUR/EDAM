@@ -93,13 +93,16 @@ def extract_station_from_preamble(resolver: Resolver):
             if matches:
                 for match in matches:
 
-                    # input_line = 'Location: 359800E 223800N, Lat 51.911 Lon -2.584, 67 metres amsl'
+                    # input_line = 'Location: 359800E 223800N,
+                    # Lat 51.911 Lon -2.584, 67 metres amsl'
                     template_line = template_line.lstrip('')
                     input_line = input_line.lstrip('')
-                    # template_line = 'Location: 359800E 223800N, Lat {{station.latitude}} Lon
+                    # template_line = 'Location: 359800E 223800N,
+                    # Lat {{station.latitude}} Lon
                     # {{station.longitude}}, {{station.tags.altitude}}'
 
-                    # new_template_line = ' Lon {{station.longitude}}, {{station.tags.altitude}}'
+                    # new_template_line = ' Lon {{station.longitude}},
+                    # {{station.tags.altitude}}'
 
                     # to_be_replaced = 'Location: 359800E 223800N, Lat'
                     to_be_replaced = template_line.partition(match)[
@@ -107,7 +110,8 @@ def extract_station_from_preamble(resolver: Resolver):
                     template_line = template_line.partition(
                         match)[-1].strip('\n\r')
 
-                    # value_of_placeholder = input_line.partition(template_line.partition('{')[0])[0]
+                    # value_of_placeholder =
+                    # input_line.partition(template_line.partition('{')[0])[0]
                     if to_be_replaced.strip(' ') == "":
                         value_of_placeholder = input_line
                     else:

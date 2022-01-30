@@ -1,14 +1,13 @@
-import copy
 import io
 import re
 
 import pandas as pd
 
-from edam.reader.database_handler import add_item, add_items
-from edam.reader.models.template import Template
 from edam.reader.models.metadata import Metadata
+from edam.reader.models.template import Template
 from edam.reader.resolvers.resolver import Resolver
-from edam.reader.resolvers.utilities import extract_station_from_preamble
+from edam.reader.resolvers.utilities import extract_station_from_preamble, \
+    store_data_sqlite
 from edam.utilities.exceptions import TemplateInputHeaderMismatch
 
 
@@ -19,13 +18,9 @@ class FileResolver(Resolver):
         self.input_uri = input_uri
         self.content_as_list = input_uri
         self.complement_stations_from_preamble()
-        # add_items(self.metadata.sensors.values())
-        # add_items(self.metadata.observables.values())
-        # add_items(self.metadata.units_of_measurement.values())
-        # add_item(self.metadata.station)
 
     def store_timeseries(self):
-        pass
+        store_data_sqlite(resolver=self)
 
     def template_matches_input(self) -> bool:
         return True
@@ -107,7 +102,7 @@ class FileResolver(Resolver):
         else:
             raise TemplateInputHeaderMismatch(
                 f"Template/Input header mismatch.\n"
-                f"template: {self.template.template_header}")
+                f"template: {self.template.header}")
 
     @property
     def template(self) -> Template:

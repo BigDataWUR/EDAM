@@ -4,12 +4,13 @@ from os.path import expanduser
 
 import requests
 
-from edam.reader.models.template import Template
 from edam.reader.models.metadata import Metadata
+from edam.reader.models.template import Template
 from edam.reader.resolvers.file_resolver import FileResolver
 from edam.reader.resolvers.http_resolver import HttpResolver
 from edam.reader.resolvers.resolver import Resolver
-from edam.utilities.exceptions import UrlInputParameterDoesNotExist, InputParameterDoesNotExist, TemplateDoesNotExist, \
+from edam.utilities.exceptions import UrlInputParameterDoesNotExist, \
+    InputParameterDoesNotExist, TemplateDoesNotExist, \
     MetadataFileDoesNotExist
 
 
@@ -41,7 +42,7 @@ class ResolverFactory:
                 self._input_uri = value
             except requests.HTTPError as e:
                 raise UrlInputParameterDoesNotExist(
-                    "Can't get {input_uri}: {issue}".format(input_uri=value, issue=str(e.args)))
+                    f"Can't get {value}: {str(e.args)}")
         elif value.__contains__('db'):
             # TODO: implement this check
             pass
@@ -50,18 +51,23 @@ class ResolverFactory:
                 # user gave full path
                 self._input_uri = os.path.abspath(value)
                 self.__input_type = InputType.FILE
-            elif os.path.isfile(os.path.join(expanduser("~"), '.edam', 'inputs', value)):
+            elif os.path.isfile(
+                    os.path.join(expanduser("~"), '.edam', 'inputs', value)):
                 # user gave relative path inside the ~/edam/input directory
-                self._input_uri = os.path.join(expanduser("~"), '.edam', 'inputs', value)
+                self._input_uri = os.path.join(expanduser("~"), '.edam',
+                                               'inputs', value)
                 self.__input_type = InputType.FILE
             elif os.path.isdir(value):
                 self._input_uri = os.path.abspath(value)
                 self.__input_type = InputType.FOLDER
-            elif os.path.isdir(os.path.join(expanduser("~"), '.edam', 'inputs', value)):
-                self._input_uri = os.path.join(expanduser("~"), '.edam', 'inputs', value)
+            elif os.path.isdir(
+                    os.path.join(expanduser("~"), '.edam', 'inputs', value)):
+                self._input_uri = os.path.join(expanduser("~"), '.edam',
+                                               'inputs', value)
                 self.__input_type = InputType.FOLDER
             else:
-                raise InputParameterDoesNotExist("{input_uri} does not exist".format(input_uri=value))
+                raise InputParameterDoesNotExist(
+                    "{input_uri} does not exist".format(input_uri=value))
 
     @property
     def template(self):
@@ -73,10 +79,13 @@ class ResolverFactory:
             if os.path.isfile(value):
                 # user gave full path
                 self._template = Template(path=os.path.abspath(value))
-            elif os.path.isfile(os.path.join(expanduser("~"), '.edam', 'templates', value)):
+            elif os.path.isfile(
+                    os.path.join(expanduser("~"), '.edam', 'templates', value)):
                 # user gave relative path inside the ~/edam/templates directory
                 self._template = Template(
-                    path=os.path.abspath(os.path.join(expanduser("~"), '.edam', 'templates', value)))
+                    path=os.path.abspath(
+                        os.path.join(expanduser("~"), '.edam', 'templates',
+                                     value)))
             else:
                 raise TemplateDoesNotExist(f"{value} does not exist")
         else:
@@ -91,18 +100,22 @@ class ResolverFactory:
         if os.path.isfile(value):
             # user gave full path
             self._metadata_file = Metadata(path=os.path.abspath(value))
-        elif os.path.isfile(os.path.join(expanduser("~"), '.edam', 'metadata', value)):
+        elif os.path.isfile(
+                os.path.join(expanduser("~"), '.edam', 'metadata', value)):
             # user gave relative path inside the ~/edam/templates directory
-            self._metadata_file = Metadata(path=os.path.abspath(os.path.join(expanduser("~"),
-                                                                                 '.edam', 'metadata', value)))
+            self._metadata_file = Metadata(
+                path=os.path.abspath(os.path.join(expanduser("~"),
+                                                  '.edam', 'metadata', value)))
         else:
             raise MetadataFileDoesNotExist(f"{value} does not exist")
 
     @property
     def resolver(self) -> Resolver:
         if self.__input_type is InputType.FILE:
-            return FileResolver(template=self.template, metadata=self.metadata_file,
+            return FileResolver(template=self.template,
+                                metadata=self.metadata_file,
                                 input_uri=self.input_uri)
         elif self.__input_type is InputType.HTTP:
-            return HttpResolver()
-            pass
+            return HttpResolver(template=self.template,
+                                metadata=self.metadata_file,
+                                input_uri=self.input_uri)

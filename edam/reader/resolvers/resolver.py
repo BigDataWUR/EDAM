@@ -30,6 +30,11 @@ class Resolver(ABC):
 
     @property
     @abstractmethod
+    def content(self) -> str:
+        pass
+
+    @property
+    @abstractmethod
     def timeseries(self) -> [pd.DataFrame]:
         pass
 

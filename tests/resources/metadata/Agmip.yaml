@@ -13,7 +13,7 @@ Observables:
     ontology: https://edam.org#TemperatureMin
   - observable_id: tmax
     name: Temperature Max
-    ontology: http://sweet.com#TemperatureMaximum
+    ontology: https://sweet.com#TemperatureMaximum
   - observable_id: rain
     name: Rain
     ontology: https://edam.org#Rain

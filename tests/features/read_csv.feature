@@ -6,11 +6,11 @@ Feature: Reading CSV formatted files with EDAM
   when reading CSV files with EDAM command.
 
   Scenario Outline: <station> happy flow
-    Given EDAM starts with "<station>.csv","<station>.yaml" and "<station>.tmpl"
+    Given EDAM starts with "<filename>","<station>.yaml" and "<station>.tmpl"
     When the user attempts to import data
     Then output contains "<number>" timeseries
 
     Examples:
-      | station | number |
-      | Agmip   | 8      |
-      | Bioma   | 7      |
+      | station | filename  | number |
+      | Agmip   | Agmip.csv | 8      |
+      | uk      | uk1.txt   | 5      |

@@ -25,7 +25,7 @@ def input_with_preamble():
         path=os.path.join(resources_folder, 'metadata', 'uk.yaml'))
     template = Template(
         path=os.path.join(resources_folder, "templates", "uk.tmpl"))
-    input_uri = os.path.join(resources_folder, "inputs", "uk1.txt")
+    input_uri = os.path.join(resources_folder, "inputs", "uk.txt")
     return FileResolver(input_uri=input_uri, template=template,
                         metadata=metadata)
 

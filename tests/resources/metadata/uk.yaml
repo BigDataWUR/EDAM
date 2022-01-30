@@ -2,9 +2,9 @@ Station:
   license: Attribution
   region: United Kingdom
   url: https://www.metoffice.gov.uk/
-  tags:
-    key1:value1
-    key2:value2
+  qualifiers:
+    estimated: '*'
+	provisional: '#'
 Observables:
   - observable_id: tmin
     name: Temperature minimum
@@ -33,6 +33,3 @@ Sensors:
   - name: Generic test sensor
     manufacturer: test Consortium
     relevant_observables: tmin, tmax, rain, sun, af
-    tags:
-      old: True
-      analog: False
