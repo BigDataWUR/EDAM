@@ -3,10 +3,10 @@ from flask import request, make_response, jsonify
 from flask_googlemaps import GoogleMaps
 from flask_googlemaps import Map
 
+from edam.utilities.exceptions import InvalidUsage
 from edam.viewer.app import app, calculate_metastations, nocache, \
     calculate_templates, \
     calculate_data_and_render_from_template
-from edam.utilities.exceptions import InvalidUsage
 from edam.viewer.app.OgcSos import OgcSos
 
 GoogleMaps(app)

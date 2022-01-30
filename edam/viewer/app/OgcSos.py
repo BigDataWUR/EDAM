@@ -1,4 +1,3 @@
-from edam.reader.manage import DatabaseHandler
 from edam.settings import OGC_SOS_CONFIGURATION
 from edam.viewer.app.manage import Measurement
 
@@ -28,7 +27,7 @@ class OgcSos:
 
         self.exceptionDetails = {}
 
-        self.data = DatabaseHandler()
+        self.data = None
 
         if request in self.available_requests:
             self.request = request
@@ -48,9 +47,10 @@ class OgcSos:
 
             try:
                 station_id, sensor_id, template_id = self.procedure.split(':')
-                exists = self.data.get_helper_for_describe_sensor(station_id=station_id,
-                                                                  sensor_id=sensor_id,
-                                                                  template_id=template_id)
+                exists = self.data.get_helper_for_describe_sensor(
+                    station_id=station_id,
+                    sensor_id=sensor_id,
+                    template_id=template_id)
                 if exists:
 
                     self.sensor = exists
@@ -62,8 +62,9 @@ class OgcSos:
         elif self.request == "GetObservation":
             try:
                 station_id, sensor_id, template_id = self.procedure.split(':')
-                exists = self.data.get_helper_for_describe_sensor(station_id=station_id, sensor_id=sensor_id,
-                                                                  template_id=template_id)
+                exists = self.data.get_helper_for_describe_sensor(
+                    station_id=station_id, sensor_id=sensor_id,
+                    template_id=template_id)
                 if exists:
                     # from_time, to_time = self.eventTime.split('/')
                     # from_time = pd.to_datetime(from_time)
@@ -73,7 +74,8 @@ class OgcSos:
                     results = self.data.get_observations_by_helper_id(
                         self.helper_object.id)
                     for row in results:
-                        self.results.append(Measurement(value=row.value, timestamp=row.timestamp,
+                        self.results.append(Measurement(value=row.value,
+                                                        timestamp=row.timestamp,
                                                         observable=self.helper_object.observable,
                                                         uom=self.helper_object.uom,
                                                         station=self.helper_object.station,

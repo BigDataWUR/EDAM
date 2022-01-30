@@ -3,19 +3,24 @@ import logging
 
 from edam.reader.base import db_session
 
-database_handler = logging.getLogger('edam.reader.database_handler')
+logger = logging.getLogger('edam.reader.logger')
 
 
 def add_item(item):
     """
-    Tries to store an item in the database. In case insertion is successful
+    Stores or updates an item in the database.
+
+    In case insertion is successful
     it returns the item (complemented with the database id). In case it's not
     it will raise an exception.
-    :param item:
-    :return: item
+
+    Args:
+        item: object to be stored in database
+
+    Returns:
+        The item stored in the database (along with the ID)
     """
     session = db_session
-    # session.expire_on_commit = False
     try:
         item_dict = copy.deepcopy(item.__dict__)  # type: dict
 
@@ -28,10 +33,11 @@ def add_item(item):
             return item_exists.first()
         else:
             session.add(item)
-            database_handler.debug(f"Added {item} in db")
+            logger.debug(f"Added {item} in db")
             session.commit()
     except BaseException:
-        database_handler.error(f'Exception when adding {item}. Check __add_item__()')
+        logger.error(
+            f'Exception when adding {item}. Check __add_item__()')
         session.rollback()
         raise
     session.expunge_all()
@@ -39,19 +45,20 @@ def add_item(item):
     return item
 
 
-def add_items(items):
+def add_items(items: list) -> list:
     """
-    Tries to store an item in the database. In case insertion is successful
-    it returns the item (complemented with the database id). In case it's not
-    it will raise an exception.
-    :param items:
-    :return: item
-    """
-    items_to_return = list()
+    Adds a list of items in database.
 
-    for item in items:
-        items_to_return.append(add_item(item))
-    return items_to_return
+    Calls the `add_item` on multiple items in a list.
+
+    Args:
+        items: list with items to be added in database
+
+    Returns:
+        The items as added in the database
+    """
+
+    return list(map(add_item, items))
 
 
 def update_object(item):
@@ -60,14 +67,3 @@ def update_object(item):
     session.merge(item)
     session.commit()
     session.close()
-
-
-def update_item(item, metadata_dict):
-    session = db_session
-    returned_item = session.query(item.__class__).filter(
-        item.__class__.id == item.id).first()  # type: item.__class__
-    if returned_item:
-        returned_item.update_metadata(metadata_dict)
-        session.commit()
-        database_handler.debug(f"Updated {item}")
-        session.close()

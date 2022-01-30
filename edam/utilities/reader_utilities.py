@@ -68,8 +68,8 @@ def remove_template_placeholders_from_string(string, separator="({.*?}+)"):
 def template_matches_input_file(template_file: Template, data_input: Template):
     """
     We are going to work with every line (i.e. list element) individually.
-    Specifically, we are going to check each of the lines against input files.
-    If all lines match to Va given input file, it means that we can parse data
+    Specifically, we are going to check each of the lines against input_file files.
+    If all lines match to Va given input_file file, it means that we can parse data
     out of it.
 
     :param template_file: The name of the template (e.g. Yucheng.tmpl)
@@ -165,7 +165,7 @@ def generate_uri(uri: str, static_variables=None):
 
     This version supports only for numerical operations.
 
-    It also exports a list of uris based on a static input.
+    It also exports a list of uris based on a static input_file.
     A URI contains a placeholder (i.e. https://example.com/{$var}).
     User defines also a set of vars ("one, two, three, four").
 

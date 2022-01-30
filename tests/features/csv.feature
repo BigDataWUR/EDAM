@@ -1,5 +1,5 @@
-# Created by argyriossamourkasidis at 04/11/2021
-#Feature: Reading data with EDAM
+# Created by Argyris at 04/11/2021
+# Feature: Reading data with EDAM
 @csv @reader
 Feature: Reading CSV formatted files with EDAM
   We'd like to check the happy flow

@@ -633,7 +633,7 @@
                 a = a.which;
                 switch (!0) {
                     case !!~[13].indexOf(a):
-                        return a = b("input:visible,textarea:visible"), d.trigger("close.xdsoft"), a.eq(a.index(this) + 1).focus(), !1;
+                        return a = b("input_file:visible,textarea:visible"), d.trigger("close.xdsoft"), a.eq(a.index(this) + 1).focus(), !1;
                     case !!~[9].indexOf(a):
                         return d.trigger("close.xdsoft"), !0
                 }
@@ -799,7 +799,7 @@ Date.parseDate = function (b, c) {
 Date.createParser = function (b) {
     var c = "parse" + Date.parseFunctions.count++, k = Date.parseRegexes.length, g = 1;
     Date.parseFunctions[b] = c;
-    for (var c = "Date." + c + " = function(input) {\nvar y = -1, m = -1, d = -1, h = -1, i = -1, s = -1, z = -1;\nvar d = new Date();\ny = d.getFullYear();\nm = d.getMonth();\nd = d.getDate();\nvar results = input.match(Date.parseRegexes[" + k + "]);\nif (results && results.length > 0) {", a = "", q = !1, m = "", n = 0; n < b.length; ++n)m = b.charAt(n), q || "\\" != m ? q ? (q = !1, a += String.escape(m)) : (obj = Date.formatCodeToRegex(m,
+    for (var c = "Date." + c + " = function(input_file) {\nvar y = -1, m = -1, d = -1, h = -1, i = -1, s = -1, z = -1;\nvar d = new Date();\ny = d.getFullYear();\nm = d.getMonth();\nd = d.getDate();\nvar results = input_file.match(Date.parseRegexes[" + k + "]);\nif (results && results.length > 0) {", a = "", q = !1, m = "", n = 0; n < b.length; ++n)m = b.charAt(n), q || "\\" != m ? q ? (q = !1, a += String.escape(m)) : (obj = Date.formatCodeToRegex(m,
         g), g += obj.g, a += obj.s, obj.g && obj.c && (c += obj.c)) : q = !0;
     c += "if (y > 0 && z > 0){\nvar doyDate = new Date(y,0);\ndoyDate.setDate(z);\nm = doyDate.getMonth();\nd = doyDate.getDate();\n}if (y > 0 && m >= 0 && d > 0 && h >= 0 && i >= 0 && s >= 0)\n{return new Date(y, m, d, h, i, s);}\nelse if (y > 0 && m >= 0 && d > 0 && h >= 0 && i >= 0)\n{return new Date(y, m, d, h, i);}\nelse if (y > 0 && m >= 0 && d > 0 && h >= 0)\n{return new Date(y, m, d, h);}\nelse if (y > 0 && m >= 0 && d > 0)\n{return new Date(y, m, d);}\nelse if (y > 0 && m >= 0)\n{return new Date(y, m);}\nelse if (y > 0)\n{return new Date(y);}\n}return null;}";
     Date.parseRegexes[k] = new RegExp("^" + a + "$");
