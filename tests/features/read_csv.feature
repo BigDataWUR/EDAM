@@ -5,7 +5,12 @@ Feature: Reading CSV formatted files with EDAM
   We'd like to check the happy flow
   when reading CSV files with EDAM command.
 
-  Scenario: Agmip happy flow
-    Given EDAM starts with "Agmip.csv","Agmip.yaml" and "Agmip.tmpl"
+  Scenario Outline: <station> happy flow
+    Given EDAM starts with "<station>.csv","<station>.yaml" and "<station>.tmpl"
     When the user attempts to import data
-    Then output contains "8" timeseries
+    Then output contains "<number>" timeseries
+
+    Examples:
+      | station | number |
+      | Agmip   | 8      |
+      | Bioma   | 7      |
