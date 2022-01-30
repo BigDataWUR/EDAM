@@ -5,7 +5,7 @@ Feature: Reading CSV formatted files with EDAM
   We'd like to check the happy flow
   when reading CSV files with EDAM command.
 
-  Scenario: Yucheng happy flow
-    Given EDAM starts with "Yucheng.met","yucheng.yml" and "yucheng.tmpl"
+  Scenario: Agmip happy flow
+    Given EDAM starts with "Agmip.csv","Agmip.yaml" and "Agmip.tmpl"
     When the user attempts to import data
-    Then output contains "X" lines
+    Then output contains "8" timeseries
