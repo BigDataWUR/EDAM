@@ -4,11 +4,11 @@ from os.path import expanduser
 
 import requests
 
-from edam.reader.models.Template import Template
-from edam.reader.models.Metadata import Metadata
-from edam.reader.resolvers.FileResolver import FileResolver
-from edam.reader.resolvers.HttpResolver import HttpResolver
-from edam.reader.resolvers.Resolver import Resolver
+from edam.reader.models.template import Template
+from edam.reader.models.metadata import Metadata
+from edam.reader.resolvers.file_resolver import FileResolver
+from edam.reader.resolvers.http_resolver import HttpResolver
+from edam.reader.resolvers.resolver import Resolver
 from edam.utilities.exceptions import UrlInputParameterDoesNotExist, InputParameterDoesNotExist, TemplateDoesNotExist, \
     MetadataFileDoesNotExist
 

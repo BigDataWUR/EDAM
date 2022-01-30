@@ -4,13 +4,13 @@ import copy
 import numpy as np
 import pandas as pd
 from sqlalchemy.dialects import sqlite
-from edam.reader.models.Station import Station
-from edam.reader.models.Observation import Observation
-from edam.reader.models.AbstractObservable import AbstractObservable
-from edam.reader.models.Sensor import Sensor
+from edam.reader.models.station import Station
+from edam.reader.models.observation import Observation
+from edam.reader.models.observable import AbstractObservable
+from edam.reader.models.sensor import Sensor
 from edam.reader.base import db_session as session
 from edam.reader.base import engine
-from edam.utilities.utilities import find_templates_in_directory
+from edam.utilities.reader_utilities import find_templates_in_directory
 
 
 class Measurement(object):

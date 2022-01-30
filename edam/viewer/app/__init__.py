@@ -12,9 +12,9 @@ from flask import make_response
 from flask_caching import Cache
 from flask_sqlalchemy import SQLAlchemy
 
-import edam.viewer.config as config
-from edam.reader.models.Station import Station
+from edam.reader.models.station import Station
 from edam.settings import home_directory
+from edam.viewer import config
 from edam.viewer.app.manage import DatabaseHandler as Data
 from edam.viewer.app.manage import Measurement
 from edam.viewer.app.utilities import check_template_source_compatibility
@@ -31,7 +31,8 @@ def copytree(src, dst, symlinks=False, ignore=None):
                 shutil.copy2(s, d)
 
 
-app = Flask(__name__, static_folder=os.path.join(home_directory, '.viewer/', 'static'),
+app = Flask(__name__,
+            static_folder=os.path.join(home_directory, '.viewer/', 'static'),
             static_url_path=os.path.join(home_directory, '.viewer/'))
 app.config.from_object(config)
 
@@ -77,10 +78,12 @@ def calculate_templates():
 
 def calculate_data_and_render_from_template(template_name, station_id):
     station = data.retrieve_object_from_id(table='Station',
-                                           object_id=int(station_id))  # type: Station
+                                           object_id=int(
+                                               station_id))  # type: Station
     template = data
-    compatible, list_template_for_arguments, template_dictionary = check_template_source_compatibility(
-        template=template_name, station=station)
+    compatible, list_template_for_arguments, template_dictionary = \
+        check_template_source_compatibility(
+            template=template_name, station=station)
     if compatible:
         station, chunk = data.retrieve_stations_data(
             station, list_template_for_arguments)
@@ -135,7 +138,8 @@ def same_timestamp(*args):
 app.jinja_env.globals.update(same_timestamp=same_timestamp)
 
 
-def resample(df: pd.DataFrame, rule, how=None, axis=0, fill_method=None, closed=None, label=None,
+def resample(df: pd.DataFrame, rule, how=None, axis=0, fill_method=None,
+             closed=None, label=None,
              convention='start',
              kind=None, loffset=None, limit=None, base=0, on=None, level=None):
     # observables_list = list(df)
@@ -155,17 +159,18 @@ def resample(df: pd.DataFrame, rule, how=None, axis=0, fill_method=None, closed=
     try:
         for observable in observables_list:
             df[observable] = df[observable].apply(lambda x: float(x))
-            
+
     except Exception as e:
         print(e.args)
         print(
             "I can't transform string value to float. "
             "Wind maybe? Check edam.viewer.__init__.py - downsample func")
         exit()
-    resampled = df.resample("A", None, axis, fill_method, closed, label, convention, kind, loffset,
+    resampled = df.resample("A", None, axis, fill_method, closed, label,
+                            convention, kind, loffset,
                             limit, base, on,
                             level)
-    
+
     resampled = resampled.mean()
     resampled = resampled.round(3)
     resampled = resampled.fillna('---')
@@ -175,7 +180,7 @@ def resample(df: pd.DataFrame, rule, how=None, axis=0, fill_method=None, closed=
             # resampled = getattr(resampled, "interpolate")(method)
             resampled = getattr(resampled, how)()
     resampled["timestamp"] = resampled.index
-    
+
     for observable in observables_list:
         resampled[observable] = resampled[observable].apply(
             lambda x: Measurement(x))

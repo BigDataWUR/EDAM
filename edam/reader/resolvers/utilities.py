@@ -9,8 +9,8 @@ from influxdb_client.client.write_api import PointSettings, \
 import pandas as pd
 
 from edam.reader.database_handler import add_items
-from edam.reader.models.Observation import Observation
-from edam.reader.resolvers.Resolver import Resolver
+from edam.reader.models.observation import Observation
+from edam.reader.resolvers.resolver import Resolver
 
 bucket = "edam"
 org = "my-org"

@@ -1,8 +1,8 @@
 import os
 
-from edam.reader.resolvers.FileResolver import FileResolver
-from edam.reader.resolvers.HttpResolver import HttpResolver
-from edam.reader.resolvers.ResolverFactory import ResolverFactory
+from edam.reader.resolvers.file_resolver import FileResolver
+from edam.reader.resolvers.http_resolver import HttpResolver
+from edam.reader.resolvers.resolver_factory import ResolverFactory
 from tests import inputs_folder, templates_folder, metadata_folder
 
 

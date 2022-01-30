@@ -5,9 +5,9 @@ import re
 import pandas as pd
 
 from edam.reader.database_handler import add_item, add_items
-from edam.reader.models.Template import Template
-from edam.reader.models.Metadata import Metadata
-from edam.reader.resolvers.Resolver import Resolver
+from edam.reader.models.template import Template
+from edam.reader.models.metadata import Metadata
+from edam.reader.resolvers.resolver import Resolver
 from edam.reader.resolvers.utilities import extract_station_from_preamble
 from edam.utilities.exceptions import TemplateInputHeaderMismatch
 
@@ -32,23 +32,28 @@ class FileResolver(Resolver):
 
     @property
     def timeseries(self):
-        timestamp_columns = list(filter(lambda column: "timestamp." in column, self.template.used_columns))
+        timestamp_columns = list(filter(lambda column: "timestamp." in column,
+                                        self.template.used_columns))
 
         contents = self.content_as_list[self.template.header_line:]
         if contents[0].count(',') == 0:
-            contents = '\n'.join(list(map(lambda line: re.sub(r'\s+', ',', line).rstrip(',').lstrip(','), contents)))
+            contents = '\n'.join(list(
+                map(lambda line: re.sub(r'\s+', ',', line).rstrip(',').lstrip(
+                    ','), contents)))
         else:
             contents = '\n'.join(contents)
         if self.header != '':
-            df = pd.read_csv(io.StringIO(contents), names=self.template.used_columns, skiprows=[0],
+            df = pd.read_csv(io.StringIO(contents),
+                             names=self.template.used_columns, skiprows=[0],
                              parse_dates={"timestamp": timestamp_columns},
                              na_values=self.metadata.station.missing_data)
         else:
-            df = pd.read_csv(io.StringIO(contents), names=self.template.used_columns,
+            df = pd.read_csv(io.StringIO(contents),
+                             names=self.template.used_columns,
                              parse_dates={"timestamp": timestamp_columns},
                              na_values=self.metadata.station.missing_data)
         df.set_index(keys=['timestamp'], inplace=True)
-        timeseries = dict()
+        timeseries = {}
         for variable in self.template.variables:
             if variable == "timestamp":
                 continue
@@ -57,14 +62,15 @@ class FileResolver(Resolver):
                 if qualifier_name == "missing_data":
                     continue
                 if timeseries[variable].dtype is not float:
-                    timeseries[variable] = timeseries[variable].apply(lambda x: float(str(x).rstrip(qualifier)))
+                    timeseries[variable] = timeseries[variable].apply(
+                        lambda x: float(str(x).rstrip(qualifier)))
         return timeseries
 
     @property
     def preamble(self) -> str:
         preamble = ''.join(self.content_as_list[:self.template.header_line])
         if preamble == '':
-            return None
+            return ''
         return preamble
 
     def complement_stations_from_preamble(self):
@@ -84,14 +90,14 @@ class FileResolver(Resolver):
 
     @content_as_list.setter
     def content_as_list(self, file_uri):
-        with open(file_uri, 'r') as f:
-            self._content_as_list = f.readlines()
+        with open(file_uri, 'r') as file:
+            self._content_as_list = file.readlines()
 
     @property
     def header(self):
         template_header_line = self.template.header_line
-        with open(self.input_uri, 'r') as f:
-            for index, line in enumerate(f):
+        with open(self.input_uri, 'r') as file:
+            for index, line in enumerate(file):
                 if index == int(template_header_line):
                     header = line.strip('\r\n')
                     break
@@ -99,8 +105,9 @@ class FileResolver(Resolver):
         if self.template.header == header:
             return header
         else:
-            raise TemplateInputHeaderMismatch(f"Template/Input header mismatch.\n"
-                                              f"template: {self.template.template_header}")
+            raise TemplateInputHeaderMismatch(
+                f"Template/Input header mismatch.\n"
+                f"template: {self.template.template_header}")
 
     @property
     def template(self) -> Template:

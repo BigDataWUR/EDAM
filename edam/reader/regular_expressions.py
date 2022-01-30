@@ -4,7 +4,8 @@ variable_name = re.compile(r"{{(.*?)}}")
 for_loop_variables = re.compile(r"{%\s?for (.*?) in (.*?)%}")
 end_for_loop = re.compile(r"{%endfor%}")
 template_file_header = r"((.*\n){1}){%\s?for.*%}"
-# This var corresponds to observables which value is located in more than one columns
+# This var corresponds to observables which value is located in more than
+# one columns
 # In our templating language they are represented as:
 # {{observable.value[0]}},{{observable.value[1]}}, etc.
 # With that regex we are going to determine the existence of those observables

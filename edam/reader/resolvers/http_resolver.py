@@ -1,5 +1,7 @@
-from edam.reader.models import Template, Metadata
-from edam.reader.resolvers.Resolver import Resolver
+from edam.reader.models import template, metadata
+from edam.reader.models.metadata import Metadata
+from edam.reader.models.template import Template
+from edam.reader.resolvers.resolver import Resolver
 
 
 class HttpResolver(Resolver):

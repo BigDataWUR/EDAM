@@ -6,22 +6,40 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy import Column, Integer, String, Boolean, Float
 
 from edam.reader.base import Base
-from edam.reader.database_handler import update_item, update_object
+from edam.reader.database_handler import update_object
 
-module_logger = logging.getLogger('edam.reader.models')
+logger = logging.getLogger('edam.reader.models.station')
 
 
 class Station(Base):
-    __tablename__ = "Station"
     """
-    :var id: A unique id among other Stations
-    :var name: The name of the Station
-    :var mobile: Boolean, i.e. True of False
-    :var polygon: :If mobile=True, then a polygon is given
-    :var latitude:
-    :var longitude:
-    """
+    Represents a Station.
 
+    This is an ORM class which represents a station along with its metadata.
+    According to the EDAM conceptual model, a station can be stationary or
+    moving.
+
+    Attributes:
+        name: The name of the station
+        mobile: Boolean value to define whether it's a stationary or moving
+            station
+        location: string attribute which describes the location where the
+            station is situated
+        latitude: float attribute which represent the station's latitude
+        longitude: float attribute which represent the station's longitude
+        region: string attribute which describes the region where the
+            station is situated. TODO: Obsolete??
+        license: string attribute which represents the license of the data
+            that the station holds
+        url: string attribute of the station's url (if applicable)
+        tags: dict attribute which represents any other tags which are not
+            explicitly defined
+        qualifiers: dict attribute which represents any qualifiers for the
+            station's data. A standard qualifier is `missing_data`. For the
+            rest, the `key` of this attribute is the qualifier (e.g. `*`) and
+            the `value` the qualifier (e.g. `estimated`)
+    """
+    __tablename__ = "Station"
     id = Column(Integer, primary_key=True)
     name = Column(String(80))
     mobile = Column(Boolean)
@@ -41,26 +59,19 @@ class Station(Base):
                     temp = getattr(self, key)  # type: dict
                     try:
                         value.update(temp)
-                    except ValueError as e:
-                        module_logger.warning(f"{e}")
+                    except ValueError as exception:
+                        logger.warning(f"{exception}")
                 setattr(self, key, value)
             except AttributeError:
-                module_logger.warning(f"{key} does not exist")
+                logger.warning(f"{key} does not exist")
         update_object(self)
 
     def __init__(self,
-                 name=None, mobile=False,
-                 location=None, latitude=None,
-                 longitude=None, region=None,
-                 license=None, url=None,
-                 qualifiers=None, tags=None):
-        """
-        :param name:
-        :param mobile:
-        :param latitude:
-        :param longitude:
-        :param tags:
-        """
+                 name: str = None, mobile: bool = False,
+                 location: str = None, latitude: float = None,
+                 longitude: float = None, region: str = None,
+                 license: str = None, url: str = None,
+                 qualifiers: dict = None, tags: dict = None):
         if tags is None:
             tags = dict()
         self.name = name

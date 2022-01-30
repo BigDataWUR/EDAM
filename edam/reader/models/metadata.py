@@ -3,10 +3,10 @@ import os
 import yaml
 
 from edam.reader.database_handler import add_item
-from edam.reader.models.AbstractObservable import AbstractObservable
-from edam.reader.models.UnitOfMeasurement import UnitOfMeasurement
-from edam.reader.models.Sensor import Sensor
-from edam.reader.models.Station import Station
+from edam.reader.models.observable import AbstractObservable
+from edam.reader.models.unit_of_measurement import UnitOfMeasurement
+from edam.reader.models.sensor import Sensor
+from edam.reader.models.station import Station
 
 
 class Metadata:

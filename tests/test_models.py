@@ -2,12 +2,12 @@ import os
 
 import pytest
 
-from edam.reader.models.Metadata import Metadata, Station
-from edam.reader.models.Station import Station
-from edam.reader.models.Sensor import Sensor
-from edam.reader.models.AbstractObservable import AbstractObservable
-from edam.reader.models.Template import Template
-from edam.reader.resolvers.ResolverFactory import ResolverFactory
+from edam.reader.models.metadata import Metadata
+from edam.reader.models.observable import AbstractObservable
+from edam.reader.models.sensor import Sensor
+from edam.reader.models.station import Station
+from edam.reader.models.template import Template
+from edam.reader.resolvers.resolver_factory import ResolverFactory
 from edam.utilities.exceptions import InputParameterDoesNotExist
 from tests import metadata_folder, resources_folder
 
@@ -53,7 +53,8 @@ def test_metadata_file_get_sensors(metadata_object):
 
 def test_metadata_file_get_observables(metadata_object):
     observables = metadata_object.observables
-    assert type(observables) is dict and type(observables["dewp"]) is AbstractObservable
+    assert type(observables) is dict and type(
+        observables["dewp"]) is AbstractObservable
 
 
 @pytest.mark.skip(reason="Local setup fails to resolve http")
@@ -86,7 +87,9 @@ def test_input_uri_folder_incorrect():
 
 
 def test_template_header(template_object):
-    assert template_object.header == "@DATE    YYYY  MM  DD  SRAD  TMAX  TMIN  RAIN  WIND  DEWP  VPRS  RHUM"
+    expected = "@DATE    YYYY  MM  DD  SRAD  TMAX  TMIN  " \
+               "RAIN  WIND  DEWP  VPRS  RHUM"
+    assert template_object.header == expected
 
 
 def test_template_preamble(template_object):
@@ -94,14 +97,15 @@ def test_template_preamble(template_object):
 
 
 def test_template_contents(template_object):
-    assert template_object.stripped_contents == "1980001  {{timestamp.year}}   {{timestamp.month}}   {{timestamp.day}}  {{srad.value}}  {{tmax.value}}  {{tmin.value}}   {{rain.value}}   {{wind.value}}   {{dewp.value}}   {{vprs.value}}    {{rhum.value}}"
+    expected = "1980001  {{timestamp.year}}   " \
+               "{{timestamp.month}}   {{timestamp.day}}  " \
+               "{{srad.value}}  {{tmax.value}}  {{tmin.value}}   " \
+               "{{rain.value}}   {{wind.value}}   {{dewp.value}}   " \
+               "{{vprs.value}}    {{rhum.value}}"
+    assert template_object.stripped_contents == expected
 
 
 def test_template_variables(template_object):
-    assert set(template_object.variables) == {'rain', 'vprs', 'srad', 'tmax', 'tmin', 'wind', 'dewp', 'timestamp',
-                                              'rhum'}
-
-
-# def test_template_used_columns(template_object):
-#     assert set(template_object.used_columns) == {'rain', 'vprs', 'srad', 'tmax', 'tmin', 'wind', 'dewp', 'timestamp',
-#                                                  'rhum'}
+    expected = {'rain', 'vprs', 'srad', 'tmax',
+                'tmin', 'wind', 'dewp', 'timestamp', 'rhum'}
+    assert set(template_object.variables) == expected

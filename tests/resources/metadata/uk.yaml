@@ -2,7 +2,6 @@ Station:
   license: Attribution
   region: United Kingdom
   url: https://www.metoffice.gov.uk/
-  missing_data: ---
   tags:
     key1:value1
     key2:value2

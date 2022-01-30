@@ -2,7 +2,8 @@ from abc import ABC, abstractmethod
 
 import pandas as pd
 
-from edam.reader.models import Template, Metadata
+from edam.reader.models.metadata import Metadata
+from edam.reader.models.template import Template
 
 
 class Resolver(ABC):

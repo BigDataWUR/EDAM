@@ -3,9 +3,10 @@ from flask import request, make_response, jsonify
 from flask_googlemaps import GoogleMaps
 from flask_googlemaps import Map
 
-from edam.viewer.app import app, calculate_metastations, nocache, calculate_templates, \
+from edam.viewer.app import app, calculate_metastations, nocache, \
+    calculate_templates, \
     calculate_data_and_render_from_template
-from edam.viewer.app.InvalidUsage import InvalidUsage
+from edam.utilities.exceptions import InvalidUsage
 from edam.viewer.app.OgcSos import OgcSos
 
 GoogleMaps(app)
@@ -20,14 +21,18 @@ def mapview():
     markers = list()
     for station_id in metastations:
         station_dict = metastations[station_id]
-        if station_dict['latitude'] is not None and station_dict['longitude'] is not None:
+        if station_dict['latitude'] is not None and station_dict[
+            'longitude'] is not None:
             observables = ', '.join(
-                [station_dict['observables'][temp_id]['observable'] for temp_id in
+                [station_dict['observables'][temp_id]['observable'] for temp_id
+                 in
                  station_dict['observables']])
 
-            infobox = '<p><b>Station</b>: <a href="%sStations/%s" target="_blank">%s</a></p>' \
+            infobox = '<p><b>Station</b>: <a href="%sStations/%s" ' \
+                      'target="_blank">%s</a></p>' \
                       '<p><b>Quantities</b>: %s</p>' % (
-                          request.url_root, station_id, station_dict['name'], observables)
+                          request.url_root, station_id,
+                          station_dict['name'], observables)
             temp_dict = {
                 'lat': station_dict['latitude'],
                 'lng': station_dict['longitude'],
@@ -109,12 +114,14 @@ def get_data():
         response.headers['Content-type'] = 'text/plain'
         response.headers['Cache-Control'] = 'public, max-age=0'
 
-        # response.headers['Content-Disposition'] = "attachment; filename=test.csv"
+        # response.headers['Content-Disposition'] = "attachment;
+        # filename=test.csv"
         return response
     else:
         if station:
             raise InvalidUsage(
-                '%s template and %s station are not compatible' % (template_name, station.name),
+                '%s template and %s station are not compatible' %
+                (template_name, station.name),
                 status_code=410)
         else:
             raise InvalidUsage('No station', status_code=410)
@@ -167,6 +174,3 @@ def sos():
 
 if __name__ == "__main__":
     pass
-    # app.jinja_env.auto_reload = True
-    # app.config['TEMPLATES_AUTO_RELOAD'] = True
-    # app.run(debug=True)

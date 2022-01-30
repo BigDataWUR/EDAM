@@ -9,7 +9,7 @@ import jinja2schema
 from edam.reader.regular_expressions import template_file_header, for_loop_variables, var_for_line
 from edam.utilities.exceptions import ErrorWithTemplate
 
-module_logger = logging.getLogger('edam.reader.models')
+logger = logging.getLogger('edam.reader.models.template')
 
 
 class Template:
@@ -39,7 +39,7 @@ class Template:
         if matches:
             header = matches[0][0].strip("\r\n")
             return header
-        module_logger.warning(f"{self.filename} does not have header")
+        logger.warning(f"{self.filename} does not have header")
 
     @property
     def header_line(self):

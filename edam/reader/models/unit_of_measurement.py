@@ -4,6 +4,16 @@ from edam.reader.base import Base
 
 
 class UnitOfMeasurement(Base):
+    """
+    Represents a unit of measurement.
+
+    This is an ORM class which represents a unit of measurement.
+
+    Attributes:
+        name: The name of the unit (e.g. Celcious)
+        ontology: An ontology for this unit
+        symbol: The symbol for the unit (e.g. C)
+    """
     __tablename__ = "UnitOfMeasurement"
     id = Column(Integer, primary_key=True)
     name = Column(String(60))
