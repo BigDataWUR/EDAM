@@ -6,7 +6,8 @@ from contextlib import contextmanager
 
 import jinja2schema
 
-from edam.reader.regular_expressions import template_file_header, for_loop_variables, var_for_line
+from edam.reader.regular_expressions import template_file_header, \
+    for_loop_variables, var_for_line
 from edam.utilities.exceptions import ErrorWithTemplate
 
 logger = logging.getLogger('edam.reader.models.template')
@@ -50,11 +51,13 @@ class Template:
 
     @property
     def dataframe_header(self):
-        return list(filter(lambda x: x != '', self.stripped_contents.split(self.delimiter)))
+        return list(filter(lambda x: x != '',
+                           self.stripped_contents.split(self.delimiter)))
 
     @property
     def used_columns(self):
-        columns = list(filter(lambda x: x != '', self.stripped_contents.split(self.delimiter)))
+        columns = list(filter(lambda x: x != '',
+                              self.stripped_contents.split(self.delimiter)))
         used_columns = list()
         for column in columns:
             variable = jinja2schema.infer(column)

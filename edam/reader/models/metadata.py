@@ -4,9 +4,9 @@ import yaml
 
 from edam.reader.database_handler import add_item
 from edam.reader.models.observable import AbstractObservable
-from edam.reader.models.unit_of_measurement import UnitOfMeasurement
 from edam.reader.models.sensor import Sensor
 from edam.reader.models.station import Station
+from edam.reader.models.unit_of_measurement import UnitOfMeasurement
 
 
 class Metadata:
@@ -15,18 +15,18 @@ class Metadata:
 
     @property
     def restructured_metadata(self):
-        restructured_metadata = dict()
+        restr_meta = dict()
         sensors = self.sensors
         observables = self.observables
-        units_of_measurement = self.units_of_measurement
-        for observable_id in self.observable_ids:
-            restructured_metadata['station'] = self.station
-            restructured_metadata[observable_id] = dict()
-            restructured_metadata[observable_id]['sensor'] = sensors[observable_id]
-            restructured_metadata[observable_id]['observable'] = observables[observable_id]
-            restructured_metadata[observable_id]['unit_of_measurement'] = units_of_measurement[observable_id]
+        unit = self.units_of_measurement
+        for obs_id in self.observable_ids:
+            restr_meta['station'] = self.station
+            restr_meta[obs_id] = dict()
+            restr_meta[obs_id]['sensor'] = sensors[obs_id]
+            restr_meta[obs_id]['observable'] = observables[obs_id]
+            restr_meta[obs_id]['unit_of_measurement'] = unit[obs_id]
 
-        return restructured_metadata
+        return restr_meta
 
     @property
     def filename(self):
@@ -57,7 +57,8 @@ class Metadata:
 
     @property
     def observables(self) -> [AbstractObservable]:
-        return {item.pop('observable_id'): add_item(AbstractObservable(**item)) for item in self.contents['Observables']}
+        return {item.pop('observable_id'): add_item(AbstractObservable(**item))
+                for item in self.contents['Observables']}
 
     @property
     def sensors(self):
@@ -65,18 +66,20 @@ class Metadata:
         if self.contents['Sensors'] is None:
             return sensors
         for sensor in self.contents['Sensors']:
-            relevant_observables = map(lambda rel_obs: rel_obs.strip().lstrip().rstrip(),
-                                       sensor.pop('relevant_observables').split(','))
+            relevant_observables = map(
+                lambda rel_obs: rel_obs.strip().lstrip().rstrip(),
+                sensor.pop('relevant_observables').split(','))
             for observable_id in relevant_observables:
                 sensors[observable_id] = add_item(Sensor(**sensor))
         return sensors
 
     @property
     def units_of_measurement(self):
-        units_of_measurement = dict()
+        unit = dict()
         for sensor in self.contents['Units of Measurement']:
-            relevant_observables = map(lambda rel_obs: rel_obs.strip().lstrip().rstrip(),
-                                       sensor.pop('relevant_observables').split(','))
+            relevant_observables = map(
+                lambda rel_obs: rel_obs.strip().lstrip().rstrip(),
+                sensor.pop('relevant_observables').split(','))
             for observable_id in relevant_observables:
-                units_of_measurement[observable_id] = add_item(UnitOfMeasurement(**sensor))
-        return units_of_measurement
+                unit[observable_id] = add_item(UnitOfMeasurement(**sensor))
+        return unit

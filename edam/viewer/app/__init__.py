@@ -199,6 +199,3 @@ def resample(df: pd.DataFrame, rule, how=None, axis=0, fill_method=None,
 
 app.jinja_env.globals.update(resample=resample)
 
-# def jsoni(uni):
-#     return json.loads(uni, object_hook=json_util.object_hook)
-# app.jinja_env.globals.update(jsoni = jsoni)

@@ -150,11 +150,6 @@ class DatabaseHandler(object):
 
 if __name__ == "__main__":
     test = DatabaseHandler()
-    # test.retrieve_stations()
-    # template_for_arguments = "timestamp,radn,maxt,mint,rain,wind,RH"
-    # list_template_for_arguments = template_for_arguments.split(',')
-    # station_object = test.retrieve_object_from_id(table='Station', object_id=1)  # type: Station
-    # results = test.retrieve_stations_data(station_object, list_template_for_arguments)
     results = test.retrieve_templates()
     print(results)
 
