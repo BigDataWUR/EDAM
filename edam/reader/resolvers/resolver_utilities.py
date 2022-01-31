@@ -1,16 +1,20 @@
+import io
 import itertools
 import re
 from datetime import datetime
+from typing import TYPE_CHECKING
 
-from influxdb_client import WritePrecision
 import influxdb_client
+import pandas as pd
+from influxdb_client import WritePrecision
 from influxdb_client.client.write_api import PointSettings, \
     WriteOptions, WriteType
-import pandas as pd
 
 from edam.reader.database_handler import add_items
 from edam.reader.models.observation import Observation
-from edam.reader.resolvers.resolver import Resolver
+
+if TYPE_CHECKING:
+    from edam.reader.resolvers.resolver import Resolver
 
 bucket = "edam"
 org = "my-org"
@@ -19,12 +23,17 @@ token = "aRMDKzxX01mfEahbo5wOSZHhsaIvIY4Ucw0Np7csotqbvUbuli04F14mZiqfYZZ4tsM43VP
 url = "http://127.0.0.1:8086"
 
 
-def store_data_sqlite(resolver: Resolver):
+def store_data_sqlite(resolver: "Resolver"):
     for measurement, dataframe in resolver.timeseries.items():
         observations = []
-        abstract_observable_id = resolver.metadata.restructured_metadata[measurement]['observable'].id
-        sensor_id = resolver.metadata.restructured_metadata[measurement]['sensor'].id
-        unit_of_measurement_id = resolver.metadata.restructured_metadata[measurement]['unit_of_measurement'].id
+        abstract_observable_id = \
+            resolver.metadata.restructured_metadata[measurement][
+                'observable'].id
+        sensor_id = resolver.metadata.restructured_metadata[measurement][
+            'sensor'].id
+        unit_of_measurement_id = \
+            resolver.metadata.restructured_metadata[measurement][
+                'unit_of_measurement'].id
         station_id = resolver.metadata.station.id
         for timestamp, value in dataframe.to_dict().items():
             observations.append(Observation(timestamp=timestamp,
@@ -34,10 +43,52 @@ def store_data_sqlite(resolver: Resolver):
                                             unit_id=unit_of_measurement_id,
                                             station_id=station_id))
         add_items(observations)
-        print("x")
 
 
-def store_data_influx(resolver: Resolver):
+def generate_timeseries(resolver: "Resolver") -> [pd.Series]:
+    timestamp_columns = list(filter(lambda column: "timestamp." in column,
+                                    resolver.template.used_columns))
+
+    contents = resolver.content_as_list[resolver.template.header_line:]
+    if contents[0].count(',') == 0:
+        contents = '\n'.join(list(
+            map(lambda line: re.sub(r'\s+', ',', line.lstrip()).rstrip(
+                ',').lstrip(
+                ','), contents)))
+    else:
+        contents = '\n'.join(contents)
+
+    dataframe_kwargs = {
+        'filepath_or_buffer': io.StringIO(contents),
+        'names': resolver.template.used_columns,
+        'parse_dates': {"timestamp": timestamp_columns},
+        'na_values': resolver.metadata.station.missing_data,
+        "error_bad_lines": False
+    }
+    if resolver.header != '':
+        dataframe_kwargs["skiprows"] = [0]
+
+    df = pd.read_csv(**dataframe_kwargs)
+    df.set_index(keys=['timestamp'], inplace=True)
+    timeseries = {}
+    for variable in resolver.template.variables:
+        if variable == "timestamp":
+            continue
+        timeseries[variable] = df[variable]
+        qualifiers = resolver.metadata.station.qualifiers.items()
+        for qualifier_name, qualifier in qualifiers:
+            if qualifier_name == "missing_data":
+                continue
+
+            timeseries[variable] = timeseries[variable].apply(
+                lambda x: str(x).rstrip(qualifier))
+        if timeseries[variable].dtype is not float:
+            timeseries[variable] = timeseries[variable].apply(
+                lambda x: float(x))
+    return timeseries
+
+
+def store_data_influx(resolver: "Resolver"):
     for measurement, dataframe in resolver.timeseries.items():
         dataframe.index = pd.to_datetime(dataframe.index, unit='s')
         try:
@@ -45,7 +96,8 @@ def store_data_influx(resolver: Resolver):
         except:
             sensor = f"Unknown {measurement} sensor"
         point_settings = PointSettings()
-        point_settings.add_default_tag("station", resolver.metadata.station.name)
+        point_settings.add_default_tag("station",
+                                       resolver.metadata.station.name)
         point_settings.add_default_tag("sensor", sensor)
         with influxdb_client.InfluxDBClient(url=url,
                                             token=token,
@@ -56,12 +108,13 @@ def store_data_influx(resolver: Resolver):
                                                batch_size=15_000,
                                                flush_interval=10_000),
                     point_settings=point_settings) as write_client:
-                write_client.write(bucket=bucket, org=org, record=dataframe.to_frame(),
+                write_client.write(bucket=bucket, org=org,
+                                   record=dataframe.to_frame(),
                                    write_precision=WritePrecision.S,
                                    data_frame_measurement_name=resolver.metadata.station.name)
 
 
-def retrieve_data(resolver: Resolver):
+def retrieve_data(resolver: "Resolver"):
     with influxdb_client.InfluxDBClient(url=url,
                                         token=token,
                                         org=org, enable_gzip=True) as client:
@@ -80,13 +133,14 @@ def retrieve_data(resolver: Resolver):
         print("x")
 
 
-def extract_station_from_preamble(resolver: Resolver):
+def extract_station_from_preamble(resolver: "Resolver"):
     station_dictionary = dict()
     station_dictionary['tags'] = dict()
     station_dictionary['qualifiers'] = dict()
     var_name = r"({{.*?}})"
-    for template_line, input_line in itertools.zip_longest(resolver.template.preamble.split('\n'),
-                                                           resolver.preamble.split('\n')):
+    for template_line, input_line in itertools.zip_longest(
+            resolver.template.preamble.split('\n'),
+            resolver.preamble.split('\n')):
         if template_line:
             matches = re.findall(var_name, template_line)
 
@@ -115,7 +169,8 @@ def extract_station_from_preamble(resolver: Resolver):
                     if to_be_replaced.strip(' ') == "":
                         value_of_placeholder = input_line
                     else:
-                        value_of_placeholder = input_line.replace(to_be_replaced, '').strip(
+                        value_of_placeholder = input_line.replace(
+                            to_be_replaced, '').strip(
                             '\n\r')
                     # print(value_of_placeholder)
                     temp_more_curly = template_line.partition('{')[
@@ -125,8 +180,9 @@ def extract_station_from_preamble(resolver: Resolver):
                         pass
                     else:
                         input_line = value_of_placeholder
-                        value_of_placeholder = value_of_placeholder.partition(temp_more_curly)[
-                            0]
+                        value_of_placeholder = \
+                            value_of_placeholder.partition(temp_more_curly)[
+                                0]
                         input_line = input_line.replace(
                             value_of_placeholder, '')
 
@@ -140,6 +196,7 @@ def extract_station_from_preamble(resolver: Resolver):
                         station_dictionary[placeholder_var_in_list[0]][
                             placeholder_var_in_list[-1]] = value_of_placeholder
                     else:
-                        station_dictionary[placeholder_var_in_list[0]] = value_of_placeholder
+                        station_dictionary[
+                            placeholder_var_in_list[0]] = value_of_placeholder
 
     return station_dictionary
