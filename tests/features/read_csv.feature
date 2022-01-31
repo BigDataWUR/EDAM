@@ -13,4 +13,4 @@ Feature: Reading CSV formatted files with EDAM
     Examples:
       | station | filename  | number |
       | Agmip   | Agmip.csv | 8      |
-      | uk      | uk1.txt   | 5      |
+      | uk      | uk.txt    | 5      |

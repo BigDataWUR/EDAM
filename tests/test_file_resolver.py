@@ -5,16 +5,16 @@ import pytest
 from edam.reader.models.metadata import Metadata
 from edam.reader.models.template import Template
 from edam.reader.resolvers.file_resolver import FileResolver
-from tests import resources_folder
+from tests import resources
 
 
 @pytest.fixture
 def input_without_preamble():
     metadata = Metadata(
-        path=os.path.join(resources_folder, 'metadata', 'Agmip.yaml'))
+        path=os.path.join(resources, 'metadata', 'Agmip.yaml'))
     template = Template(
-        path=os.path.join(resources_folder, "templates", "Agmip.tmpl"))
-    input_uri = os.path.join(resources_folder, "inputs", "Agmip.csv")
+        path=os.path.join(resources, "templates", "Agmip.tmpl"))
+    input_uri = os.path.join(resources, "inputs", "Agmip.csv")
     return FileResolver(input_uri=input_uri, template=template,
                         metadata=metadata)
 
@@ -22,10 +22,10 @@ def input_without_preamble():
 @pytest.fixture
 def input_with_preamble():
     metadata = Metadata(
-        path=os.path.join(resources_folder, 'metadata', 'uk.yaml'))
+        path=os.path.join(resources, 'metadata', 'uk.yaml'))
     template = Template(
-        path=os.path.join(resources_folder, "templates", "uk.tmpl"))
-    input_uri = os.path.join(resources_folder, "inputs", "uk.txt")
+        path=os.path.join(resources, "templates", "uk.tmpl"))
+    input_uri = os.path.join(resources, "inputs", "uk.txt")
     return FileResolver(input_uri=input_uri, template=template,
                         metadata=metadata)
 

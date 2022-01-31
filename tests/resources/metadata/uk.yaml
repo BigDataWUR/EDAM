@@ -4,7 +4,7 @@ Station:
   url: https://www.metoffice.gov.uk/
   qualifiers:
     estimated: '*'
-	provisional: '#'
+    provisional: '#'
 Observables:
   - observable_id: tmin
     name: Temperature minimum

@@ -9,7 +9,7 @@ from edam.reader.models.station import Station
 from edam.reader.models.template import Template
 from edam.reader.resolvers.resolver_factory import ResolverFactory
 from edam.utilities.exceptions import InputParameterDoesNotExist
-from tests import metadata_folder, resources_folder
+from tests import metadata_folder, resources
 
 
 @pytest.fixture
@@ -19,15 +19,15 @@ def metadata_object():
 
 @pytest.fixture
 def test_resolver():
-    input_url = os.path.join(resources_folder, "inputs", "Agmip.csv")
-    template_url = os.path.join(resources_folder, "templates", "Agmip.tmpl")
-    metadata_url = os.path.join(resources_folder, "metadata", "Agmip.yaml")
+    input_url = os.path.join(resources, "inputs", "Agmip.csv")
+    template_url = os.path.join(resources, "templates", "Agmip.tmpl")
+    metadata_url = os.path.join(resources, "metadata", "Agmip.yaml")
     return ResolverFactory(input_url, template_url, metadata_url)
 
 
 @pytest.fixture
 def template_object():
-    template_url = os.path.join(resources_folder, "templates", "Agmip.tmpl")
+    template_url = os.path.join(resources, "templates", "Agmip.tmpl")
     return Template(path=template_url)
 
 
@@ -65,23 +65,23 @@ def test_input_uri_http_correct():
 
 
 def test_input_uri_file_correct(test_resolver):
-    input_url = os.path.join(resources_folder, "inputs/Agmip.csv")
+    input_url = os.path.join(resources, "inputs/Agmip.csv")
     assert test_resolver.input_uri == input_url
 
 
 def test_input_uri_folder_correct(test_resolver):
-    input_url = os.path.join(resources_folder, "inputs", "Agmip.csv")
+    input_url = os.path.join(resources, "inputs", "Agmip.csv")
     assert test_resolver.input_uri == input_url
 
 
 def test_input_uri_file_incorrect():
-    input_url = os.path.join(resources_folder, "inputs/doesnt-exist.csv")
+    input_url = os.path.join(resources, "inputs/doesnt-exist.csv")
     with pytest.raises(InputParameterDoesNotExist):
         ResolverFactory(input_url, None, None)
 
 
 def test_input_uri_folder_incorrect():
-    input_url = os.path.join(resources_folder, "inputsFAKE/")
+    input_url = os.path.join(resources, "inputsFAKE/")
     with pytest.raises(InputParameterDoesNotExist):
         ResolverFactory(input_url, None, None)
 

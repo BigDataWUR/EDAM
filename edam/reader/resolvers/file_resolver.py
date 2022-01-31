@@ -41,12 +41,14 @@ class FileResolver(Resolver):
             df = pd.read_csv(io.StringIO(contents),
                              names=self.template.used_columns, skiprows=[0],
                              parse_dates={"timestamp": timestamp_columns},
-                             na_values=self.metadata.station.missing_data)
+                             na_values=self.metadata.station.missing_data,
+                             error_bad_lines=False)
         else:
             df = pd.read_csv(io.StringIO(contents),
                              names=self.template.used_columns,
                              parse_dates={"timestamp": timestamp_columns},
-                             na_values=self.metadata.station.missing_data)
+                             na_values=self.metadata.station.missing_data,
+                             error_bad_lines=False)
         df.set_index(keys=['timestamp'], inplace=True)
         timeseries = {}
         for variable in self.template.variables:
