@@ -48,7 +48,8 @@ class CustomInstall(install):
 
         resources_directory = os.path.join(here, 'edam', 'resources')
         home_user_directory = os.path.expanduser("~/.edam/")
-        directories_to_be_copied_from_resources = ['inputs', 'templates', 'metadata']
+        directories_to_be_copied_from_resources = ['inputs', 'templates',
+                                                   'metadata']
 
         for directory in directories_to_be_copied_from_resources:
             copytree(os.path.join(resources_directory, directory),
@@ -67,7 +68,8 @@ class CustomInstall(install):
                  os.path.join(home_user_directory, '.viewer/'))
         # Copy edam templates into flask edam/templates
         copytree(os.path.join(resources_directory, 'templates'),
-                 os.path.join(home_user_directory, '.viewer', 'templates', 'edam'))
+                 os.path.join(home_user_directory, '.viewer', 'templates',
+                              'edam'))
 
 
 def read(*filenames, **kwargs):
@@ -95,6 +97,9 @@ class PyTest(TestCommand):
         sys.exit(errcode)
 
 
+with open('requirements.txt') as f:
+    required = f.read().splitlines()
+
 setup(
     name='edam',
     version=__version__,
@@ -107,17 +112,16 @@ setup(
     setup_requires=['pytest-runner'],
     tests_require=['pytest'],
     include_package_data=True,
-    install_requires=['sqlalchemy', 'requests', 'numpy', 'pandas', 'numexpr', 'geopy', 'Flask-SQLAlchemy',
-                      'Flask', 'Flask-Caching', 'jinja2', 'PyYAML', 'records', 'click',
-                      'Flask-GoogleMaps==0.2.4', 'owlready2', 'pint', 'Werkzeug'
-                      ],
+    install_requires=required,
     cmdclass={'test': PyTest, 'install': CustomInstall},
-    python_requires='>=3.6',
+    python_requires='>=3.8',
     packages=find_packages(exclude=["tests.*", "tests"]),
     author_email='argysamo@gmail.com',
     package_data={
-        'edam': ['resources/metadata/*', 'resources/inputs/*', 'resources/templates/*',
-                 'resources/settings.yaml', 'resources/flask_related/static/*/*',
+        'edam': ['resources/metadata/*', 'resources/inputs/*',
+                 'resources/templates/*',
+                 'resources/settings.yaml',
+                 'resources/flask_related/static/*/*',
                  'resources/flask_related/templates/*/*', ],
     },
     entry_points={
@@ -127,8 +131,6 @@ setup(
     },
     classifiers=[
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
     ],

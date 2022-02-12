@@ -1,26 +1,18 @@
 import io
 import itertools
+import logging
 import re
-from datetime import datetime
 from typing import TYPE_CHECKING
 
-import influxdb_client
 import pandas as pd
-from influxdb_client import WritePrecision
-from influxdb_client.client.write_api import PointSettings, \
-    WriteOptions, WriteType
 
 from edam.reader.database_handler import add_items
 from edam.reader.models.observation import Observation
 
+logger = logging.getLogger('edam.reader.resolvers.resolver_utilities')
+
 if TYPE_CHECKING:
     from edam.reader.resolvers.resolver import Resolver
-
-bucket = "edam"
-org = "my-org"
-token = "aRMDKzxX01mfEahbo5wOSZHhsaIvIY4Ucw0Np7csotqbvUbuli04F14mZiqfYZZ4tsM43VP3R8UFCs7pUC4edA=="
-# Store the URL of your InfluxDB instance
-url = "http://127.0.0.1:8086"
 
 
 def store_data_sqlite(resolver: "Resolver"):
@@ -45,6 +37,11 @@ def store_data_sqlite(resolver: "Resolver"):
         add_items(observations)
 
 
+def handle_bad_csv_line(line: [str]):
+    logger.error(f"Can't parse this line: {line}")
+    return None
+
+
 def generate_timeseries(resolver: "Resolver") -> [pd.Series]:
     timestamp_columns = list(filter(lambda column: "timestamp." in column,
                                     resolver.template.used_columns))
@@ -63,7 +60,7 @@ def generate_timeseries(resolver: "Resolver") -> [pd.Series]:
         'names': resolver.template.used_columns,
         'parse_dates': {"timestamp": timestamp_columns},
         'na_values': resolver.metadata.station.missing_data,
-        "error_bad_lines": False
+        "on_bad_lines": 'warn'
     }
     if resolver.header != '':
         dataframe_kwargs["skiprows"] = [0]
@@ -86,51 +83,6 @@ def generate_timeseries(resolver: "Resolver") -> [pd.Series]:
             timeseries[variable] = timeseries[variable].apply(
                 lambda x: float(x))
     return timeseries
-
-
-def store_data_influx(resolver: "Resolver"):
-    for measurement, dataframe in resolver.timeseries.items():
-        dataframe.index = pd.to_datetime(dataframe.index, unit='s')
-        try:
-            sensor = resolver.metadata.sensors[measurement].name
-        except:
-            sensor = f"Unknown {measurement} sensor"
-        point_settings = PointSettings()
-        point_settings.add_default_tag("station",
-                                       resolver.metadata.station.name)
-        point_settings.add_default_tag("sensor", sensor)
-        with influxdb_client.InfluxDBClient(url=url,
-                                            token=token,
-                                            org=org,
-                                            enable_gzip=True) as client:
-            with client.write_api(
-                    write_options=WriteOptions(WriteType.batching,
-                                               batch_size=15_000,
-                                               flush_interval=10_000),
-                    point_settings=point_settings) as write_client:
-                write_client.write(bucket=bucket, org=org,
-                                   record=dataframe.to_frame(),
-                                   write_precision=WritePrecision.S,
-                                   data_frame_measurement_name=resolver.metadata.station.name)
-
-
-def retrieve_data(resolver: "Resolver"):
-    with influxdb_client.InfluxDBClient(url=url,
-                                        token=token,
-                                        org=org, enable_gzip=True) as client:
-        query_api = client.query_api()
-        buckets = influxdb_client.BucketsApi(client)
-        # client.get_list_measurements()
-        now = datetime.now()
-        query = f'from(bucket:"edam")\
-        |> range(start: 1980-01-01T00:00:00Z)\
-        |> filter(fn:(r) => r._measurement == "{resolver.metadata.station.name}")\
-        |> filter(fn:(r) => r._field == "dewp")\
-        |> pivot(rowKey:["_time"], columnKey: ["_field"], valueColumn: "_value")'
-        dataframe = query_api.query_data_frame(query=query, org=org)
-        then = datetime.now()
-        speed = (then - now).total_seconds()
-        print("x")
 
 
 def extract_station_from_preamble(resolver: "Resolver"):
