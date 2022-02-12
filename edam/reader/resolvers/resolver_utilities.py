@@ -59,6 +59,7 @@ def generate_timeseries(resolver: "Resolver") -> [pd.Series]:
         'filepath_or_buffer': io.StringIO(contents),
         'names': resolver.template.used_columns,
         'parse_dates': {"timestamp": timestamp_columns},
+        'infer_datetime_format': True,
         'na_values': resolver.metadata.station.missing_data,
         "on_bad_lines": 'warn'
     }

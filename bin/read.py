@@ -32,7 +32,7 @@ def cli(input_file, template, metadata, var, drop):
     # Workflow
     if resolver.template_matches_input():
         dataframes = resolver.timeseries
-        resolver.store_timeseries()
+        # resolver.store_timeseries()
 
 
 def run():
