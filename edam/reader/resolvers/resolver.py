@@ -16,7 +16,7 @@ class Resolver(ABC):
         self.input_uri = input_uri
         self.content_as_list = input_uri
         self.complement_stations_from_preamble()
-        self.store_timeseries()
+        # self.store_timeseries()
 
     @property
     def template(self) -> Template:

@@ -1,6 +1,5 @@
 import os
 
-import pytest
 from pytest_bdd import scenarios, given, when, then, parsers
 
 from edam.reader.resolvers.resolver_factory import ResolverFactory
