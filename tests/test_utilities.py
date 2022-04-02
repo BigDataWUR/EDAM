@@ -4,14 +4,16 @@ import pytest
 
 from edam.reader.models.template import Template
 from edam.settings import test_resources
-from edam.utilities.reader_utilities import remove_template_placeholders_from_string, \
+from edam.utilities.reader_utilities import \
+    remove_template_placeholders_from_string, \
     evaluate_variable_part, generate_uri
 
 
 def test_get_observables_from_template_with_observables():
     template_path = os.path.join(test_resources, 'templates', 'Agmip.tmpl')
     template = Template(path=template_path)
-    expected_observables = ["timestamp", "srad", "tmax", "tmin", "rain", "wind", "dewp", "vprs",
+    expected_observables = ["timestamp", "srad", "tmax", "tmin",
+                            "rain", "wind", "dewp", "vprs",
                             "rhum"]
     assert template.observable_ids == expected_observables
 
@@ -26,33 +28,28 @@ def test_get_observables_from_template_without_observables():
 def test_remove_template_placeholders_from_string():
     test_string1 = "longitude   =   {{station.longitude}}"
     separator = "({.*?}+)"
-    test_output1 = remove_template_placeholders_from_string(test_string1, separator)
+    test_output1 = remove_template_placeholders_from_string(test_string1,
+                                                            separator)
     desired_output1 = "longitude   =   "
 
     assert test_output1 == desired_output1
 
-    test_string2 = "longitude   =   {{station.longitude}}, {{station.latitude}} this is test"
-    test_output2 = remove_template_placeholders_from_string(test_string2, separator)
+    test_string2 = "longitude   =   {{station.longitude}}, " \
+                   "{{station.latitude}} this is test"
+    test_output2 = remove_template_placeholders_from_string(test_string2,
+                                                            separator)
     desired_output2 = "longitude   =   "
 
     assert test_output2 == desired_output2
-
-
-# def test_check_template_against_input_file():
-#
-#     test_template1 = "Yucheng.tmpl"
-#     test_input1 = "Yucheng.met"
-#     test_output1 = check_template_against_input_file(template_file=test_template1, data_input=test_input1)
-#     desired_output1 = True
-#
-#     assert test_output1 == desired_output1
 
 
 def test_evaluate_variable_part():
     test_variable1 = '{01-12}'
     test_output1 = evaluate_variable_part(test_variable1)
     desired_output1 = {
-        '{01-12}': ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']}
+        '{01-12}': ['01', '02', '03', '04', '05', '06',
+                    '07', '08', '09', '10', '11', '12']
+    }
 
     assert test_output1 == desired_output1
 
@@ -60,8 +57,10 @@ def test_evaluate_variable_part():
 def test_generate_uri_placeholders_in_group_correct():
     test_uri1 = "http://{2016-2017}{01-02}/IDCJDW2006.{2016-2017}{01-02}"
     test_output1 = generate_uri(test_uri1)
-    desired_output1 = ['http://201601/IDCJDW2006.201601', 'http://201701/IDCJDW2006.201701',
-                       'http://201602/IDCJDW2006.201602', 'http://201702/IDCJDW2006.201702']
+    desired_output1 = ['http://201601/IDCJDW2006.201601',
+                       'http://201701/IDCJDW2006.201701',
+                       'http://201602/IDCJDW2006.201602',
+                       'http://201702/IDCJDW2006.201702']
 
     assert sorted(test_output1) == sorted(desired_output1)
 
@@ -69,7 +68,8 @@ def test_generate_uri_placeholders_in_group_correct():
 def test_generate_uri_placeholders_correct():
     test_uri2 = "http://example.com/{01-02}-{2010-2011}"
     test_output2 = generate_uri(test_uri2)
-    desired_output2 = ['http://example.com/01-2010', 'http://example.com/01-2011',
+    desired_output2 = ['http://example.com/01-2010',
+                       'http://example.com/01-2011',
                        'http://example.com/02-2010',
                        'http://example.com/02-2011']
 
@@ -78,7 +78,8 @@ def test_generate_uri_placeholders_correct():
 
 def test_generate_uri_placeholders_missing_value():
     test_uri2 = "http://example.com/{01}-{2010-2011}"
-    desired_output2 = 'Range {0} is not correct in the correct format {starting_int - ending_int}'
+    desired_output2 = 'Range {0} is not correct in the ' \
+                      'correct format {starting_int - ending_int}'
     with pytest.raises(Exception) as excinfo:
         generate_uri(test_uri2)
 
@@ -97,7 +98,8 @@ def test_generate_uri_extra_vars_correct():
     test_uri4 = 'http://example.com/{$var}'
     extra_vars = "1, 2, 3"
     test_output4 = generate_uri(test_uri4, static_variables=extra_vars)
-    desired_output4 = ["http://example.com/1", "http://example.com/2", "http://example.com/3"]
+    desired_output4 = ["http://example.com/1", "http://example.com/2",
+                       "http://example.com/3"]
 
     assert sorted(test_output4) == sorted(desired_output4)
 
@@ -107,7 +109,6 @@ def test_generate_uri_extra_vars_without_vars():
     with pytest.raises(AttributeError) as excinfo:
         generate_uri(test_uri4)
         assert "--extra parameter (static vars) was empty" in str(excinfo.value)
-
 
 # def test_handle_input_parameter_correct():
 #     # Tests an existing file

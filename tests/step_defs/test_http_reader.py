@@ -20,7 +20,7 @@ def step_impl(input_file, metadata_file, template_file):
 
 @when("the user attempts to import data", target_fixture="resolver")
 def step_impl(factory):
-    return factory.resolver
+    return factory.resolver.pop()
 
 
 @then(parsers.parse('output contains "{timeseries_length:d}" timeseries'))

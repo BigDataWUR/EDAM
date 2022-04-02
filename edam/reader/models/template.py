@@ -130,7 +130,7 @@ class Template:
             raise ErrorWithTemplate(exc)
 
     @property
-    def delimiter(self) -> property:
+    def delimiter(self) -> str:
         dialect = csv.Sniffer().sniff(self.stripped_contents)
         return dialect.delimiter
 

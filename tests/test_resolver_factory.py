@@ -20,7 +20,8 @@ def test_main_resolver_type_file():
         input_uri=os.path.join(inputs_folder, 'Agmip.csv'),
         template=os.path.join(templates_folder, "Agmip.tmpl"),
         metadata_file=os.path.join(metadata_folder, "Agmip.yaml"))
-    assert type(resolver.resolver) is FileResolver
+    assert len(resolver.resolver) == 1
+    assert type(resolver.resolver.pop()) is FileResolver
 
 
 @vcr.use_cassette('tests/fixtures/vcr_cassettes/metoffice.yaml')
@@ -33,4 +34,5 @@ def test_main_resolver_type_http():
                               "uk.tmpl"),
         metadata_file=os.path.join(metadata_folder,
                                    "uk.yaml"))
-    assert type(resolver.resolver) is HttpResolver
+    assert len(resolver.resolver) == 1
+    assert type(resolver.resolver.pop()) is HttpResolver

@@ -1,8 +1,9 @@
 import io
 import itertools
 import logging
+import os
 import re
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, List
 
 import pandas as pd
 
@@ -13,6 +14,18 @@ logger = logging.getLogger('edam.reader.resolvers.resolver_utilities')
 
 if TYPE_CHECKING:
     from edam.reader.resolvers.resolver import Resolver
+
+
+def template_matches_file(template_file: str, input_file: str) -> bool:
+    return False
+
+
+def walk_files_in_directory(directory: str) -> List[str]:
+    all_files = []
+    for root, dirs, files in os.walk(directory):
+        for filename in files:
+            all_files.append(os.path.join(root, filename))
+    return all_files
 
 
 def store_data_sqlite(resolver: "Resolver"):

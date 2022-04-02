@@ -8,7 +8,7 @@ class AbstractObservable(Base):
     """
     Represents an observable.
 
-    This is an ORM class which represents an observable in its abstract form.
+    This ORM class represents an observable in its abstract form.
     For example, `temperature` is the abstract observable for `temperature_max`
     or `temp_min`, etc.
 

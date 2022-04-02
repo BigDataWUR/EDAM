@@ -15,7 +15,7 @@ class Sensor(Base):
     """
     Represents a Sensor.
 
-    This is an ORM class which represents a sensor along with its metadata.
+    This ORM class represents a sensor along with its metadata.
 
     Attributes:
         name: The name of the sensor

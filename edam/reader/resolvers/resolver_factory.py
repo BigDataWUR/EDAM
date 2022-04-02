@@ -1,6 +1,7 @@
 import os
 from enum import Enum
 from os.path import expanduser
+from typing import List
 
 import requests
 
@@ -9,6 +10,7 @@ from edam.reader.models.template import Template
 from edam.reader.resolvers.file_resolver import FileResolver
 from edam.reader.resolvers.http_resolver import HttpResolver
 from edam.reader.resolvers.resolver import Resolver
+from edam.reader.resolvers.resolver_utilities import walk_files_in_directory
 from edam.utilities.exceptions import UrlInputParameterDoesNotExist, \
     InputParameterDoesNotExist, TemplateDoesNotExist, \
     MetadataFileDoesNotExist
@@ -110,12 +112,18 @@ class ResolverFactory:
             raise MetadataFileDoesNotExist(f"{value} does not exist")
 
     @property
-    def resolver(self) -> Resolver:
+    def resolver(self) -> List[Resolver]:
         if self.__input_type is InputType.FILE:
-            return FileResolver(template=self.template,
-                                metadata=self.metadata_file,
-                                input_uri=self.input_uri)
+            return [FileResolver(template=self.template,
+                                 metadata=self.metadata_file,
+                                 input_uri=self.input_uri)]
         elif self.__input_type is InputType.HTTP:
-            return HttpResolver(template=self.template,
-                                metadata=self.metadata_file,
-                                input_uri=self.input_uri)
+            return [HttpResolver(template=self.template,
+                                 metadata=self.metadata_file,
+                                 input_uri=self.input_uri)]
+        elif self.__input_type is InputType.FOLDER:
+            resolvers = []
+            for file in walk_files_in_directory(self.input_uri):
+                pass
+
+

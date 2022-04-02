@@ -7,10 +7,10 @@ class UnitOfMeasurement(Base):
     """
     Represents a unit of measurement.
 
-    This is an ORM class which represents a unit of measurement.
+    This ORM class represents a unit of measurement.
 
     Attributes:
-        name: The name of the unit (e.g. Celcious)
+        name: The name of the unit (e.g. Celcius)
         ontology: An ontology for this unit
         symbol: The symbol for the unit (e.g. C)
     """

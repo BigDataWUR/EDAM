@@ -7,7 +7,7 @@ class Observation(Base):
     """
     Represents an observation.
 
-    This is an ORM class which represents an observation. For the time being,
+    This ORM class represents an observation. For the time being,
     apart from `value` (in string format) and `timestamp`, we store Foreign
     Keys pointing to the other dimension of the observations. These include,
     the abstract observable, sensor, unit of measurement and station.

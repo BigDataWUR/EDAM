@@ -15,7 +15,7 @@ class Station(Base):
     """
     Represents a Station.
 
-    This is an ORM class which represents a station along with its metadata.
+    This ORM class represents a station along with its metadata.
     According to the EDAM conceptual model, a station can be stationary or
     moving.
 
