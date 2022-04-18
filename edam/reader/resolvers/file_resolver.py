@@ -3,9 +3,6 @@ from edam.reader.resolvers.resolver import Resolver
 
 class FileResolver(Resolver):
 
-    def template_matches_input(self) -> bool:
-        return True
-
     @property
     def content_as_list(self):
         return self._content_as_list

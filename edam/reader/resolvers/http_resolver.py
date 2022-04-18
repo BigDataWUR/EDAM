@@ -13,6 +13,3 @@ class HttpResolver(Resolver):
     def content_as_list(self, file_uri):
         response = requests.get(file_uri)
         self._content_as_list = response.text.split('\r\n')
-
-    def template_matches_input(self) -> bool:
-        return True

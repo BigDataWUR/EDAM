@@ -36,3 +36,12 @@ def test_main_resolver_type_http():
                                    "uk.yaml"))
     assert len(resolver.resolver) == 1
     assert type(resolver.resolver.pop()) is HttpResolver
+
+
+def test_folder_resolver():
+    resolver = ResolverFactory(
+        input_uri=os.path.join(inputs_folder),
+        template=os.path.join(templates_folder, "uk.tmpl"),
+        metadata_file=os.path.join(metadata_folder, "uk.yaml"))
+    assert len(resolver.resolver) == 3
+    print("x")

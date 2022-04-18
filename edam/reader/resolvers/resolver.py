@@ -15,7 +15,7 @@ class Resolver(ABC):
         self.metadata = metadata
         self.input_uri = input_uri
         self.content_as_list = input_uri
-        self.complement_stations_from_preamble()
+        # self.complement_stations_from_preamble()
         # self.store_timeseries()
 
     @property
@@ -73,9 +73,10 @@ class Resolver(ABC):
             station.update(station_dictionary)
             self.metadata.station = station
 
-    @abstractmethod
     def template_matches_input(self) -> bool:
-        pass
+        if self.template.header == self.header:
+            return True
+        return False
 
     def store_timeseries(self):
         store_data_sqlite(resolver=self)

@@ -13,7 +13,7 @@ from edam.reader.resolvers.resolver import Resolver
 from edam.reader.resolvers.resolver_utilities import walk_files_in_directory
 from edam.utilities.exceptions import UrlInputParameterDoesNotExist, \
     InputParameterDoesNotExist, TemplateDoesNotExist, \
-    MetadataFileDoesNotExist
+    MetadataFileDoesNotExist, TemplateInputHeaderMismatch
 
 
 class InputType(Enum):
@@ -124,6 +124,12 @@ class ResolverFactory:
         elif self.__input_type is InputType.FOLDER:
             resolvers = []
             for file in walk_files_in_directory(self.input_uri):
-                pass
-
-
+                try:
+                    temp_resolver = FileResolver(template=self.template,
+                                                 metadata=self.metadata_file,
+                                                 input_uri=file)
+                    if temp_resolver.template_matches_input():
+                        resolvers.append(temp_resolver)
+                except TemplateInputHeaderMismatch:
+                    pass
+            return resolvers
