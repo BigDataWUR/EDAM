@@ -51,9 +51,13 @@ class Metadata:
         except AttributeError:
             return add_item(Station(**self.contents['Station']))
 
+    @property
+    def raw_station(self):
+        return Station(**self.contents['Station'])
+
     @station.setter
     def station(self, value):
-        self._station = value
+        self._station = add_item(value)
 
     @property
     def observables(self) -> [AbstractObservable]:

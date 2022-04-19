@@ -15,7 +15,8 @@ class Resolver(ABC):
         self.metadata = metadata
         self.input_uri = input_uri
         self.content_as_list = input_uri
-        # self.complement_stations_from_preamble()
+        if self.template_matches_input():
+            self.complement_stations_from_preamble()
         # self.store_timeseries()
 
     @property
@@ -69,7 +70,7 @@ class Resolver(ABC):
     def complement_stations_from_preamble(self):
         if self.template.preamble and self.preamble:
             station_dictionary = extract_station_from_preamble(self)
-            station = self.metadata.station
+            station = self.metadata.raw_station
             station.update(station_dictionary)
             self.metadata.station = station
 

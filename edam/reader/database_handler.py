@@ -65,5 +65,7 @@ def update_object(item):
     session = db_session
 
     session.merge(item)
+    session.flush()
+    session.expunge_all()
     session.commit()
     session.close()
