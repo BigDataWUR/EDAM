@@ -6,6 +6,24 @@ from edam.reader.base import db_session
 logger = logging.getLogger('edam.reader.logger')
 
 
+def exists(item):
+    session = db_session
+    try:
+        item_dict = copy.deepcopy(item.__dict__)  # type: dict
+
+        item_dict.pop('_sa_instance_state')
+        item_exists = session.query(item.__class__).filter_by(**item_dict)
+        if item_exists.count() > 0:
+            session.flush()
+            session.expunge_all()
+            session.close()
+            return item_exists.first()
+        return None
+    except Exception:
+        logger.exception("Exception")
+        return None
+
+
 def add_item(item):
     """
     Stores or updates an item in the database.

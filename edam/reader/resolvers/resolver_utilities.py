@@ -7,7 +7,8 @@ from typing import TYPE_CHECKING, List
 
 import pandas as pd
 
-from edam.reader.database_handler import add_items
+from edam.reader.database_handler import add_items, add_item
+from edam.reader.models.junction import Junction
 from edam.reader.models.observation import Observation
 
 logger = logging.getLogger('edam.reader.resolvers.resolver_utilities')
@@ -40,13 +41,15 @@ def store_data_sqlite(resolver: "Resolver"):
             resolver.metadata.restructured_metadata[measurement][
                 'unit_of_measurement'].id
         station_id = resolver.metadata.station.id
+        junction = Junction(abstract_observable_id=abstract_observable_id,
+                            unit_id=unit_of_measurement_id,
+                            station_id=station_id,
+                            sensor_id=sensor_id)
+        junction = add_item(junction)  # type: Junction
         for timestamp, value in dataframe.to_dict().items():
             observations.append(Observation(timestamp=timestamp,
                                             value=str(value),
-                                            abstract_observable_id=abstract_observable_id,
-                                            sensor_id=sensor_id,
-                                            unit_id=unit_of_measurement_id,
-                                            station_id=station_id))
+                                            junction_id=junction.id))
         add_items(observations)
 
 

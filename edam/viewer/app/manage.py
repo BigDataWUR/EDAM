@@ -1,6 +1,5 @@
 import copy
 
-
 import numpy as np
 import pandas as pd
 from sqlalchemy.dialects import sqlite
@@ -133,9 +132,12 @@ class DatabaseHandler(object):
                 helper.end_date)
             dictionary['observables'][helper.observable_id][
                 'Observation'] = helper.number_of_Observation
-            dictionary['observables'][helper.observable_id]['frequency'] = helper.frequency
-            dictionary['observables'][helper.observable_id]['observable'] = helper.observable.name
-            dictionary['observables'][helper.observable_id]['observed_in'] = helper.uom.name
+            dictionary['observables'][helper.observable_id][
+                'frequency'] = helper.frequency
+            dictionary['observables'][helper.observable_id][
+                'observable'] = helper.observable.name
+            dictionary['observables'][helper.observable_id][
+                'observed_in'] = helper.uom.name
             # dictionary['observables'][helper.observable.name]['observed_in'] = helper.uom.name
             # dictionary['observables'][helper.observable.name]['observed_in_symbol'] = helper.uom.symbol
             # dictionary['observables'][helper.observable.name]['ontology'] = helper.observable.ontology
@@ -152,5 +154,3 @@ if __name__ == "__main__":
     test = DatabaseHandler()
     results = test.retrieve_templates()
     print(results)
-
-    # print(results[0].helper.observable_id)

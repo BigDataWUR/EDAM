@@ -28,11 +28,12 @@ def cli(input_file, template, metadata, var, drop):
                               template=template,
                               metadata_file=metadata,
                               var=var)
-    resolver = factory.resolver
+    resolvers = factory.resolver
     # Workflow
-    if resolver.template_matches_input():
-        dataframes = resolver.timeseries
-        # resolver.store_timeseries()
+    for resolver in resolvers:
+        if resolver.template_matches_input():
+            dataframes = resolver.timeseries
+            resolver.store_timeseries()
 
 
 def run():

@@ -5,7 +5,7 @@ from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
 from edam.reader.base import Base
-from edam.reader.database_handler import update_object
+from edam.reader.models.utilities import update_existing
 
 logger = logging.getLogger('edam.reader.models.sensor')
 
@@ -20,7 +20,7 @@ class Sensor(Base):
     Attributes:
         name: The name of the sensor
         manufacturer: The name of the sensor's manufacturer
-        abstract_observable_id: The Foreign Key which connects a sensor with 
+        obs_id: The Foreign Key which connects a sensor with 
             an (abstract) observable
         tags: dict attribute which represents any other tags which are not
             explicitly defined
@@ -36,18 +36,7 @@ class Sensor(Base):
                                        back_populates="sensors")
 
     def update(self, new_values: dict):
-        for key, value in new_values.items():
-            try:
-                if key in ['tags', 'qualifiers']:
-                    temp = getattr(self, key)  # type: dict
-                    try:
-                        value.update(temp)
-                    except ValueError as exception:
-                        logger.warning(f"{exception}")
-                setattr(self, key, value)
-            except AttributeError:
-                logger.warning(f"{key} does not exist")
-        update_object(self)
+        update_existing(self, new_values, logger)
 
     def __init__(self, name: str = None, manufacturer: str = None,
                  abstract_observable_id: int = None,

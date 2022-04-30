@@ -24,20 +24,12 @@ class Observation(Base):
     id = Column(Integer, primary_key=True)
     timestamp = Column(DateTime)
     value = Column(String(60))
-    abstract_observable_id = Column(
-        Integer, ForeignKey('AbstractObservable.id'))
-    unit_id = Column(Integer, ForeignKey('UnitOfMeasurement.id'))
-    station_id = Column(Integer, ForeignKey('Station.id'))
-    sensor_id = Column(Integer, ForeignKey('Sensor.id'))
+    junction_id = Column(Integer, ForeignKey('Junction.id'))
 
-    def __init__(self, timestamp=None, value=None, abstract_observable_id=None,
-                 unit_id=None, station_id=None, sensor_id=None):
+    def __init__(self, timestamp=None, value=None, junction_id=None):
         self.timestamp = timestamp
         self.value = value
-        self.abstract_observable_id = abstract_observable_id
-        self.unit_id = unit_id
-        self.station_id = station_id
-        self.sensor_id = sensor_id
+        self.junction_id = junction_id
 
     def __repr__(self):
         return f'<id {self.id!r}>'

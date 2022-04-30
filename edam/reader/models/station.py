@@ -6,7 +6,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy import Column, Integer, String, Boolean, Float
 
 from edam.reader.base import Base
-from edam.reader.database_handler import update_object
+from edam.reader.models.utilities import update_existing
 
 logger = logging.getLogger('edam.reader.models.station')
 
@@ -53,18 +53,7 @@ class Station(Base):
     _qualifiers = Column('qualifiers', String(500))
 
     def update(self, new_values: dict):
-        for key, value in new_values.items():
-            try:
-                if key in ['tags', 'qualifiers']:
-                    temp = getattr(self, key)  # type: dict
-                    try:
-                        value.update(temp)
-                    except ValueError as exception:
-                        logger.warning(f"{exception}")
-                setattr(self, key, value)
-            except AttributeError:
-                logger.warning(f"{key} does not exist")
-        update_object(self)
+        update_existing(self, new_values, logger)
 
     def __init__(self,
                  name: str = None, mobile: bool = False,
