@@ -35,6 +35,8 @@ class Sensor(Base):
     abstract_observable = relationship("AbstractObservable",
                                        back_populates="sensors")
 
+    junctions = relationship("Junction", back_populates="sensor")
+
     def update(self, new_values: dict):
         update_existing(self, new_values, logger)
 

@@ -4,8 +4,7 @@ from flask_googlemaps import GoogleMaps
 from flask_googlemaps import Map
 
 from edam.utilities.exceptions import InvalidUsage
-from edam.viewer.app import app, calculate_metastations, nocache, \
-    calculate_templates, \
+from edam.viewer.app import app, stations, nocache, templates, \
     calculate_data_and_render_from_template
 from edam.viewer.app.OgcSos import OgcSos
 
@@ -16,26 +15,20 @@ GoogleMaps(app)
 @app.route('/index/')
 @app.route('/')
 def mapview():
-    # creating a map in the view
-    metastations = calculate_metastations()
+    metastations = stations()
     markers = list()
-    for station_id in metastations:
-        station_dict = metastations[station_id]
-        if station_dict['latitude'] is not None and station_dict[
-            'longitude'] is not None:
+    for station in metastations:
+        if station.latitude is not None and station.longitude is not None:
             observables = ', '.join(
-                [station_dict['observables'][temp_id]['observable'] for temp_id
-                 in
-                 station_dict['observables']])
+                [junction.observable.name for junction in station.junctions])
 
-            infobox = '<p><b>Station</b>: <a href="%sStations/%s" ' \
-                      'target="_blank">%s</a></p>' \
-                      '<p><b>Quantities</b>: %s</p>' % (
-                          request.url_root, station_id,
-                          station_dict['name'], observables)
+            infobox = f'<p><b>Station</b>: ' \
+                      f'<a href="{request.url_root}Stations/{station.id}" ' \
+                      f'target="_blank">{station.name}</a></p>' \
+                      f'<p><b>Observables</b>: {observables}</p>'
             temp_dict = {
-                'lat': station_dict['latitude'],
-                'lng': station_dict['longitude'],
+                'lat': station.latitude,
+                'lng': station.longitude,
                 'infobox': infobox}
             markers.append(temp_dict)
     mymap = Map(
@@ -61,26 +54,28 @@ def index():
 
 
 @app.route('/Stations/')
-def stations():
-    metastations = calculate_metastations()
-    return jsonify(metastations)
+def stat():
+    stations_dict = {station.id: station.as_dict() for station in stations()}
+
+    return stations_dict
 
 
 @app.route('/Stations/<station>')
 def specific_station(station):
-    metastations = calculate_metastations()
-    return jsonify(metastations[int(station)])
+    stations_dict = {station.id: station.as_dict() for station in stations()}
+    return jsonify(stations_dict[int(station)])
 
 
 @app.route('/templates/')
-def templates():
-    metatemplates = calculate_templates()
-    return jsonify(metatemplates)
+def templ():
+    templates_dict = {template.filename: template.to_dict() for template in
+                      templates()}
+    return templates_dict
 
 
 @app.route('/templates/<template>')
 def specific_template(template):
-    metatemplates = calculate_templates()
+    metatemplates = template()
     try:
         path = metatemplates[template]['path']
 
@@ -90,8 +85,7 @@ def specific_template(template):
             return response
     except KeyError:
         raise InvalidUsage(
-            '%s template does not exist' %
-            template, status_code=410)
+            f'{template} template does not exist', status_code=410)
 
 
 @app.route('/data/')
@@ -120,8 +114,8 @@ def get_data():
     else:
         if station:
             raise InvalidUsage(
-                '%s template and %s station are not compatible' %
-                (template_name, station.name),
+                f'{template_name} template and {station.name} station '
+                f'are not compatible',
                 status_code=410)
         else:
             raise InvalidUsage('No station', status_code=410)

@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, DateTime, String, ForeignKey
+from sqlalchemy.orm import relationship
 
 from edam.reader.base import Base
 
@@ -10,9 +11,16 @@ class Junction(Base):
     id = Column(Integer, primary_key=True)
     abstract_observable_id = Column(
         Integer, ForeignKey('AbstractObservable.id'))
+    observable = relationship("AbstractObservable", back_populates="junctions")
+
     unit_id = Column(Integer, ForeignKey('UnitOfMeasurement.id'))
+    unit = relationship("UnitOfMeasurement", back_populates="junctions")
+
     station_id = Column(Integer, ForeignKey('Station.id'))
+    station = relationship("Station", back_populates="junctions")
+
     sensor_id = Column(Integer, ForeignKey('Sensor.id'))
+    sensor = relationship("Sensor", back_populates="junctions")
 
     def __init__(self, abstract_observable_id=None,
                  unit_id=None, station_id=None, sensor_id=None):

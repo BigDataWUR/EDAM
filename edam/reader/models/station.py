@@ -1,12 +1,14 @@
+import copy
 import json
 import logging
 
 from sqlalchemy.ext.hybrid import hybrid_property
 
 from sqlalchemy import Column, Integer, String, Boolean, Float
+from sqlalchemy.orm import relationship
 
 from edam.reader.base import Base
-from edam.reader.models.utilities import update_existing
+from edam.reader.models.utilities import update_existing, as_dict
 
 logger = logging.getLogger('edam.reader.models.station')
 
@@ -51,6 +53,8 @@ class Station(Base):
     url = Column(String(100))
     _tags = Column('tags', String(500))
     _qualifiers = Column('qualifiers', String(500))
+
+    junctions = relationship("Junction", back_populates="station")
 
     def update(self, new_values: dict):
         update_existing(self, new_values, logger)
@@ -102,6 +106,9 @@ class Station(Base):
             return ''
         except TypeError:
             return ''
+
+    def as_dict(self):
+        return as_dict(self)
 
     def __eq__(self, other):
         """Override the default Equals behavior"""

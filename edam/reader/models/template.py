@@ -7,7 +7,7 @@ from contextlib import contextmanager
 import jinja2schema
 
 from edam.reader.regular_expressions import template_file_header, \
-    for_loop_variables, var_for_line
+    for_loop_variables, var_for_line, start_if, end_if
 from edam.utilities.exceptions import ErrorWithTemplate
 
 logger = logging.getLogger('edam.reader.models.template')
@@ -74,8 +74,8 @@ class Template:
 
     @property
     def variables(self):
-        variables = jinja2schema.infer(self.stripped_contents)
-        return variables.keys()
+        variables = jinja2schema.infer(self.cleaned_contents)
+        return list(variables.keys())
 
     @property
     def observable_ids(self) -> [str]:
@@ -125,14 +125,33 @@ class Template:
             template_contents = template_file_object.read()
         matches = re.findall(var_for_line, template_contents)
         try:
-            return matches.pop()
+            return matches.pop().lstrip('\n\r').rstrip('\n\r')
         except Exception as exc:
             raise ErrorWithTemplate(exc)
 
     @property
+    def cleaned_contents(self):
+        temp = re.sub(start_if, '', self.stripped_contents)
+        temp = re.sub(end_if, '', temp).lstrip('\r\n').rstrip('\r\n')
+        return temp
+
+    @property
     def delimiter(self) -> str:
-        dialect = csv.Sniffer().sniff(self.stripped_contents)
+        dialect = csv.Sniffer().sniff(self.cleaned_contents)
         return dialect.delimiter
+
+    def to_dict(self):
+        temp = {}
+        properties = ['delimiter', 'filename', 'header', 'header_line',
+                      'observable_ids', 'preamble', 'stripped_contents',
+                      'used_columns', 'variables']
+        for prop in properties:
+            try:
+                temp[prop] = self.__getattribute__(prop)
+            except Exception as e:
+                logger.exception("Exception: ")
+                temp[prop] = "ERROR"
+        return temp
 
     def __repr__(self):
         return f"{self.filename} located at {self.path}"

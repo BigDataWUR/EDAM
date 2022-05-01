@@ -63,6 +63,13 @@ def add_item(item):
     return item
 
 
+def get_all(item):
+    session = db_session
+    session.flush()
+
+    return session.query(item).all()
+
+
 def add_items(items: list) -> list:
     """
     Adds a list of items in database.

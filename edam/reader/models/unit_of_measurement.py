@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
 
 from edam.reader.base import Base
 
@@ -19,6 +20,8 @@ class UnitOfMeasurement(Base):
     name = Column(String(60))
     ontology = Column(String(160))
     symbol = Column(String(15))
+
+    junctions = relationship("Junction", back_populates="unit")
 
     def __init__(self, name=None, ontology=None, symbol=None):
         self.name = name

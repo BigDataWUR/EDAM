@@ -12,24 +12,18 @@ from flask import make_response
 from flask_caching import Cache
 from flask_sqlalchemy import SQLAlchemy
 
+from edam.reader.database_handler import get_all
 from edam.reader.models.station import Station
+from edam.reader.models.junction import Junction
+from edam.reader.models.unit_of_measurement import UnitOfMeasurement
+from edam.reader.models.observable import AbstractObservable
+from edam.reader.models.sensor import Sensor
 from edam.settings import home_directory
+from edam.utilities.reader_utilities import find_templates_in_directory
 from edam.viewer import config
 from edam.viewer.app.manage import DatabaseHandler as Data
 from edam.viewer.app.manage import Measurement
 from edam.viewer.app.utilities import check_template_source_compatibility
-
-
-def copytree(src, dst, symlinks=False, ignore=None):
-    for item in os.listdir(src):
-        s = os.path.join(src, item)
-        d = os.path.join(dst, item)
-        if os.path.isdir(s):
-            shutil.copytree(s, d, symlinks, ignore)
-        else:
-            if "DS_" not in s:
-                shutil.copy2(s, d)
-
 
 app = Flask(__name__,
             static_folder=os.path.join(home_directory, '.viewer/', 'static'),
@@ -64,16 +58,16 @@ app.secret_key = "this should be harder to guess"
 data = Data()
 
 
-@cache.cached(timeout=600, key_prefix='metastations')
-def calculate_metastations():
-    metastations = data.retrieve_stations()
-    return metastations
+@cache.cached(timeout=600, key_prefix='stations')
+def stations():
+    all_stations = get_all(Station)
+    return all_stations
 
 
 @cache.cached(timeout=600, key_prefix='metatemplates')
-def calculate_templates():
-    metatemplates = data.retrieve_templates()
-    return metatemplates
+def templates():
+    all_templates = find_templates_in_directory()
+    return all_templates
 
 
 def calculate_data_and_render_from_template(template_name, station_id):
@@ -198,4 +192,3 @@ def resample(df: pd.DataFrame, rule, how=None, axis=0, fill_method=None,
 
 
 app.jinja_env.globals.update(resample=resample)
-

@@ -23,6 +23,8 @@ class AbstractObservable(Base):
 
     sensors = relationship("Sensor", back_populates="abstract_observable")
 
+    junctions = relationship("Junction", back_populates="observable")
+
     def __init__(self, name=None, ontology=None, **kwargs):
         self.name = name
         self.ontology = ontology

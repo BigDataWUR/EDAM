@@ -89,65 +89,10 @@ class DatabaseHandler(object):
         zip_argument = eval("zip(%s)" % zip_argument)
         return Station(station, df=station_df), zip_argument
 
-    def retrieve_object_from_id(self, table, object_id):
-        # session = self.Session()
-        # # item = session.query(
-        # #     getattr(
-        # #         models,
-        # #         table)).filter(
-        # #     getattr(
-        # #         models,
-        # #         table).id == object_id)
-        # # session.close()
-        #
-        # return item.first()
-        return None
-
     @staticmethod
     def retrieve_templates():
 
         return find_templates_in_directory()
-
-    def retrieve_stations(self):
-        items = session.query(Station).all()
-        dictionary = dict()
-        for station in items:
-            dictionary[station.id] = self.station2json(station)
-        session.close()
-        return dictionary
-
-    @staticmethod
-    def station2json(station: Station):
-        tags = station.tags
-        dictionary = copy.deepcopy(station.__dict__)
-
-        dictionary['tags'] = tags
-
-        dictionary['observables'] = dict()
-        for helper in station.helper:
-            dictionary['observables'][helper.observable_id] = dict()
-            dictionary['observables'][helper.observable_id]['start_date'] = str(
-                helper.start_date)
-            dictionary['observables'][helper.observable_id]['end_date'] = str(
-                helper.end_date)
-            dictionary['observables'][helper.observable_id][
-                'Observation'] = helper.number_of_Observation
-            dictionary['observables'][helper.observable_id][
-                'frequency'] = helper.frequency
-            dictionary['observables'][helper.observable_id][
-                'observable'] = helper.observable.name
-            dictionary['observables'][helper.observable_id][
-                'observed_in'] = helper.uom.name
-            # dictionary['observables'][helper.observable.name]['observed_in'] = helper.uom.name
-            # dictionary['observables'][helper.observable.name]['observed_in_symbol'] = helper.uom.symbol
-            # dictionary['observables'][helper.observable.name]['ontology'] = helper.observable.ontology
-            # dictionary['observables'][helper.observable.name]['input_file_path'] = helper.input_file_path
-            # dictionary['observables'][helper.observable.name]['observable_id'] = helper.observable_id
-        # dictionary.pop('id', None)
-        dictionary.pop('helper', None)
-        dictionary.pop('_sa_instance_state', None)
-
-        return dictionary
 
 
 if __name__ == "__main__":
