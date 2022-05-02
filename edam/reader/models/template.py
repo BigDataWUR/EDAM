@@ -153,6 +153,11 @@ class Template:
                 temp[prop] = "ERROR"
         return temp
 
+    @property
+    def contents(self):
+        with read_template(self) as template_file_object:
+            return template_file_object.read()
+
     def __repr__(self):
         return f"{self.filename} located at {self.path}"
 

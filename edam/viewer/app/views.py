@@ -15,9 +15,8 @@ GoogleMaps(app)
 @app.route('/index/')
 @app.route('/')
 def mapview():
-    metastations = stations()
     markers = list()
-    for station in metastations:
+    for station in stations():
         if station.latitude is not None and station.longitude is not None:
             observables = ', '.join(
                 [junction.observable.name for junction in station.junctions])
@@ -48,24 +47,29 @@ def handle_invalid_usage(error):
         error.status_code), errorMessage=error.message)
 
 
+@app.route('/Stations')
+@app.route('/Stations/')
+@app.route('/stations')
+@app.route('/stations/')
+def stat():
+    stations_dict = {station.id: station.as_dict() for station in stations()}
+    return stations_dict
+
+
+@app.route('/home')
 @app.route('/home/')
 def index():
     return render_template('home.html')
 
 
-@app.route('/Stations/')
-def stat():
-    stations_dict = {station.id: station.as_dict() for station in stations()}
-
-    return stations_dict
-
-
 @app.route('/Stations/<station>')
+@app.route('/stations/<station>')
 def specific_station(station):
     stations_dict = {station.id: station.as_dict() for station in stations()}
     return jsonify(stations_dict[int(station)])
 
 
+@app.route('/templates')
 @app.route('/templates/')
 def templ():
     templates_dict = {template.filename: template.to_dict() for template in
@@ -75,15 +79,13 @@ def templ():
 
 @app.route('/templates/<template>')
 def specific_template(template):
-    metatemplates = template()
     try:
-        path = metatemplates[template]['path']
+        temp = next(filter(lambda item: item.filename == template, templates()))
 
-        with open(path, 'r') as f:
-            response = make_response(f.read())
-            response.headers['Content-type'] = 'text/plain'
-            return response
-    except KeyError:
+        response = make_response(temp.contents)
+        response.headers['Content-type'] = 'text/plain'
+        return response
+    except StopIteration:
         raise InvalidUsage(
             f'{template} template does not exist', status_code=410)
 
