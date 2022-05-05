@@ -5,10 +5,8 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from edam.settings import database_url
 
 engine = create_engine(database_url, connect_args={'check_same_thread': False})
-db_session = scoped_session(sessionmaker(autocommit=False,
-                                         autoflush=False,
-                                         bind=engine,
-                                         expire_on_commit=False))
+Session = sessionmaker(bind=engine, autoflush=True, autocommit=False,
+                       expire_on_commit=True)
+session = Session(future=True)
 Base = declarative_base(bind=engine)
-
-Base.query = db_session.query_property()
+Base.query = scoped_session(Session).query_property()

@@ -73,7 +73,7 @@ class Template:
         return used_columns
 
     @property
-    def variables(self):
+    def variables(self) -> [str]:
         variables = jinja2schema.infer(self.cleaned_contents)
         return list(variables.keys())
 
@@ -138,13 +138,16 @@ class Template:
     @property
     def delimiter(self) -> str:
         dialect = csv.Sniffer().sniff(self.cleaned_contents)
-        return dialect.delimiter
+        return str(dialect.delimiter)
+
+    @property
+    def name(self) -> str:
+        return self.filename.split('.tmpl')[0]
 
     def to_dict(self):
         temp = {}
         properties = ['delimiter', 'filename', 'header', 'header_line',
-                      'observable_ids', 'preamble', 'stripped_contents',
-                      'used_columns', 'variables']
+                      'variables']
         for prop in properties:
             try:
                 temp[prop] = self.__getattribute__(prop)

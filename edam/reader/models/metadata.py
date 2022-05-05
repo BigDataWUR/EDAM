@@ -16,8 +16,8 @@ class Metadata:
     @property
     def restructured_metadata(self):
         restr_meta = dict()
-        sensors = self.sensors
         observables = self.observables
+        sensors = self.sensors
         unit = self.units_of_measurement
         for obs_id in self.observable_ids:
             restr_meta['station'] = self.station
@@ -61,7 +61,7 @@ class Metadata:
 
     @property
     def observables(self) -> [AbstractObservable]:
-        return {item.pop('observable_id'): add_item(AbstractObservable(**item))
+        return {item['observable_id']: add_item(AbstractObservable(**item))
                 for item in self.contents['Observables']}
 
     @property
@@ -74,6 +74,8 @@ class Metadata:
                 lambda rel_obs: rel_obs.strip().lstrip().rstrip(),
                 sensor.pop('relevant_observables').split(','))
             for observable_id in relevant_observables:
+                sensor['abstract_observable_id'] = self.observables[
+                    observable_id].id
                 sensors[observable_id] = add_item(Sensor(**sensor))
         return sensors
 

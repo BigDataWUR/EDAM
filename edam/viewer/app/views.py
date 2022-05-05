@@ -3,9 +3,11 @@ from flask import request, make_response, jsonify
 from flask_googlemaps import GoogleMaps
 from flask_googlemaps import Map
 
+from edam.reader.models.station import Station
+from edam.reader.models.template import Template
 from edam.utilities.exceptions import InvalidUsage
 from edam.viewer.app import app, stations, nocache, templates, \
-    calculate_data_and_render_from_template
+    render_data
 from edam.viewer.app.OgcSos import OgcSos
 
 GoogleMaps(app)
@@ -72,7 +74,7 @@ def specific_station(station):
 @app.route('/templates')
 @app.route('/templates/')
 def templ():
-    templates_dict = {template.filename: template.to_dict() for template in
+    templates_dict = {template.name: template.to_dict() for template in
                       templates()}
     return templates_dict
 
@@ -80,7 +82,7 @@ def templ():
 @app.route('/templates/<template>')
 def specific_template(template):
     try:
-        temp = next(filter(lambda item: item.filename == template, templates()))
+        temp = next(filter(lambda item: item.name == template, templates()))
 
         response = make_response(temp.contents)
         response.headers['Content-type'] = 'text/plain'
@@ -90,14 +92,25 @@ def specific_template(template):
             f'{template} template does not exist', status_code=410)
 
 
-@app.route('/data/')
+@app.route('/data')
 @nocache
 def get_data():
-    station_id = request.args.get('station')
+    station_name = request.args.get('station')
     template_name = request.args.get('template')
+    try:
+        station = next(filter(lambda item: item.name == station_name,
+                              stations()))  # type: Station
+    except StopIteration:
+        print("Station does not exist")
+    try:
+        template = next(
+            filter(lambda item: item.name == template_name,
+                   templates()))  # type: Template
+    except StopIteration:
+        print("template does not exist")
 
-    valid, template, station, chunk = calculate_data_and_render_from_template(
-        template_name=template_name, station_id=station_id)
+    valid, template, station, chunk = render_data(template=template,
+                                                  station=station)
     # Template_id: Yucheng. The actual file is edam/Yucheng.tmpl
     if valid:
         response = make_response(

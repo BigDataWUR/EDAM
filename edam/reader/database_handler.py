@@ -1,24 +1,19 @@
 import copy
 import logging
 
-from edam.reader.base import db_session
+from edam.reader.base import session
 
 logger = logging.getLogger('edam.reader.logger')
+logger.setLevel("DEBUG")
 
 
 def exists(item):
-    session = db_session
     try:
         item_dict = copy.deepcopy(item.__dict__)  # type: dict
 
         item_dict.pop('_sa_instance_state')
-        item_exists = session.query(item.__class__).filter_by(**item_dict)
-        if item_exists.count() > 0:
-            session.flush()
-            session.expunge_all()
-            session.close()
-            return item_exists.first()
-        return None
+        _item = session.query(item.__class__).filter_by(**item_dict).first()
+        return _item
     except Exception:
         logger.exception("Exception")
         return None
@@ -38,39 +33,29 @@ def add_item(item):
     Returns:
         The item stored in the database (along with the ID)
     """
-    session = db_session
     try:
-        item_dict = copy.deepcopy(item.__dict__)  # type: dict
-
-        item_dict.pop('_sa_instance_state')
-        item_exists = session.query(item.__class__).filter_by(**item_dict)
-        if item_exists.count() > 0:
-            session.flush()
-            session.expunge_all()
-            session.close()
-            return item_exists.first()
-        else:
+        existing_object = exists(item)
+        if existing_object is None:
             session.add(item)
-            logger.debug(f"Added {item} in db")
             session.commit()
+            # session.flush()
+            logger.debug(f"Added {item} in db")
+            return item
     except BaseException:
         logger.error(
             f'Exception when adding {item}. Check __add_item__()')
         session.rollback()
         raise
-    session.expunge_all()
-    session.close()
-    return item
+    else:
+        return existing_object
 
 
 def get_all(item):
-    session = db_session
     session.flush()
-
     return session.query(item).all()
 
 
-def add_items(items: list) -> list:
+def add_items(items: list):
     """
     Adds a list of items in database.
 
@@ -82,15 +67,14 @@ def add_items(items: list) -> list:
     Returns:
         The items as added in the database
     """
-
-    return list(map(add_item, items))
+    unique_items = list(filter(lambda item: exists(item) is None, items))
+    if unique_items:
+        session.bulk_save_objects(unique_items)
+        session.commit()
+        session.flush()
 
 
 def update_object(item):
-    session = db_session
-
     session.merge(item)
-    session.flush()
-    session.expunge_all()
     session.commit()
-    session.close()
+    session.flush()
