@@ -18,6 +18,7 @@ class AbstractObservable(Base):
     """
     __tablename__ = "AbstractObservable"
     id = Column(Integer, primary_key=True)
+    observable_id = Column(String(60))
     name = Column(String(60))
     ontology = Column(String(160))
 
@@ -25,6 +26,11 @@ class AbstractObservable(Base):
 
     junctions = relationship("Junction", back_populates="observable")
 
-    def __init__(self, name=None, ontology=None, **kwargs):
+    def __init__(self, name=None, ontology=None, observable_id=None,
+                 **kwargs):
         self.name = name
         self.ontology = ontology
+        self.observable_id = observable_id
+
+    def __repr__(self):
+        return f'<id {self.id!r}>'

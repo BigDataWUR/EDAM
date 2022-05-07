@@ -1,13 +1,17 @@
-import copy
 import json
 import logging
+from datetime import datetime
 
+import pandas as pd
+from sqlalchemy.dialects import sqlite
 from sqlalchemy.ext.hybrid import hybrid_property
 
 from sqlalchemy import Column, Integer, String, Boolean, Float
 from sqlalchemy.orm import relationship
 
-from edam.reader.base import Base
+from edam.reader.base import Base, session, engine
+from edam.reader.models.measurement import Measurement
+from edam.reader.models.observation import Observation
 from edam.reader.models.utilities import update_existing, as_dict
 
 logger = logging.getLogger('edam.reader.models.station')
@@ -106,6 +110,66 @@ class Station(Base):
             return ''
         except TypeError:
             return ''
+
+    @property
+    def observable_ids(self) -> [str]:
+        return [junction.observable.observable_id for junction in
+                self.junctions]
+
+    @property
+    def junctions_mapping(self) -> dict:
+        return {junction.id: junction.observable.observable_id for junction in
+                self.junctions}
+
+    @property
+    def data(self) -> pd.DataFrame:
+        dataframes = []
+        for junction in self.junctions_mapping.keys():
+            sql = session.query(Observation).filter(
+                Observation.junction_id == junction)
+            sql_literal = str(sql.statement.compile(dialect=sqlite.dialect(),
+                                                    compile_kwargs={
+                                                        "literal_binds": True}))
+
+            df = pd.read_sql_query(sql_literal, engine)
+
+            df.rename(columns={"value": self.junctions_mapping[junction]},
+                      inplace=True)
+            if dataframes:
+                df.drop(['id', 'junction_id', 'timestamp'], axis=1,
+                        inplace=True)
+            else:
+                df.drop(['id', 'junction_id'], axis=1, inplace=True)
+            dataframes.append(df)
+        dataframe = pd.concat(dataframes, join='inner', axis=1).fillna(
+            "empty")  # type: pd.DataFrame
+        dataframe.set_index(keys=["timestamp"], drop=False, inplace=True)
+        return dataframe
+
+    def data_iter(self, variables=None):
+        data = self.data
+        for row in data.itertuples():
+            if variables is not None:
+                yield self._prepare_dataframe_generator(row, variables)
+            else:
+                yield self._prepare_dataframe_generator(row, list(data))
+
+    def _prepare_dataframe_generator(self, row: tuple, variables) -> []:
+        gen = []
+        for variable in variables:
+            value = row.__getattribute__(variable)
+            if variable == "timestamp":
+                gen.append(datetime.strptime(value.split('.')[0],
+                                             "%Y-%m-%d %H:%M:%S"))
+            else:
+                if value == "nan":
+                    try:
+                        gen.append(Measurement(self.qualifiers['missing_data']))
+                    except Exception:
+                        gen.append(Measurement(value))
+                else:
+                    gen.append(Measurement(value))
+        return gen
 
     def as_dict(self):
         return as_dict(self)

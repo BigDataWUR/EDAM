@@ -1,6 +1,5 @@
 import copy
 import json
-
 from edam.reader.database_handler import update_object, exists
 
 

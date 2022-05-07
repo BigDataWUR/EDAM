@@ -3,8 +3,7 @@ from edam.reader.models.template import Template
 
 
 def template_matches_source(template: Template, station: Station):
-    return True
-    # if set(template_for_vars) <= set(station_observable_ids):
-    #     return True, template_for_vars, template_dictionary
-    # else:
-    #     return False, None, None
+    if set(station.observable_ids + ['timestamp']) >= set(
+            template.observable_ids):
+        return True
+    return False

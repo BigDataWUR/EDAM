@@ -1,5 +1,5 @@
+from edam.reader.models.measurement import Measurement
 from edam.settings import OGC_SOS_CONFIGURATION
-from edam.viewer.app.manage import Measurement
 
 
 class OgcSos:

@@ -15,10 +15,9 @@ class Observation(Base):
     Attributes:
         value: The measurement as string
         timestamp: When the measurement was taken
-        abstract_observable_id: FK to the corresponding abstract observable
-        unit_id: FK to the corresponding unit of measurement
-        station_id: FK to the corresponding station
-        sensor_id: FK to the corresponding sensor
+        junction_id: FK to the corresponding junction table. This tables
+            holds further info about the corresponding unit of measurement,
+            station and sensor
     """
     __tablename__ = "Observation"
     id = Column(Integer, primary_key=True)

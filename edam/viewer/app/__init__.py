@@ -13,10 +13,10 @@ from flask_caching import Cache
 from flask_sqlalchemy import SQLAlchemy
 
 from edam.reader.database_handler import get_all
+from edam.reader.models.measurement import Measurement
 from edam.settings import home_directory
 from edam.utilities.reader_utilities import find_templates_in_directory
 from edam.viewer import config
-from edam.viewer.app.manage import Measurement
 from edam.viewer.app.utilities import template_matches_source
 
 # These are needed despite not all being used
@@ -72,13 +72,9 @@ def templates():
 
 def render_data(template, station):
     if template_matches_source(template=template, station=station):
-        pass
-    if compatible:
-        station, chunk = data.retrieve_stations_data(
-            station, list_template_for_arguments)
-        return True, template_dictionary, station, chunk
+        return station.data_iter(template.observable_ids)
     else:
-        return False, redirect(url_for('index')), None, None
+        return None
 
 
 def nocache(view):

@@ -1,3 +1,5 @@
+import os.path
+
 from flask import render_template
 from flask import request, make_response, jsonify
 from flask_googlemaps import GoogleMaps
@@ -109,22 +111,16 @@ def get_data():
     except StopIteration:
         print("template does not exist")
 
-    valid, template, station, chunk = render_data(template=template,
-                                                  station=station)
-    # Template_id: Yucheng. The actual file is edam/Yucheng.tmpl
-    if valid:
+    data = render_data(template=template,
+                       station=station)
+    if data is not None:
         response = make_response(
-            render_template(
-                "edam/" +
-                template_name +
-                '.tmpl',
-                chunk=chunk,
-                station=station))
+            render_template(os.path.join('edam', template.filename),
+                            chunk=data,
+                            station=station))
         response.headers['Content-type'] = 'text/plain'
         response.headers['Cache-Control'] = 'public, max-age=0'
 
-        # response.headers['Content-Disposition'] = "attachment;
-        # filename=test.csv"
         return response
     else:
         if station:
