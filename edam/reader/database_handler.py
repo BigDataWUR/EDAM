@@ -14,7 +14,8 @@ def exists(item):
         _item = session.query(item.__class__).filter_by(**item_dict).first()
         return _item
     except Exception:
-        logger.exception(f"Exception while checking whether {item} exists in db")
+        logger.exception(
+            f"Exception while checking whether {item} exists in db")
         return None
 
 

@@ -30,8 +30,8 @@ def walk_files_in_directory(directory: str) -> List[str]:
 
 
 def store_data_sqlite(resolver: "Resolver"):
+    observations = []
     for measurement, dataframe in resolver.timeseries.items():
-        observations = []
         abstract_observable_id = \
             resolver.metadata.restructured_metadata[measurement][
                 'observable'].id
@@ -50,12 +50,7 @@ def store_data_sqlite(resolver: "Resolver"):
             observations.append(Observation(timestamp=timestamp,
                                             value=str(value),
                                             junction_id=junction.id))
-        add_items(observations)
-
-
-def handle_bad_csv_line(line: [str]):
-    logger.error(f"Can't parse this line: {line}")
-    return None
+    add_items(observations)
 
 
 def generate_timeseries(resolver: "Resolver") -> [pd.Series]:
