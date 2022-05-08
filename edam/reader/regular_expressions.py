@@ -11,7 +11,7 @@ template_file_header = r"((.*\n){1}){%\s?for.*%}"
 # In our templating language they are represented as:
 # {{observable.value[0]}},{{observable.value[1]}}, etc.
 # With that regex we are going to determine the existence of those observables
-multicolumn_values_bom = re.compile(r"{{.*?\..*?(\[[0-9]\])*}}")
+multicolumn_values_bom = re.compile(r"{{.*?\..*?(\[\d\])*}}")
 
 # For the following regex, line has to be split to ',' and then
 # each individual var to be parsed with var_name

@@ -1,6 +1,3 @@
-__pycache__/
-*.py[cod]
-*$py.class
 venv
 .idea/
 !/edam/viewer/app/templates/
