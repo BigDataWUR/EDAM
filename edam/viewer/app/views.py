@@ -5,12 +5,15 @@ from flask import request, make_response, jsonify
 from flask_googlemaps import GoogleMaps
 from flask_googlemaps import Map
 
+from edam import get_logger
 from edam.reader.models.station import Station
 from edam.reader.models.template import Template
 from edam.utilities.exceptions import InvalidUsage
 from edam.viewer.app import app, stations, nocache, templates, \
     render_data
 from edam.viewer.app.OgcSos import OgcSos
+
+logger = get_logger('edam.viewer.app.views')
 
 GoogleMaps(app)
 
@@ -103,13 +106,17 @@ def get_data():
         station = next(filter(lambda item: item.name == station_name,
                               stations()))  # type: Station
     except StopIteration:
-        print("Station does not exist")
+        message = f"Station {station_name} does not exist"
+        logger.warn(message)
+        raise InvalidUsage(message, status_code=410)
     try:
         template = next(
             filter(lambda item: item.name == template_name,
                    templates()))  # type: Template
     except StopIteration:
-        print("template does not exist")
+        message = f"Template {template_name} does not exist"
+        logger.warn(message)
+        raise InvalidUsage(message, status_code=410)
 
     data = render_data(template=template,
                        station=station)
@@ -123,13 +130,10 @@ def get_data():
 
         return response
     else:
-        if station:
-            raise InvalidUsage(
-                f'{template_name} template and {station.name} station '
-                f'are not compatible',
-                status_code=410)
-        else:
-            raise InvalidUsage('No station', status_code=410)
+        raise InvalidUsage(
+            f'{template_name} template and {station.name} station '
+            f'are not compatible',
+            status_code=410)
 
 
 @app.route('/about/')

@@ -1,10 +1,9 @@
-from datetime import datetime
-
 import click
 
 from edam.reader.models.database import recreate_database
 from edam.reader.resolvers.resolver_factory import ResolverFactory
 from edam.settings import SERVER
+from edam.utilities.decorators import timer
 from edam.viewer.app.views import app
 
 
@@ -19,8 +18,8 @@ from edam.viewer.app.views import app
 @click.option('--drop', required=False, default='no',
               type=click.Choice(['yes', 'no']),
               help="Whether to drop stored data or not")
+@timer
 def cli(input_file, template, metadata, var, drop):
-    now = datetime.now()
     if drop == "yes":
         recreate_database()
 

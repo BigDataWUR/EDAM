@@ -4,7 +4,7 @@ import logging
 import os
 import re
 from typing import TYPE_CHECKING, List
-
+from datetime import datetime
 import pandas as pd
 
 from edam.reader.database_handler import add_items, add_item
@@ -71,18 +71,28 @@ def generate_timeseries(resolver: "Resolver") -> [pd.Series]:
     else:
         contents = '\n'.join(contents)
 
+    def date_parser(row):
+        if "timestamp.dayofyear" in timestamp_columns:
+            dt = datetime.strptime(row, "%Y %j")
+        else:
+            dt = pd.to_datetime(row, errors="coerce")
+        return dt
+
     dataframe_kwargs = {
         'filepath_or_buffer': io.StringIO(contents),
         'names': resolver.template.used_columns,
         'parse_dates': {"timestamp": timestamp_columns},
         'infer_datetime_format': True,
         'na_values': resolver.metadata.station.missing_data,
+        'date_parser': date_parser,
         "on_bad_lines": 'warn'
     }
     if resolver.header != '':
         dataframe_kwargs["skiprows"] = [0]
 
     df = pd.read_csv(**dataframe_kwargs)
+    # Drop rows where timestamp was not parsed correctly
+    df = df.loc[~df.timestamp.isnull()]
     df.set_index(keys=['timestamp'], inplace=True)
     timeseries = {}
     for variable in resolver.template.variables:

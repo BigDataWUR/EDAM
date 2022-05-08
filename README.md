@@ -125,6 +125,7 @@ The APSIM data files share the same structure, so these preamble-encoded metadat
 
 <details>
     <summary><code>AgMIP metadata</code></summary>
+
 ```yaml
 Station:
     name: Agmip

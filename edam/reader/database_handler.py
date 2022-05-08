@@ -1,10 +1,9 @@
 import copy
-import logging
 
+from edam import get_logger
 from edam.reader.base import session
 
-logger = logging.getLogger('edam.reader.logger')
-logger.setLevel("DEBUG")
+logger = get_logger('edam.reader.logger')
 
 
 def exists(item):
@@ -15,7 +14,7 @@ def exists(item):
         _item = session.query(item.__class__).filter_by(**item_dict).first()
         return _item
     except Exception:
-        logger.exception("Exception")
+        logger.exception(f"Exception while checking whether {item} exists in db")
         return None
 
 
@@ -38,12 +37,11 @@ def add_item(item):
         if existing_object is None:
             session.add(item)
             session.commit()
-            # session.flush()
             logger.debug(f"Added {item} in db")
             return item
     except BaseException:
-        logger.error(
-            f'Exception when adding {item}. Check __add_item__()')
+        logger.exception(
+            f'Exception when adding {item}')
         session.rollback()
         raise
     else:

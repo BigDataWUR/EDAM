@@ -12,6 +12,7 @@ from flask import make_response
 from flask_caching import Cache
 from flask_sqlalchemy import SQLAlchemy
 
+from edam import get_logger
 from edam.reader.database_handler import get_all
 from edam.reader.models.measurement import Measurement
 from edam.settings import home_directory
@@ -26,6 +27,8 @@ from edam.reader.models.template import Template
 from edam.reader.models.unit_of_measurement import UnitOfMeasurement
 from edam.reader.models.observable import AbstractObservable
 from edam.reader.models.sensor import Sensor
+
+logger = get_logger('edam.viewer.app')
 
 app = Flask(__name__,
             static_folder=os.path.join(home_directory, '.viewer/', 'static'),
@@ -146,10 +149,7 @@ def resample(df: pd.DataFrame, rule, how=None, axis=0, fill_method=None,
             df[observable] = df[observable].apply(lambda x: float(x))
 
     except Exception as e:
-        print(e.args)
-        print(
-            "I can't transform string value to float. "
-            "Wind maybe? Check edam.viewer.__init__.py - downsample func")
+        logger.exception("Exception")
         exit()
     resampled = df.resample("A", None, axis, fill_method, closed, label,
                             convention, kind, loffset,

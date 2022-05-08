@@ -1,13 +1,14 @@
 import json
-import logging
 
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
+
+from edam import get_logger
 from edam.reader.base import Base
 from edam.reader.models.utilities import update_existing
 
-logger = logging.getLogger('edam.reader.models.sensor')
+logger = get_logger('edam.reader.models.sensor')
 
 
 class Sensor(Base):
@@ -57,4 +58,4 @@ class Sensor(Base):
         self._tags = json.dumps(value)
 
     def __repr__(self):
-        return f'<id {self.id!r}>'
+        return f'<{self.__class__.__name__} {self.name} with id {self.id!r}>'

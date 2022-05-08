@@ -1,16 +1,16 @@
 import csv
-import logging
 import os
 import re
 from contextlib import contextmanager
 
 import jinja2schema
 
+from edam import get_logger
 from edam.reader.regular_expressions import template_file_header, \
     for_loop_variables, var_for_line, start_if, end_if
 from edam.utilities.exceptions import ErrorWithTemplate
 
-logger = logging.getLogger('edam.reader.models.template')
+logger = get_logger('edam.reader.models.template')
 
 
 class Template:

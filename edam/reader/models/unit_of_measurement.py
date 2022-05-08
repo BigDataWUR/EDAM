@@ -27,3 +27,6 @@ class UnitOfMeasurement(Base):
         self.name = name
         self.ontology = ontology
         self.symbol = symbol
+
+    def __repr__(self):
+        return f'<{self.__class__.__name__} {self.name!r} with id {self.id!r}>'

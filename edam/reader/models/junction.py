@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, DateTime, String, ForeignKey
+from sqlalchemy import Column, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 
 from edam.reader.base import Base
@@ -30,4 +30,4 @@ class Junction(Base):
         self.sensor_id = sensor_id
 
     def __repr__(self):
-        return f'<id {self.id!r}>'
+        return f'<{self.__class__.__name__} with id {self.id!r}>'

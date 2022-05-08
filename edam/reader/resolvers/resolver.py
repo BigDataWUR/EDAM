@@ -2,11 +2,14 @@ from abc import ABC, abstractmethod
 
 import pandas as pd
 
+from edam import get_logger
 from edam.reader.models.metadata import Metadata
 from edam.reader.models.template import Template
 from edam.reader.resolvers.resolver_utilities import generate_timeseries, \
     extract_station_from_preamble, store_data_sqlite
 from edam.utilities.exceptions import TemplateInputHeaderMismatch
+
+logger = get_logger('edam.reader.resolvers.resolver')
 
 
 class Resolver(ABC):
@@ -80,6 +83,7 @@ class Resolver(ABC):
         return False
 
     def store_timeseries(self):
+        logger.debug(f"Storing timeseries for {self.metadata.station.name}")
         store_data_sqlite(resolver=self)
 
     @property

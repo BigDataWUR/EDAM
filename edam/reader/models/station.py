@@ -1,5 +1,4 @@
 import json
-import logging
 from datetime import datetime
 
 import pandas as pd
@@ -9,12 +8,13 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy import Column, Integer, String, Boolean, Float
 from sqlalchemy.orm import relationship
 
+from edam import get_logger
 from edam.reader.base import Base, session, engine
 from edam.reader.models.measurement import Measurement
 from edam.reader.models.observation import Observation
 from edam.reader.models.utilities import update_existing, as_dict
 
-logger = logging.getLogger('edam.reader.models.station')
+logger = get_logger('edam.reader.models.station')
 
 
 class Station(Base):
@@ -187,4 +187,4 @@ class Station(Base):
         return NotImplemented
 
     def __repr__(self):
-        return f'<Name {self.name!r}>'
+        return f'<{self.__class__.__name__} {self.name!r} with id {self.id!r}>'
