@@ -1,9 +1,13 @@
+import json
 import os.path
 
 from flask import render_template
 from flask import request, make_response, jsonify
 from flask_googlemaps import GoogleMaps
 from flask_googlemaps import Map
+
+import plotly
+import plotly.graph_objs as go
 
 from edam import get_logger
 from edam.reader.models.station import Station
@@ -139,6 +143,51 @@ def get_data():
 @app.route('/about/')
 def about():
     return render_template('about.html')
+
+
+@app.route('/graphs')
+def graphs():
+    all_stations = stations()  # type: [Station]
+    metrics = all_stations[0].observable_ids
+    return render_template('graphs.html', stations=all_stations,
+                           metrics=metrics)
+
+
+@app.route('/line', methods=['GET', 'POST'])
+def line_graph():
+    metrics = request.args['metrics'].split(',')
+    st = request.args['stations'].split(',')
+    graphJSON = line_plotter(metrics, st)
+    data_to_return = dict()
+    data_to_return['data_json'] = graphJSON
+    data_to_return['layout'] = dict()
+    data_to_return['layout']['title'] = f"{','.join(metrics)}"
+
+    return data_to_return
+
+
+def line_plotter(metrics, st):
+    tracers = list()
+    for sta in st:
+        try:
+            station = next(filter(lambda sts: sts.name == sta, stations()))
+        except StopIteration:
+            return {}
+        for metric in metrics:
+            df = station.data
+            metric_formal = next(
+                filter(lambda it: it.observable.observable_id == metric,
+                       station.junctions))
+
+            trace = go.Scatter(
+                x=df.index,
+                y=df[metric],
+                mode='lines',
+                name=f'{station.name} - {metric_formal.observable.name.capitalize()}'
+            )
+            tracers.append(trace)
+    graphJSON = json.dumps(tracers, cls=plotly.utils.PlotlyJSONEncoder)
+    return graphJSON
 
 
 @app.route('/SensorObservationService/')

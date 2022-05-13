@@ -9,8 +9,10 @@
         <sml:IdentifierList>
             <sml:identifier name="longName">
                 <sml:Term>
-                    <sml:value>{{ helper.sensor.name }} observes {{ helper.observable.name }}. It is manufactured
-                        by {{ helper.sensor.manufacturer }}</sml:value>
+                    <sml:value>{{ helper.sensor.name }} observes {{
+                        helper.observable.name }}. It is manufactured
+                        by {{ helper.sensor.manufacturer }}
+                    </sml:value>
                 </sml:Term>
             </sml:identifier>
             <sml:identifier name="shortName">
@@ -20,7 +22,9 @@
             </sml:identifier>
             <sml:identifier name="SensorId">
                 <sml:Term>
-                    <sml:value>{{ helper.station_id }}:{{ helper.sensor_id}}:{{ helper.template_id }}</sml:value>
+                    <sml:value>{{ helper.station_id }}:{{ helper.sensor_id}}:{{
+                        helper.template_id }}
+                    </sml:value>
                 </sml:Term>
             </sml:identifier>
         </sml:IdentifierList>

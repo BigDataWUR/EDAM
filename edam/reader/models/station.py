@@ -141,10 +141,13 @@ class Station(Base):
             else:
                 df.drop(['id', 'junction_id'], axis=1, inplace=True)
             dataframes.append(df)
-        dataframe = pd.concat(dataframes, join='inner', axis=1).fillna(
-            "empty")  # type: pd.DataFrame
-        dataframe.set_index(keys=["timestamp"], drop=False, inplace=True)
-        return dataframe
+        if dataframes:
+            dataframe = pd.concat(dataframes, join='inner', axis=1).fillna(
+                "empty")  # type: pd.DataFrame
+            dataframe.set_index(keys=["timestamp"], drop=False, inplace=True)
+            return dataframe
+        logger.warning(f"{self.name} does not have any data associated")
+        return None
 
     def data_iter(self, variables=None):
         data = self.data
