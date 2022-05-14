@@ -8,7 +8,7 @@ from setuptools import setup, find_packages
 from setuptools.command.install import install
 from setuptools.command.test import test as TestCommand
 
-__version__ = '1.1.1'
+__version__ = '2.0.0'
 here = os.path.abspath(os.path.dirname(__file__))
 
 
@@ -33,39 +33,47 @@ class CustomInstall(install):
         install.run(self)
         # custom stuff here
         # create folders to put staff in.
-        directories_to_be_created = [os.path.expanduser("~/.edam/"), os.path.expanduser("~/.edam/templates/"),
-                                     os.path.expanduser("~/.edam/metadata/"),
-                                     os.path.expanduser("~/.edam/inputs/"),
-                                     os.path.expanduser("~/.edam/.viewer/")
-                                     ]
-        for directory in directories_to_be_created:
+        user_home = os.path.expanduser("~")
+        edam_home = os.path.join(user_home, ".edam")
+        edam_templates = os.path.join(edam_home, "templates")
+        edam_metadata = os.path.join(edam_home, "metadata")
+        edam_inputs = os.path.join(edam_home, "inputs")
+        edam_viewer = os.path.join(edam_home, ".viewer")
+        directories = [edam_home, edam_templates, edam_metadata,
+                       edam_inputs, edam_viewer]
+        for directory in directories:
             try:
                 os.makedirs(directory, exist_ok=True)
             except OSError as e:
                 if e.errno != errno.EEXIST:
                     raise
 
-        resources_directory = os.path.join(here, 'edam', 'resources')
-        home_user_directory = os.path.expanduser("~/.edam/")
-        directories_to_be_copied_from_resources = ['inputs', 'templates', 'metadata']
+        resources = os.path.join(here, 'edam', 'resources')
+        resource_dirs = ['inputs', 'templates', 'metadata']
 
-        for directory in directories_to_be_copied_from_resources:
-            copytree(os.path.join(resources_directory, directory), os.path.join(home_user_directory, directory))
-        shutil.copyfile(os.path.join(resources_directory, 'settings.yaml'),
-                        os.path.join(home_user_directory, 'settings.yaml'))
+        for directory in resource_dirs:
+            copytree(os.path.join(resources, directory),
+                     os.path.join(edam_home, directory))
 
-        shutil.copyfile(os.path.join(resources_directory, 'edam.owl'),
-                        os.path.join(home_user_directory, 'edam.owl'))
+        # Copy resource files
+        shutil.copyfile(os.path.join(resources, 'settings.yaml'),
+                        os.path.join(edam_home, 'settings.yaml'))
 
-        shutil.copyfile(os.path.join(resources_directory, 'edam.owl'),
-                        os.path.join(home_user_directory, 'backup.owl'))
+        shutil.copyfile(os.path.join(resources, 'edam.owl'),
+                        os.path.join(edam_home, 'edam.owl'))
+
+        shutil.copyfile(os.path.join(resources, 'edam.owl'),
+                        os.path.join(edam_home, 'backup.owl'))
+
         # Copy flask_related contents into home_directory
+        copytree(os.path.join(resources, 'flask_related'),
+                 os.path.join(edam_home, '.viewer/'))
 
-        copytree(os.path.join(resources_directory, 'flask_related'),
-                 os.path.join(home_user_directory, '.viewer/'))
-        # Copy edam templates into flask edam/templates
-        copytree(os.path.join(resources_directory, 'templates'),
-                 os.path.join(home_user_directory, '.viewer', 'templates', 'edam'))
+        shutil.rmtree(os.path.join(edam_home, '.viewer/', 'templates', 'edam'),
+                      ignore_errors=True)
+        # Create symlink templates into flask edam/templates
+        os.symlink(os.path.join(edam_home, 'templates'),
+                   os.path.join(edam_home, '.viewer', 'templates', 'edam'))
 
 
 def read(*filenames, **kwargs):
@@ -93,6 +101,9 @@ class PyTest(TestCommand):
         sys.exit(errcode)
 
 
+with open('requirements.txt') as f:
+    required = f.read().splitlines()
+
 setup(
     name='edam',
     version=__version__,
@@ -105,17 +116,16 @@ setup(
     setup_requires=['pytest-runner'],
     tests_require=['pytest'],
     include_package_data=True,
-    install_requires=['sqlalchemy', 'requests', 'numpy', 'pandas', 'numexpr', 'geopy', 'Flask-SQLAlchemy',
-                      'Flask', 'Flask-Caching', 'jinja2', 'PyYAML==5.4.1', 'records', 'psycopg2', 'click',
-                      'Flask-GoogleMaps==0.2.4', 'owlready2', 'pint', 'Werkzeug'
-                      ],
+    install_requires=required,
     cmdclass={'test': PyTest, 'install': CustomInstall},
-    python_requires='>=3.6',
+    python_requires='>=3.7',
     packages=find_packages(exclude=["tests.*", "tests"]),
     author_email='argysamo@gmail.com',
     package_data={
-        'edam': ['resources/metadata/*', 'resources/inputs/*', 'resources/templates/*',
-                 'resources/settings.yaml', 'resources/flask_related/static/*/*',
+        'edam': ['resources/metadata/*', 'resources/inputs/*',
+                 'resources/templates/*',
+                 'resources/settings.yaml',
+                 'resources/flask_related/static/*/*',
                  'resources/flask_related/templates/*/*', ],
     },
     entry_points={
@@ -125,10 +135,10 @@ setup(
     },
     classifiers=[
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
     ],
 
 )

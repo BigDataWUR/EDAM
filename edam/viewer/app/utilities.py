@@ -1,18 +1,9 @@
-from edam.reader.models import Station
+from edam.reader.models.station import Station
+from edam.reader.models.template import Template
 
-from edam.reader.utilities import find_and_describe_template
 
-
-def check_template_source_compatibility(observable_id, station_object: Station):
-    template_dictionary = find_and_describe_template(observable_id)
-    print(observable_id)
-    if template_dictionary:
-        template_for_vars = template_dictionary['variables'].replace(' ', '').split(',')
-    else:
-        return False, None, False
-    station_observable_ids = [helper.observable_id for helper in station_object.helper]
-    station_observable_ids.append('timestamp')
-    if set(template_for_vars) <= set(station_observable_ids):
-        return True, template_for_vars, template_dictionary
-    else:
-        return False, None, None
+def template_matches_source(template: Template, station: Station):
+    if set(station.observable_ids + ['timestamp']) >= set(
+            template.observable_ids):
+        return True
+    return False

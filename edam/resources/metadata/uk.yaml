@@ -3,8 +3,8 @@ Station:
   region: United Kingdom
   url: http://www.metoffice.gov.uk/
   tags:
-    key1:value1
-    key2:value2
+    key1: value1
+    key2: value2
 Observables:
   - observable_id: tmin
     name: Temperature minimum
@@ -30,8 +30,7 @@ Units of Measurement:
     ontology: something
     relevant_observables: rain
 Sensors:
-  - generic: True
-    name: Generic test sensor
+  - name: Generic test sensor
     manufacturer: test Consortium
     relevant_observables: tmin, tmax, rain, sun, af
     tags:

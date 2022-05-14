@@ -1,0 +1,5 @@
+pytest==7.1.2
+coverage==6.3.2
+pytest-bdd==5.0.0
+pylint==2.13.8
+vcrpy==4.1.1

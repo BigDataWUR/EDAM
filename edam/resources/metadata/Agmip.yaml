@@ -53,8 +53,7 @@ Units of Measurement:
     ontology: something
     relevant_observables: wind
 Sensors:
-  - generic: True
-    name: Generic Agmip sensor
+  - name: Generic Agmip sensor
     manufacturer: Agmip Consortium
     relevant_observables: dewp, vprs, srad, rhum, tmin, tmax, rain, wind
     tags:
