@@ -3,7 +3,7 @@ import os
 import pytest
 
 from edam.reader.models.template import Template
-from edam.settings import test_resources
+from edam import test_resources
 from edam.utilities.reader_utilities import \
     remove_template_placeholders_from_string, \
     evaluate_variable_part, generate_uri

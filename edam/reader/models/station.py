@@ -12,7 +12,11 @@ from edam import get_logger
 from edam.reader.base import Base, session, engine
 from edam.reader.models.measurement import Measurement
 from edam.reader.models.observation import Observation
-from edam.reader.models.utilities import update_existing, as_dict
+from edam.reader.models.utilities import update_existing, as_dict, resample
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from edam.reader.models.template import Template
 
 logger = get_logger('edam.reader.models.station')
 
@@ -149,13 +153,28 @@ class Station(Base):
         logger.warning(f"{self.name} does not have any data associated")
         return None
 
-    def data_iter(self, variables=None):
+    def data_iter(self, template: "Template"):
         data = self.data
+        variables = template.observable_ids
+        if template.resampled:
+            data = resample(self, template.resampled['rule'],
+                            template.resampled['how'])
         for row in data.itertuples():
             if variables is not None:
                 yield self._prepare_dataframe_generator(row, variables)
             else:
                 yield self._prepare_dataframe_generator(row, list(data))
+
+    def resampled(self, rule=None, how=None):
+        return self._res
+
+    @property
+    def res(self):
+        return self._res
+
+    @res.setter
+    def res(self, value):
+        self._res = value
 
     def _prepare_dataframe_generator(self, row: tuple, variables) -> []:
         gen = []

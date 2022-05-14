@@ -125,10 +125,16 @@ def get_data():
     data = render_data(template=template,
                        station=station)
     if data is not None:
-        response = make_response(
-            render_template(os.path.join('edam', template.filename),
-                            chunk=data,
-                            station=station))
+        if template.resampled:
+            station.res = data
+            response = make_response(
+                render_template(os.path.join('edam', template.filename),
+                                station=station))
+        else:
+            response = make_response(
+                render_template(os.path.join('edam', template.filename),
+                                chunk=data,
+                                station=station))
         response.headers['Content-type'] = 'text/plain'
         response.headers['Cache-Control'] = 'public, max-age=0'
 

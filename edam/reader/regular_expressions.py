@@ -22,3 +22,5 @@ var_parse_header = re.compile(r"(.*?)\n*{%\s?for .*? in .*?%}")
 # var_anything_but_value = re.compile(r"{{.*?.value(.*?)}}")
 # var_anything_but_value = re.compile(r"{{.+.value(\[.+\]).?.?}}")
 var_for_value_timestamp = re.compile(r"{{.+.(timestamp.?)}}")
+
+resample_function = re.compile(r"station\.resampled\(\s*(\S+)\s*,\s*(\S+)\)")

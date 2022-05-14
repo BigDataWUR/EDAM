@@ -1,6 +1,57 @@
 import copy
 import json
+from typing import TYPE_CHECKING
+
+import pandas as pd
+
 from edam.reader.database_handler import update_object, exists
+
+if TYPE_CHECKING:
+    from edam.reader.models.template import Template
+    from edam.reader.models.station import Station
+
+
+def resample(station: "Station", rule, how=None):
+    dataframe = station.data
+    rule = rule.lstrip('"').lstrip("'").rstrip('"').rstrip("'")
+    observables_list = list(dataframe)
+    observables_list.remove('timestamp')
+    available_operations = [
+        'bfill',
+        'max',
+        'median',
+        'sum',
+        'min',
+        'interpolate',
+        'ffill',
+        'mean']
+
+    try:
+        for observable in observables_list:
+            dataframe[observable] = dataframe[observable].apply(
+                lambda x: float(x))
+
+    except Exception as e:
+        # logger.exception("Exception")
+        pass
+    dataframe['timestamp'] = pd.to_datetime(dataframe['timestamp'])
+    resampled = dataframe.resample(rule=rule, on='timestamp')
+
+    if how is None:
+        resampled = resampled.mean()
+        resampled = resampled.round(3)
+        resampled = resampled.fillna('---')
+    else:
+        how = how.lstrip('"').lstrip("'").rstrip('"').rstrip("'")
+        if how in available_operations:
+            resampled = getattr(resampled, how)()
+            resampled = resampled.round(3)
+
+    resampled['timestamp'] = resampled.index
+    for observable in list(resampled):
+        resampled[observable] = resampled[observable].apply(
+            lambda x: str(x))
+    return resampled
 
 
 def update_existing(obj, new_values, logger):

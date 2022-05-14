@@ -7,7 +7,7 @@ import jinja2schema
 
 from edam import get_logger
 from edam.reader.regular_expressions import template_file_header, \
-    for_loop_variables, var_for_line, start_if, end_if
+    for_loop_variables, var_for_line, start_if, end_if, resample_function
 from edam.utilities.exceptions import ErrorWithTemplate
 
 logger = get_logger('edam.reader.models.template')
@@ -96,6 +96,7 @@ class Template:
         matches = re.findall(for_loop_variables, template_contents)
         if matches:
             template_observables = matches[0][0]  # type: str
+            self.resampled = matches[0][1]
             template_observables_as_list = list(
                 map(lambda observable: observable.rstrip().lstrip(),
                     template_observables.split(',')))
@@ -103,6 +104,32 @@ class Template:
             return template_observables_as_list
         raise ErrorWithTemplate(f"I couldn't extract variables from "
                                 f"{self.filename} located at {self.path}")
+
+    @property
+    def resampled(self) -> dict:
+        """
+        """
+        return self._resampled
+
+    @resampled.setter
+    def resampled(self, value):
+        matches = re.findall(resample_function, value)
+        dictionary = {}
+        if matches:
+            try:
+                rule = matches[0][0]
+            except:
+                rule = None
+            try:
+                how = matches[0][1]
+            except:
+                rule = None
+            dictionary['rule'] = rule
+            dictionary['how'] = how
+            self._resampled = dictionary
+        else:
+            self._resampled = None
+
 
     @property
     def preamble(self) -> str:

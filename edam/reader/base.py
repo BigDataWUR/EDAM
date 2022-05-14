@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-from edam.settings import database_url
+from edam import database_url
 
 engine = create_engine(database_url, connect_args={'check_same_thread': False})
 Session = sessionmaker(bind=engine, autoflush=True, autocommit=False,

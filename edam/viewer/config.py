@@ -1,5 +1,5 @@
 import os
-from edam.settings import database_url
+from edam import database_url
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 

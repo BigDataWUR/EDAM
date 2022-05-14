@@ -2,7 +2,7 @@ import click
 
 from edam.reader.models.database import recreate_database
 from edam.reader.resolvers.resolver_factory import ResolverFactory
-from edam.settings import SERVER
+from edam import SERVER
 from edam.utilities.decorators import timer
 from edam.viewer.app.views import app
 

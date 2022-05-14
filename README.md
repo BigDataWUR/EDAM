@@ -25,9 +25,11 @@ You can install and run this version. Issue the followings:
 Above command installs `edam`, which will be available to the virtual environment. 
 It also creates an **.edam** folder in your system's home directory. 
 All EDAM related documents are located in this folder. 
-User drafted *template* and *metadata*, and *input* files should be put in this folder. 
+User=drafted *template* and *metadata*, and *input* files should be placed 
+under these corresponding directories. 
 
-More information about the proposed workflow can be found in the [proposed-workflow](#proposed-workflow). 
+More information about the proposed workflow can be found 
+in the [proposed-workflow](#proposed-workflow). 
 
 # Table of contents
 
@@ -54,20 +56,22 @@ An *observable* can have the following attributes:
 
 ## Template
 
-In a template one can use in a *placeholder (**{{}}**)* only the *template_id*'s, which were defined in the metadata files. 
+In a template one can use in a *placeholder (**{{}}**)* only the 
+*template_id*'s, which were defined in the metadata files. 
 
 A *template_id* can have certain attributes. 
 These are:
 1. value (e.g.`{{wind.value}}`)
 2. timestamp. In case the table (csv) has a dedicated column which denotes the timestamp of a **specific observable**, this will be defined as `{{wind.timestamp.time}}` (if it's in the hh:mm format).
-3. In case the one column-timestamp refers to more than one observables (e.g. BoM wind_direction_max and wind_speed_max), this should be defined as `{{same_timestamp(windm_spd.timestamp.time, windm_dir.timestamp.time)}}`
+3. In case the one column-timestamp refers to more than one observable (e.g. BoM wind_direction_max and wind_speed_max), this should be defined as `{{same_timestamp(windm_spd.timestamp.time, windm_dir.timestamp.time)}}`
 
-In case a column has the timestamp which corresponds to **all observables in each row**, users will use the `{{timestamp.}}`.  
+In case a column has the timestamp which corresponds to 
+**all observables in each row**, users will use the `{{timestamp.}}`.  
 
 # Proposed workflow
 
 1. Edit `setting.yaml` to correspond to your database system 
-1. Draft a metadata file and put it into metadata folder (~/.edam/metadata)
+1. Draft a metadata file and put it into metadata folder (`~/.edam/metadata`)
 2. Draft a template file (`~/.edam/templates`)
 3. Add your input csv file into inputs folder (`~/.edam/inputs`)
 
@@ -78,20 +82,27 @@ and a webservice starts on you computer. If no changes to `settings.yaml`
 (check [Proposed workflow](#proposed-workflow)) have been made, you can visit 
 `http://127.0.0.1:5000` and view the data. 
 
-For more details about the `edam` command usage, issue a `edam --help` in your terminal.  
+For more details about the `edam` command usage, 
+issue a `edam --help` in your terminal.  
 
 ## **AgMIP and APSIM weather data files**
 
-The Agricultural Model Intercomparison and Improvement Project (AgMIP) brought into the spotlight agricultural modelling data sharing. 
-Within AgMIP, various agricultural models (such as the APSIM) were transformed into the AgMIP data scheme. 
+The Agricultural Model Intercomparison and Improvement Project (AgMIP) 
+brought into the spotlight agricultural modelling data sharing. 
+Within AgMIP, various agricultural models (such as the APSIM) were transformed 
+into the AgMIP data scheme. 
 
 AgMIP and APSIM data files use different *timestamp components*. 
 The challenge here is to compose these into one universal timestamp. 
-APSIM uses *julian dates* and *years*, while AgMIP timestamp is represented through *year*, *month*, *date* components. 
+APSIM uses *julian dates* and *years*, while AgMIP timestamp is 
+represented through *year*, *month*, *date* components. 
 
-Another challenge was related with metadata encoded in the preamble of APSIM data files. 
-Specifically, prior to the timeseries there are station metadata such as station name, location and others. 
-The APSIM data files share the same structure, so these preamble-encoded metadata distinguish the different stations. 
+Another challenge was related with metadata encoded in the preamble 
+of APSIM data files. 
+Specifically, prior to the timeseries there are station metadata 
+such as station name, location and others. 
+The APSIM data files share the same structure, so these preamble-encoded 
+metadata distinguish the different stations. 
 
 
 ### AgMIP data files
@@ -113,7 +124,6 @@ The APSIM data files share the same structure, so these preamble-encoded metadat
 
 <details>
     <summary><code>AgMIP template</code></summary>
-
 
 ```csv
 @DATE    YYYY  MM  DD  SRAD  TMAX  TMIN  RAIN  WIND  DEWP  VPRS  RHUM
@@ -189,7 +199,7 @@ Units of Measurement:
 
 Following command is executed in approximately 2 seconds:
 
-`edam --input Agmip.csv --template Agmip.tmpl --metadata Agmip.yaml --drop yes`   
+`edam --input Agmip.csv --template Agmip.tmpl --metadata Agmip.yaml`   
 
 
 ### APSIM station
@@ -287,24 +297,28 @@ Units of Measurement:
 
 Following command is executed in less than 1 second:
 
-`edam --input Yucheng.met --template Yucheng.tmpl --metadata Yucheng.yaml --drop yes`   
+`edam --input Yucheng.met --template Yucheng.tmpl --metadata Yucheng.yaml`   
 
 
 ## **UK Meteorological Office**
 
-In the context of Open Data, the UK Meteorological Office, reports historical observations of 27 weather stations. 
+In the context of Open Data, the UK Meteorological Office, reports historical 
+observations of 27 weather stations. 
 For every station, monthly observations are stored in one text document. 
-New observations are appended every month and each weather station can be found on a certain URI. 
+New observations are appended every month and each weather station can be 
+found on a certain URI. 
 URI follows the pattern: 
-`http://www.metoffice.gov.uk/pub/data/weather/uk/climate/stationdata/{station name}data.txt`, where {station name} is replaced with an actual station name. 
+`http://www.metoffice.gov.uk/pub/data/weather/uk/climate/stationdata/{station name}data.txt`, 
+where {station name} is replaced with an actual station name. 
 
-Data points reported in Met Office weather stations' documents have special markers. 
-The challenge here is concerned with establishing a relation among markers and attributes. 
-This relation, expressed using natural language, is defined in each document's preamble. 
+Data points reported in Met Office weather stations' documents have 
+special markers. 
+The challenge here is concerned with establishing a relation 
+among markers and attributes. 
+This relation, expressed using natural language, is defined 
+in each document's preamble. 
 For example, "estimated data is marked with a * after the value". 
-These types of metadata are essential, so they have to be parsed and stored. 
-
-
+These types of metadata are essential, so they have to be parsed and stored.
 
 <details>
     <summary><code>UK Met dataset</code></summary>
@@ -399,4 +413,4 @@ Units of Measurement:
 Following command downloads and stores data from 27 weather stations. 
 It is executed in approximately 9 seconds.   
 
-`edam --input "http://www.metoffice.gov.uk/pub/data/weather/uk/climate/stationdata/{_var_}data.txt" --template uk.tmpl --metadata uk.yaml --var "aberporth,armagh, ballypatrick, camborne, cambridge, cardiff, chivenor, cwmystwyth, dunstaffnage, durham, eastbourne, eskdalemuir" --drop yes`
+`edam --input "http://www.metoffice.gov.uk/pub/data/weather/uk/climate/stationdata/{_var_}data.txt" --template uk.tmpl --metadata uk.yaml --var "aberporth,armagh, ballypatrick, camborne, cambridge, cardiff, chivenor, cwmystwyth, dunstaffnage, durham, eastbourne, eskdalemuir"`

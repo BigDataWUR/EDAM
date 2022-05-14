@@ -19,7 +19,7 @@ import requests
 from edam.reader.models.station import Station
 from edam.reader.models import template
 from edam.reader.models.template import Template
-from edam.settings import database_type, home_directory
+from edam import database_type, home_directory
 
 logger = logging.getLogger('edam.reader.utilities')
 

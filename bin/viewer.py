@@ -1,4 +1,4 @@
-from edam.settings import SERVER
+from edam import SERVER
 from edam.viewer.app.views import app
 
 
