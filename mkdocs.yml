@@ -17,8 +17,8 @@ nav:
   - Home: 'index.md'
   - Installation: 'installation.md'
   - EDAM template language:
-      - 'Metadata': 'edam-template-language/metadata.md'
-      - 'Template': 'edam-template-language/template.md'
+      - Metadata: 'edam-template-language/metadata.md'
+      - Template: 'edam-template-language/template.md'
   - Proposed workflow: 'workflow.md'
   - Test cases:
       - AgMIP and APSIM: 'test-cases/agmip_apsim.md'
@@ -26,4 +26,5 @@ nav:
       - APSIM: 'test-cases/apsim.md'
       - UK Met office: 'test-cases/uk_met.md'
   - API:
-      - 'Station': 'api/station.md'
+      - Station: 'api/station.md'
+      - Observable: 'api/observable.md'
