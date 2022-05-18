@@ -25,6 +25,7 @@ jobs:
           python setup.py sdist
           pip install dist/edam-2.0.0.tar.gz
           pip install -r requirements-dev.txt
+          python -m edam.reader.models.app
       - name: Test with pytest
         run: |
           pytest
