@@ -16,8 +16,7 @@ data reuse via transformations across different formats.
 
 This project runs on **python3**. Thus, python3 should be installed.
 
-It is highly recommended installing the module via Python virtual environment.  
-
+It is highly recommended installing the module via Python virtual environment
 You can install and run this version. Issue the followings:
 
 `pip install edam`

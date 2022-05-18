@@ -1,0 +1,29 @@
+site_name: EDAM
+theme:
+  name: material
+repo_name: 'EDAM'
+repo_url: 'https://github.com/BigDataWUR/EDAM'
+copyright: 'Copyright © 2017, Argyrios Samourkasidis'
+plugins:
+  - search
+  - autorefs
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          rendering:
+            show_source: true
+nav:
+  - Home: 'index.md'
+  - Installation: 'installation.md'
+  - EDAM template language:
+      - 'Metadata': 'edam-template-language/metadata.md'
+      - 'Template': 'edam-template-language/template.md'
+  - Proposed workflow: 'workflow.md'
+  - Test cases:
+      - AgMIP and APSIM: 'test-cases/agmip_apsim.md'
+      - AgMIP: 'test-cases/agmip.md'
+      - APSIM: 'test-cases/apsim.md'
+      - UK Met office: 'test-cases/uk_met.md'
+  - API:
+      - 'Station': 'api/station.md'
