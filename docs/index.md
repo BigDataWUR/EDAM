@@ -1,8 +1,4 @@
-# <span style="font-family:Papyrus; font-size:35px;"><span style="color: rgb(112,156,96);">**
-E**</span>nvironmental <span style="color: rgb(140,201,200);">**
-D**</span>ata <span style="color: rgb(245,74,57);">**
-A**</span>cquisition <span style="color: rgb(21,97,101);">**
-M**</span>odule</span>
+# <span style="font-family:Papyrus; font-size:35px;"><span style="color: rgb(112,156,96);">**E**</span>nvironmental <span style="color: rgb(140,201,200);">**D**</span>ata <span style="color: rgb(245,74,57);">**A**</span>cquisition <span style="color: rgb(21,97,101);">**M**</span>odule</span>
 
 EDAM (Environmental Data Acquisition Module), is a template framework that
 facilitates
