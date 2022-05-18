@@ -1,3 +1,3 @@
 # Observable
 
-::: edam.reader.models.observable.Observable
+::: edam.reader.models.observable.AbstractObservable

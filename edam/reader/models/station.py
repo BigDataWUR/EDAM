@@ -38,7 +38,7 @@ class Station(Base):
         latitude: float attribute which represent the station's latitude
         longitude: float attribute which represent the station's longitude
         region: string attribute which describes the region where the
-            station is situated. TODO: Obsolete??
+            station is situated.
         license: string attribute which represents the license of the data
             that the station holds
         url: string attribute of the station's url (if applicable)
