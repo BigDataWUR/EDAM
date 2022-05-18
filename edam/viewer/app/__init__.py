@@ -1,14 +1,11 @@
-import calendar
 import hashlib
 import os
-import shutil
 from datetime import datetime
 from functools import wraps, update_wrapper
 
 import jinja2
 from flask import Flask
 from flask import make_response
-from flask_caching import Cache
 from flask_sqlalchemy import SQLAlchemy
 
 from edam import get_logger
@@ -45,10 +42,6 @@ app.jinja_loader = jinja2.FileSystemLoader(
 
 # Don't sort with jsonify
 app.config['JSON_SORT_KEYS'] = False
-
-# Set cache
-cache = Cache(app, config={'CACHE_TYPE': 'simple'})
-cache.init_app(app)
 
 # secret key for sessions
 app.secret_key = "this should be harder to guess"
