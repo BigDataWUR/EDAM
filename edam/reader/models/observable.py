@@ -13,6 +13,7 @@ class AbstractObservable(Base):
     or `temp_min`, etc.
 
     Attributes:
+        observable_id:
         name: The name of the observable (e.g. Temperature)
         ontology: An ontology for the observable
     """
