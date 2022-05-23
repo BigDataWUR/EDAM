@@ -12,7 +12,6 @@ logger = get_logger('edam.reader.models.sensor')
 
 
 class Sensor(Base):
-    __tablename__ = "Sensor"
     """
     Represents a Sensor.
 
@@ -21,11 +20,10 @@ class Sensor(Base):
     Attributes:
         name: The name of the sensor
         manufacturer: The name of the sensor's manufacturer
-        obs_id: The Foreign Key which connects a sensor with 
-            an (abstract) observable
         tags: dict attribute which represents any other tags which are not
             explicitly defined
     """
+    __tablename__ = "Sensor"
     id = Column(Integer, primary_key=True)
     name = Column(String(60))
     manufacturer = Column(String(60))
