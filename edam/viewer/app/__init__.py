@@ -11,7 +11,7 @@ from flask_sqlalchemy import SQLAlchemy
 from edam import get_logger
 from edam.reader.database_handler import get_all
 from edam import home_directory
-from edam.utilities.reader_utilities import find_templates_in_directory
+from edam.reader.models.template import find_templates_in_directory
 from edam.viewer import config
 from edam.viewer.app.utilities import template_matches_source
 
