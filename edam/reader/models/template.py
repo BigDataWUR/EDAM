@@ -1,11 +1,12 @@
 import csv
+import fnmatch
 import os
 import re
 from contextlib import contextmanager
 
 import jinja2schema
 
-from edam import get_logger
+from edam import get_logger, home_directory
 from edam.reader.regular_expressions import template_file_header, \
     for_loop_variables, var_for_line, start_if, end_if, resample_function
 from edam.utilities.exceptions import ErrorWithTemplate
@@ -130,7 +131,6 @@ class Template:
         else:
             self._resampled = None
 
-
     @property
     def preamble(self) -> str:
         """
@@ -202,3 +202,22 @@ def read_template(template: Template):
     f = open(template.path, 'r')
     yield f
     f.close()
+
+
+def find_templates_in_directory(directory: str = home_directory) -> [Template]:
+    """
+        Returns a list of templates located in a given directory.
+        Directory defaults to the home_directory(~/.edam)
+        :rtype: [Template]
+        :param directory: Directory to search for templates
+        :return: list of Template objects
+    """
+    list_of_templates = list()
+    for folder, _, files in os.walk(os.path.join(directory, 'templates')):
+        for file in files:
+            if fnmatch.fnmatch(file, '*.tmpl'):
+                path = os.path.join(folder, file)
+                filename, _ = os.path.splitext(file)
+                templ = Template(path=path)
+                list_of_templates.append(templ)
+    return list_of_templates
