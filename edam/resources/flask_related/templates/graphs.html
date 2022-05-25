@@ -12,7 +12,7 @@
         </div>
         <div class="panel-body">
             <div class="col-md-4">
-                <select class="stocks-multiple" multiple="multiple" id="stock-line" style="width: 75%">
+                <select class="station-single" id="selected-station" style="width: 75%">
                     {% for station in stations %}
                         <option>{{ station.name }}</option>
                     {% endfor %}
@@ -20,14 +20,16 @@
             </div>
 
             <div class="col-md-4">
-                <select class="metrics-multiple" multiple="multiple" id="line-metric" style="width: 75%">
+                <select class="metrics-multiple" multiple="multiple"
+                        id="line-metric" style="width: 75%">
                     {% for metric in metrics %}
                         <option>{{ metric }}</option>
                     {% endfor %}
                 </select>
             </div>
             <div class="col-md-4">
-                <button class="btn btn-info" id="line-on-demand"><i class="glyphicon glyphicon-refresh"></i> Get graph
+                <button class="btn btn-info" id="line-on-demand">
+                    <i class="glyphicon glyphicon-refresh"></i> Get graph
                 </button>
             </div>
         </div>
@@ -36,7 +38,7 @@
         <div class="panel-body">
             <div class="chart" id="bargraph">
                 <script>
-                    let graphs = {{plot | safe}};
+                    let graphs = {{plot | safe}}
                     let layout = {
                         title: '{{ title }}',
                     };

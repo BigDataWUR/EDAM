@@ -11,10 +11,6 @@ function serealizeSelects(select) {
 
 
 $(document).ready(function () {
-    $('.stocks-multiple').select2({
-        placeholder: 'Select a station',
-        width: 'resolve'
-    });
     $('.metrics-multiple').select2({
         placeholder: 'Select a metric',
         width: 'resolve'
@@ -23,7 +19,7 @@ $(document).ready(function () {
         placeholder: 'Select a metric',
         width: 'resolve'
     });
-    $('.stocks-single').select2({
+    $('.station-single').select2({
         placeholder: 'Select a station',
         width: 'resolve'
     });
@@ -38,7 +34,7 @@ $("#line-on-demand").on("click", function (e) {
         contentType: 'application/json;charset=UTF-8',
         data: {
             'metrics': serealizeSelects($('#line-metric')),
-            'stations': serealizeSelects($('#stock-line'))
+            'stations': serealizeSelects($('#selected-station'))
         },
         dataType: "json",
         success: function (data) {
