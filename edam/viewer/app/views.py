@@ -147,6 +147,7 @@ def get_data():
 
 
 @app.route('/about/')
+@app.route('/about')
 def about():
     return render_template('about.html')
 
@@ -163,9 +164,9 @@ def graphs():
 def line_graph():
     metrics = request.args['metrics'].split(',')
     st = request.args['stations'].split(',')
-    graphJSON = line_plotter(metrics, st)
+    graph_json = line_plotter(metrics, st)
     data_to_return = dict()
-    data_to_return['data_json'] = graphJSON
+    data_to_return['data_json'] = graph_json
     data_to_return['layout'] = dict()
     data_to_return['layout']['title'] = f"{','.join(metrics)}"
 
@@ -189,11 +190,12 @@ def line_plotter(metrics, st):
                 x=df.index,
                 y=df[metric],
                 mode='lines',
-                name=f'{station.name} - {metric_formal.observable.name.capitalize()}'
+                name=f'{station.name} - '
+                     f'{metric_formal.observable.name.capitalize()}'
             )
             tracers.append(trace)
-    graphJSON = json.dumps(tracers, cls=plotly.utils.PlotlyJSONEncoder)
-    return graphJSON
+    graph_json = json.dumps(tracers, cls=plotly.utils.PlotlyJSONEncoder)
+    return graph_json
 
 
 @app.route('/SensorObservationService/')

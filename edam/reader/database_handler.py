@@ -50,21 +50,31 @@ def add_item(item):
 
 
 def get_all(item):
+    """
+    Get all objects for a given type from database
+
+    Use the type of `item` argument to get all such
+    objects from database.
+    Args:
+        item: A class of the available models. E.g. `Station`, `Sensor`, etc.
+
+    Returns:
+        List of `item` objects
+    """
     session.flush()
     return session.query(item).all()
 
 
-def add_items(items: list):
+def add_items(items: list) -> None:
     """
     Adds a list of items in database.
 
-    Calls the `add_item` on multiple items in a list.
+    Checks each item whether is already stored in the database.
+    Following the check, the non-stored items are saved
+    in the database via a `bulk_save_objects` action.
 
     Args:
         items: list with items to be added in database
-
-    Returns:
-        The items as added in the database
     """
     unique_items = list(filter(lambda item: exists(item) is None, items))
     if unique_items:
