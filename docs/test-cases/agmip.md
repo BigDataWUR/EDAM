@@ -1,4 +1,4 @@
-# **AgMIP data files**
+# AgMIP data files
 
 <details>
     <summary><code>AgMIP dataset</code></summary>

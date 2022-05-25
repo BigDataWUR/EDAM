@@ -1,4 +1,4 @@
-# **AgMIP and APSIM weather data files**
+# AgMIP and APSIM weather data files
 
 The Agricultural Model Intercomparison and Improvement Project (AgMIP) 
 brought into the spotlight agricultural modelling data sharing. 

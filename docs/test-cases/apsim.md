@@ -1,4 +1,4 @@
-# **APSIM station**
+# APSIM station
 
 <details>
     <summary><code>APSIM dataset</code></summary>

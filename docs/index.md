@@ -8,6 +8,10 @@ language-agnostic semantics, and can be reused both for input and output, thus
 enabling
 data reuse via transformations across different formats.
 
+The theoretical concepts on which EDAM is based are documented 
+in the Open Access paper: 
+"[A template framework for environmental timeseries data acquisition](https://www.sciencedirect.com/science/article/pii/S1364815218302627)"
+
 # Table of contents
 
 - [Installation](installation)
