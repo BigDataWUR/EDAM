@@ -43,3 +43,6 @@ nav:
       - Station: 'api/station.md'
       - Observable: 'api/observable.md'
       - Sensor: 'api/sensor.md'
+      - Unit of Measurement: 'api/unit_of_measurement.md'
+      - Observation: 'api/observation.md'
+      - Junction table: 'api/junction.md'

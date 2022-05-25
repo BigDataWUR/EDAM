@@ -1,4 +1,4 @@
-# **UK Meteorological Office**
+# UK Meteorological Office
 
 In the context of Open Data, the UK Meteorological Office, reports historical 
 observations of 27 weather stations. 
