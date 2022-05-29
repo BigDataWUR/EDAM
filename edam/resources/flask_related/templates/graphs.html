@@ -1,53 +1,59 @@
 {% extends "base.html" %}
 {% set active_page = 'graphs' %}
-
+{% block head %}
+<script src="https://cdn.plot.ly/plotly-2.12.1.min.js"></script>
+{% endblock %}
 {% block title %}Graphs{% endblock %}
 
 {% block body %}
 
 <div class="content-box-large">
-        <div class="panel-heading">
-            <div class="panel-title">
-            </div>
-        </div>
-        <div class="panel-body">
-            <div class="col-md-4">
-                <select class="station-single" id="selected-station" style="width: 75%">
-                    {% for station in stations %}
-                        <option>{{ station.name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <div class="col-md-4">
-                <select class="metrics-multiple" multiple="multiple"
-                        id="line-metric" style="width: 75%">
-                    {% for metric in metrics %}
-                        <option>{{ metric }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="col-md-4">
-                <button class="btn btn-info" id="line-on-demand">
-                    <i class="glyphicon glyphicon-refresh"></i> Get graph
-                </button>
-            </div>
+    <div class="panel-heading">
+        <div class="panel-title">
         </div>
     </div>
-    <div class="content-box-large">
-        <div class="panel-body">
-            <div class="chart" id="bargraph">
-                <script>
-                    let graphs = {{plot | safe}}
-                    let layout = {
-                        title: '{{ title }}',
-                    };
-                    Plotly.plot('bargraph', graphs, layout, {});
-                </script>
-            </div>
+    <div class="panel-body">
+        <div class="col-md-4">
+            <select class="station-single" id="selected-station"
+                    style="width: 75%">
+                {% for station in stations %}
+                <option>{{ station.name }}</option>
+                {% endfor %}
+            </select>
         </div>
 
+        <div class="col-md-4">
+            <select class="metrics-multiple" multiple="multiple"
+                    id="line-metric" style="width: 75%">
+                {% for metric in metrics %}
+                <option>{{ metric }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-4">
+            <button class="btn btn-info" id="line-on-demand">
+                <i class="glyphicon glyphicon-refresh"></i> Get graph
+            </button>
+        </div>
     </div>
+</div>
+<div class="content-box-large">
+    <div class="panel-body">
+        <div class="chart" id="bargraph">
+            <script>
+                let graphs = "{{ plot | safe }}"
+                {% if plot %}
+                Plotly.newPlot('bargraph',
+                    {
+                        "data": graphs,
+                        "layout": {"title": '{{ title }}'}
+                    });
+                {% endif %}
+            </script>
+        </div>
+    </div>
+
+</div>
 
 
 {% endblock %}

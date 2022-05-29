@@ -4,6 +4,7 @@ from edam.reader.models.database import recreate_database
 from edam.reader.resolvers.resolver_factory import ResolverFactory
 from edam import SERVER
 from edam.utilities.decorators import timer
+from edam.utilities.utilities import verify_database
 from edam.viewer.app.views import app
 
 
@@ -36,4 +37,5 @@ def cli(input_file, template, metadata, var, drop):
 
 
 if __name__ == '__main__':
+    verify_database()
     cli()
