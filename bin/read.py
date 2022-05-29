@@ -12,7 +12,7 @@ from edam.viewer.app.views import app
 @click.option('--template', required=True,
               help='template file to parse data with')
 @click.option('--metadata', required=True,
-              help='configuration file to annotate data with')
+              help='metadata file to annotate data with')
 @click.option('--var', required=False, default="",
               help='Extra variables for URI generation')
 @click.option('--drop', required=False, default='no',
@@ -33,12 +33,6 @@ def cli(input_file, template, metadata, var, drop):
         if resolver.template_matches_input():
             dataframes = resolver.timeseries
             resolver.store_timeseries()
-
-
-def run():
-    app.jinja_env.auto_reload = True
-    app.config['TEMPLATES_AUTO_RELOAD'] = True
-    app.run(host=SERVER['host'], port=SERVER['port'], debug=SERVER['debug'])
 
 
 if __name__ == '__main__':
