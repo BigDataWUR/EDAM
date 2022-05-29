@@ -1,5 +1,5 @@
 pytest==7.1.2
-coverage==6.3.2
+coverage==6.4
 pytest-bdd==5.0.0
-pylint==2.13.8
+pylint==2.13.9
 vcrpy==4.1.1

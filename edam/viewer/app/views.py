@@ -155,7 +155,11 @@ def about():
 @app.route('/graphs')
 def graphs():
     all_stations = stations()  # type: [Station]
-    metrics = all_stations[0].observable_ids
+    try:
+        metrics = all_stations[0].observable_ids
+    except IndexError:
+        logger.exception("Exception:")
+        metrics = []
     return render_template('graphs.html', stations=all_stations,
                            metrics=metrics)
 
