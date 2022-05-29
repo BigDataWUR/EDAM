@@ -16,4 +16,4 @@ User-drafted *template* and *metadata*, and *input* files should be placed
 under these corresponding directories. 
 
 More information about the proposed workflow can be found 
-in the [proposed-workflow](#proposed-workflow). 
+in the [proposed-workflow](workflow.md#proposed-workflow). 
