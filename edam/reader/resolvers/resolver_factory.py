@@ -1,3 +1,4 @@
+import fnmatch
 import os
 from enum import Enum
 from os.path import expanduser
@@ -157,6 +158,9 @@ class ResolverFactory:
         elif self.__input_type is InputType.FOLDER:
             resolvers = []
             for file in walk_files_in_directory(self.input_uri):
+                if fnmatch.fnmatch(file, '*.tmpl'):
+                    logger.debug(f"Ignore .tmpl file: {file}")
+                    continue
                 try:
                     meta = Metadata(path=self.metadata_file)
                     temp_resolver = FileResolver(template=self.template,
