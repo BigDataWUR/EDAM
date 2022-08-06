@@ -42,3 +42,22 @@ $("#line-on-demand").on("click", function (e) {
         }
     });
 })
+
+$("#selected-station").change(function (e) {
+    // e.preventDefault();
+    $.ajax({
+        url: "/_get_metrics",
+        type: "GET",
+        contentType: 'application/json;charset=UTF-8',
+        data: {
+            'station': serealizeSelects($('#selected-station'))
+        },
+        dataType: "json",
+        success: function (data) {
+            $("#line-metric").html('');
+            $.each(data, function () {
+                $("#line-metric").append('<option>' + this.metric + '</option>')
+            })
+        }
+    });
+})

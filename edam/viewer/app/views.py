@@ -155,13 +155,7 @@ def about():
 @app.route('/graphs')
 def graphs():
     all_stations = stations()  # type: [Station]
-    try:
-        metrics = all_stations[0].observable_ids
-    except IndexError:
-        logger.exception("Exception:")
-        metrics = []
-    return render_template('graphs.html', stations=all_stations,
-                           metrics=metrics)
+    return render_template('graphs.html', stations=all_stations)
 
 
 @app.route('/line', methods=['GET', 'POST'])
@@ -175,6 +169,17 @@ def line_graph():
     data_to_return['layout']['title'] = f"{','.join(metrics)}"
 
     return data_to_return
+
+
+@app.route('/_get_metrics')
+def station_metrics():
+    station = request.args.get('station', 'none')
+    try:
+        station = next(filter(lambda sts: sts.name == station, stations()))
+
+        return [dict(metric=metric) for metric in station.observable_ids]
+    except StopIteration:
+        return []
 
 
 def line_plotter(metrics, st):
