@@ -16,6 +16,7 @@
         <div class="col-md-4">
             <select class="station-single" id="selected-station"
                     style="width: 75%">
+                <option></option>
                 {% for station in stations %}
                 <option>{{ station.name }}</option>
                 {% endfor %}
@@ -25,9 +26,6 @@
         <div class="col-md-4">
             <select class="metrics-multiple" multiple="multiple"
                     id="line-metric" style="width: 75%">
-                {% for metric in metrics %}
-                <option>{{ metric }}</option>
-                {% endfor %}
             </select>
         </div>
         <div class="col-md-4">
