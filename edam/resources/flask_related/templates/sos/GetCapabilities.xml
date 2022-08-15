@@ -115,13 +115,11 @@
                         <gml:endPosition></gml:endPosition>
                     </gml:TimePeriod>
                 </time>
-                {% for helper in helpers %}{% if helper.station_id == station.id
-                %}
+                {% for junction in station.junctions %}
                 <sos:procedure
-                        xlink:href="{{ helper.station_id }}:{{ helper.sensor_id }}:{{ helper.template_id }}"/>
+                        xlink:href="{{ station.name }}:{{ junction.sensor.name }}"/>
                 <sos:observedProperty
-                        xlink:href="{{ helper.observable.name }}"/>{% endif %}{%
-                endfor %}
+                        xlink:href="{{ junction.observable.observable_id }}"/>{% endfor %}
                 <sos:featureOfInterest
                         xlink:href="urn:edam:feature:{{ station.name }}"/>
                 <sos:responseFormat>text/xml;subtype="om/1.0.0"

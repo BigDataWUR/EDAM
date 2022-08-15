@@ -148,7 +148,8 @@ class Station(Base):
         if dataframes:
             dataframe = pd.concat(dataframes, join='inner', axis=1).fillna(
                 "empty")  # type: pd.DataFrame
-            dataframe.set_index(keys=["timestamp"], drop=False, inplace=True)
+            dataframe['my_index'] = pd.to_datetime(dataframe['timestamp'])
+            dataframe.set_index('my_index', drop=True, inplace=True)
             return dataframe
         logger.warning(f"{self.name} does not have any data associated")
         return None

@@ -79,25 +79,4 @@ def nocache(view):
     return update_wrapper(no_cache, view)
 
 
-def hash(anything):
-    return '_' + hashlib.md5(anything).hexdigest()
-
-
 app.jinja_env.globals.update(hash=hash)
-
-
-def d2s(datetime_object):
-    return datetime_object.strftime("%D %H %M")
-
-
-app.jinja_env.globals.update(d2s=d2s)
-
-
-def same_timestamp(*args):
-    if args:
-        return args[0]
-    else:
-        return None
-
-
-app.jinja_env.globals.update(same_timestamp=same_timestamp)

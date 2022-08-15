@@ -4,6 +4,6 @@
                  version="1.0.0"
                  xml:lang="en">
     <Exception exceptionCode="InvalidParameterValue" locator="procedure">
-        <ExceptionText>{{ procedure }}</ExceptionText>
+        <ExceptionText>{{ exception_text }}</ExceptionText>
     </Exception>
 </ExceptionReport>
