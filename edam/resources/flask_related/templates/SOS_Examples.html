@@ -36,8 +36,8 @@
         procedure = URN of sensor (see getCapabilities output for sensor's URN)
     </li>
     <li>Example: <a
-            href="{{ request.url_root }}SOS/?request=DescribeSensor&amp;procedure=2:13:TX">{{
-        request.url_root }}SOS/?request=DescribeSensor&amp;procedure=2:13:TX</a>
+            href="{{ request.url_root }}SOS/{{ example_describe }}">{{
+        request.url_root }}SOS/{{ example_describe }}</a>
     </li>
 </ul>
 
@@ -49,10 +49,10 @@
         time frame
     </li>
     <li>Parameters: request = GetObservation <br/></li>
-    <li><code>offering</code> = URN of sensor (see getCapabilities output for
-        sensor's URN) <br/></li>
-    <li><code>observedProperty</code> = (One of : <em>Temperature, Pressure,
-        Nitrogen_Dioxide, Carbon_Monoxide</em>)
+    <li><code>offering</code> = Station name (see getCapabilities output for
+        available stations) <br/></li>
+    <li><code>observedProperty</code> = (see getCapabilities output for
+        available stations))
         <br/></li>
     <li><code>eventTime</code> = (YYYY-MM-DD HH:MM:SS/YYYY-MM-DD HH:MM:SS). When
         eventTime = Datetime/
@@ -60,8 +60,8 @@
         <em>measurements</em> from <strong>Datetime</strong> until now.
     </li>
     <li>Example: <a
-            href="{{ request.url_root }}SOS/?request=GetObservation&procedure=2:13:TX">{{
-        request.url_root }}SOS/?request=GetObservation&procedure=2:13:TX</a>
+            href="{{ request.url_root }}SOS/{{ example_observation }}">{{
+        request.url_root }}SOS/{{ example_observation }}</a>
     </li>
 </ul>
 

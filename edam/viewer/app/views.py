@@ -15,7 +15,7 @@ from edam.reader.models.template import Template
 from edam.utilities.exceptions import InvalidUsage
 from edam.viewer.app import app, stations, nocache, templates, \
     render_data
-from edam.viewer.app.OgcSos import OgcSos
+from edam.services.sos.sos import OgcSos
 
 logger = get_logger('edam.viewer.app.views')
 
@@ -209,39 +209,42 @@ def line_plotter(metrics, st):
 
 @app.route('/SensorObservationService/')
 def sensor_info():
-    return render_template('SOS_Examples.html')
+    all_stations = stations()
+    if all_stations:
+        first_station = all_stations[0]  # type: Station
+        station = first_station.name
+
+        first_junction = first_station.junctions[0]
+        procedure = f"{station}:{first_junction.sensor.name}"
+        observed = f"{first_junction.observable.observable_id}"
+    else:
+        procedure = "STATION_NAME:SENSOR_NAME"
+        station = "STATION_NAME"
+        observed = "OBSERVABLE_ID"
+    example_describe = f"?request=DescribeSensor&procedure={procedure}"
+    example_observation = f"?request=GetObservation&offering={station}&observedProperty={observed}"
+    return render_template('SOS_Examples.html',
+                           example_describe=example_describe,
+                           example_observation=example_observation)
 
 
 @app.route('/sos/')
 @app.route('/Sos/')
 @app.route('/sos/')
 @app.route('/SOS/')
-def sos():
-    sos_request = request.args.get('request', '')
-    sos_procedure = request.args.get('procedure', '')
-    sos_offering = request.args.get('offering', '')
-    sos_observed_property = request.args.get('observedProperty', '')
-    sos_event_time = request.args.get('eventTime', '')
+def sensor_observation_service():
+    sos = OgcSos(stations=stations())
+    response = sos.resolve_request(request=request.args.get('request', None),
+                                   procedure=request.args.get('procedure',
+                                                              None),
+                                   offering=request.args.get('offering', None),
+                                   observed_property=request.args.get(
+                                       'observedProperty',
+                                       None),
+                                   event_time=request.args.get('eventTime',
+                                                               None))
 
-    sos = OgcSos(
-        sos_request,
-        sos_procedure,
-        sos_offering,
-        sos_event_time,
-        sos_observed_property)
-    sos_response = sos
-
-    response = make_response(
-        render_template(
-            sos_response.template,
-            info=sos.info,
-            keywords=sos.keywords,
-            stations=sos.stations,
-            helpers=sos.metadata,
-            procedure=sos.procedure,
-            sensor=sos.sensor,
-            results=sos.results,
-            helper=sos.helper_object))
+    response = make_response(render_template(**response))
     response.headers["Content-Type"] = "application/xml"
 
     return response

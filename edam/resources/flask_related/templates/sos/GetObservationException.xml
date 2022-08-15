@@ -5,6 +5,6 @@
                  xml:lang="en">
     <Exception exceptionCode=""
                locator="">
-        <ExceptionText></ExceptionText>
+        <ExceptionText>{{ exception_text }}</ExceptionText>
     </Exception>
 </ExceptionReport>
