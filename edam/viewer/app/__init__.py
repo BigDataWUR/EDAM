@@ -10,7 +10,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 from edam import get_logger
 from edam.reader.database_handler import get_all
-from edam import home_directory
+from edam import edam_home
 from edam.reader.models.template import find_templates_in_directory
 from edam.viewer import config
 from edam.viewer.app.utilities import template_matches_source
@@ -26,8 +26,8 @@ from edam.reader.models.sensor import Sensor
 logger = get_logger('edam.viewer.app')
 
 app = Flask(__name__,
-            static_folder=os.path.join(home_directory, '.viewer/', 'static'),
-            static_url_path=os.path.join(home_directory, '.viewer/'))
+            static_folder=os.path.join(edam_home, '.viewer/', 'static'),
+            static_url_path=os.path.join(edam_home, '.viewer/'))
 app.config.from_object(config)
 
 db = SQLAlchemy(app)
@@ -38,7 +38,7 @@ app.jinja_env.lstrip_blocks = True
 
 # Change the folder of templates and static files
 app.jinja_loader = jinja2.FileSystemLoader(
-    [home_directory + '/.viewer/templates'])
+    [edam_home + '/.viewer/templates'])
 
 # Don't sort with jsonify
 app.config['JSON_SORT_KEYS'] = False
