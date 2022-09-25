@@ -25,7 +25,7 @@ If applicable, add screenshots to help explain your problem.
 
 **Desktop (please complete the following information):**
  - OS: [e.g. iOS]
- - Python version [e.g. 3.7, 3.8]
+ - Python version [e.g. 3.10, 3.11]
  - EDAM version [e.g. 2.0.4]
 
 **Additional context**

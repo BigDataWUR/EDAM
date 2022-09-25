@@ -54,7 +54,6 @@ class Resolver(ABC):
             if index == int(template_header_line):
                 header = line.strip('\r\n')
                 break
-
         if self.template.header == header:
             return header
         else:
