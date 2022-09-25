@@ -6,5 +6,5 @@ Sunshine data taken from an automatic Kipp & Zonen sensor marked with a #, other
    yyyy  mm   tmax    tmin      af    rain     sun
               degC    degC    days      mm   hours
 {%for timestamp, tmax,tmin,af,rain,sun in chunk%}
-{{timestamp.year}}  {{timestamp.month}}  {{tmax.value}}  {{tmin.value}}  {{af.value}}  {{rain.value}}  {{sun.value}}
+{{timestamp.year}}  {{timestamp.month}}  {{tmax.value}}  {{tmin.value}}  {{af.value}}  {{rain.value}}  {{sun.value}} Provisional
 {%endfor%}

@@ -1,21 +1,20 @@
 import json
 import os.path
 
+import plotly
+import plotly.graph_objs as go
 from flask import render_template
 from flask import request, make_response, jsonify
 from flask_googlemaps import GoogleMaps
 from flask_googlemaps import Map
 
-import plotly
-import plotly.graph_objs as go
-
 from edam import get_logger
 from edam.reader.models.station import Station
 from edam.reader.models.template import Template
+from edam.services.sos.sos import OgcSos
 from edam.utilities.exceptions import InvalidUsage
 from edam.viewer.app import app, stations, nocache, templates, \
     render_data
-from edam.services.sos.sos import OgcSos
 
 logger = get_logger('edam.viewer.app.views')
 
@@ -248,7 +247,3 @@ def sensor_observation_service():
     response.headers["Content-Type"] = "application/xml"
 
     return response
-
-
-if __name__ == "__main__":
-    pass

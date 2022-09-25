@@ -1,7 +1,6 @@
 import os
 
 import pytest
-import vcr
 
 from edam.reader.models.metadata import Metadata
 from edam.reader.models.observable import AbstractObservable
@@ -11,13 +10,6 @@ from edam.reader.models.template import Template
 from edam.reader.resolvers.resolver_factory import ResolverFactory
 from edam.utilities.exceptions import InputParameterDoesNotExist
 from tests import metadata_folder, resources
-
-my_vcr = vcr.VCR(
-    serializer='json',
-    cassette_library_dir='fixtures/vcr_cassettes',
-    record_mode='once',
-    match_on=['url', 'method', 'headers'],
-)
 
 
 @pytest.fixture
