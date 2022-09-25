@@ -6,7 +6,7 @@ from contextlib import contextmanager
 
 import jinja2schema
 
-from edam import get_logger, home_directory
+from edam import get_logger, edam_home
 from edam.reader.regular_expressions import template_file_header, \
     for_loop_variables, var_for_line, start_if, end_if, resample_function
 from edam.utilities.exceptions import ErrorWithTemplate
@@ -204,10 +204,10 @@ def read_template(template: Template):
     f.close()
 
 
-def find_templates_in_directory(directory: str = home_directory) -> [Template]:
+def find_templates_in_directory(directory: str = edam_home) -> [Template]:
     """
         Returns a list of templates located in a given directory.
-        Directory defaults to the home_directory(~/.edam)
+        Directory defaults to the edam_home(~/.edam)
         :rtype: [Template]
         :param directory: Directory to search for templates
         :return: list of Template objects

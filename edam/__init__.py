@@ -6,10 +6,10 @@ import os
 import yaml
 from sqlalchemy.engine.url import URL
 
-ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
-home_directory = os.path.join(os.path.expanduser('~'), '.edam')
-test_resources = os.path.join(ROOT_DIR, os.pardir, 'tests', 'resources')
-settings = os.path.join(home_directory, 'settings.yaml')
+root = os.path.dirname(os.path.abspath(__file__))
+edam_home = os.path.join(os.path.expanduser('~'), '.edam')
+test_resources = os.path.join(root, os.pardir, 'tests', 'resources')
+settings = os.path.join(edam_home, 'settings.yaml')
 
 with open(settings, 'r') as stream:
     try:
@@ -35,7 +35,7 @@ def safe_return(section: str, fields: dict) -> dict:
     if section == 'DATABASE':
         if temp_dict['drivername'] in ['sqlite']:
             temp_dict['database'] = os.path.join(
-                home_directory, temp_dict['database'])
+                edam_home, temp_dict['database'])
 
     return temp_dict
 

@@ -65,7 +65,7 @@ class CustomInstall(install):
         shutil.copyfile(os.path.join(resources, 'edam.owl'),
                         os.path.join(edam_home, 'backup.owl'))
 
-        # Copy flask_related contents into home_directory
+        # Copy flask_related contents into edam_home
         copytree(os.path.join(resources, 'flask_related'),
                  os.path.join(edam_home, '.viewer/'))
 
