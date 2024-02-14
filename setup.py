@@ -118,7 +118,7 @@ setup(
     include_package_data=True,
     install_requires=required,
     cmdclass={'test': PyTest, 'install': CustomInstall},
-    python_requires='>=3.8',
+    python_requires='>=3.9',
     packages=find_packages(exclude=["tests.*", "tests"]),
     author_email='argysamo@gmail.com',
     package_data={
@@ -135,10 +135,10 @@ setup(
     },
     classifiers=[
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
     ],
 
 )
